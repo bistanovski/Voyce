@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Voyce is a simple podcast streaming application based on Felgo, Qt and QML" version="" project="Voyce">
+    <namespace name="" status="active" access="public" module="voyce">
+        <qmlclass name="DownloadsPage" qml-module-name="DownloadsPage" href="qml-downloadspage.html" status="internal" access="private" location="DownloadsPage.qml" filepath="/home/developer/Voyce/qml/pages/DownloadsPage.qml" lineno="4" title="DownloadsPage" fulltitle="DownloadsPage" subtitle=""/>
+        <page name="explore-felgo-gen-app.html" href="explore-felgo-gen-app.html" status="active" location="explore-felgo-gen-app.qdoc" filepath="/home/developer/Voyce/doc/explore-felgo-gen-app.qdoc" lineno="1" documented="true" subtype="page" title="Explore generated Felgo Application" fulltitle="Explore generated Felgo Application" subtitle="" module="Voyce">
+            <contents name="adding-new-pages" title="Adding new Pages" level="1"/>
+            <contents name="removing-not-needed-code-update-existing" title="Removing not needed code, update existing" level="1"/>
+            <contents name="next-steps" title="Next steps" level="1"/>
+        </page>
+        <page name="create-basic-app.html" href="create-basic-app.html" status="active" location="create-basic-app.qdoc" filepath="/home/developer/Voyce/doc/create-basic-app.qdoc" lineno="1" documented="true" subtype="page" title="Create new application in Felgo" fulltitle="Create new application in Felgo" subtitle="" module="Voyce">
+            <contents name="creating-new-project" title="Creating new project" level="1"/>
+            <contents name="next-steps" title="Next steps" level="1"/>
+        </page>
+        <page name="list-initial-source-files.html" href="list-initial-source-files.html" status="active" location="list-initial-voyce-source-files.qdoc" filepath="/home/developer/Voyce/doc/list-initial-voyce-source-files.qdoc" lineno="1" documented="true" subtype="page" title="List of source files - initial Voyce application" fulltitle="List of source files - initial Voyce application" subtitle="" module="Voyce">
+            <contents name="c-files" title="C++ Files" level="1"/>
+            <contents name="qml-files" title="QML Files" level="1"/>
+            <contents name="main" title="main" level="2"/>
+            <contents name="logic" title="logic" level="2"/>
+            <contents name="model" title="model" level="2"/>
+            <contents name="pages" title="pages" level="2"/>
+        </page>
+        <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/developer/Voyce/doc/index.qdoc" lineno="1" documented="true" subtype="page" title="How to create mobile application for Podcast streaming using Felgo SDK" fulltitle="How to create mobile application for Podcast streaming using Felgo SDK" subtitle="" module="Voyce">
+            <contents name="getting-started" title="Getting Started" level="1"/>
+            <contents name="installing-felgo-sdk" title="Installing Felgo SDK" level="2"/>
+            <contents name="add-felgo-packages-for-android-platform" title="Add Felgo packages for Android platform" level="2"/>
+            <contents name="setup-android-emulator" title="Setup Android emulator" level="2"/>
+            <contents name="running-qt-creator" title="Running Qt Creator" level="1"/>
+            <contents name="next-steps" title="Next steps" level="1"/>
+        </page>
+        <qmlclass name="PlaylistPage" qml-module-name="PlaylistPage" href="qml-playlistpage.html" status="internal" access="private" location="PlaylistPage.qml" filepath="/home/developer/Voyce/qml/pages/PlaylistPage.qml" lineno="4" title="PlaylistPage" fulltitle="PlaylistPage" subtitle=""/>
+        <qmlclass name="SettingsPage" qml-module-name="SettingsPage" href="qml-settingspage.html" status="internal" access="private" location="SettingsPage.qml" filepath="/home/developer/Voyce/qml/pages/SettingsPage.qml" lineno="4" title="SettingsPage" fulltitle="SettingsPage" subtitle=""/>
+        <qmlclass name="Main" qml-module-name="Main" href="qml-main.html" status="internal" access="private" location="Main.qml" filepath="/home/developer/Voyce/qml/Main.qml" lineno="7" title="Main" fulltitle="Main" subtitle=""/>
+        <qmlclass name="Logic" qml-module-name="Logic" href="qml-logic.html" status="internal" access="private" location="Logic.qml" filepath="/home/developer/Voyce/qml/logic/Logic.qml" lineno="3" title="Logic" fulltitle="Logic" subtitle="">
+            <function name="clearCache" fullname="Logic::clearCache" href="qml-logic.html#clearCache-signal" status="internal" access="private" location="Logic.qml" filepath="/home/developer/Voyce/qml/logic/Logic.qml" lineno="5" meta="qmlsignal"/>
+        </qmlclass>
+        <qmlclass name="RestAPI" qml-module-name="RestAPI" href="qml-restapi.html" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="4" title="RestAPI" fulltitle="RestAPI" subtitle="">
+            <qmlproperty name="maxRequestTimeout" fullname="RestAPI::maxRequestTimeout" href="qml-restapi.html#maxRequestTimeout-prop" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="10" type="int" attached="false" writable="true"/>
+            <qmlproperty name="busy" fullname="RestAPI::busy" href="qml-restapi.html#busy-prop" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="7" type="bool" attached="false" writable="false"/>
+        </qmlclass>
+        <qmlclass name="DataModel" qml-module-name="DataModel" href="qml-datamodel.html" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="4" title="DataModel" fulltitle="DataModel" subtitle="">
+            <qmlproperty name="dispatcher" fullname="DataModel::dispatcher" href="qml-datamodel.html#dispatcher-prop" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="6" type="alias" attached="false" writable="true"/>
+            <qmlproperty name="isBusy" fullname="DataModel::isBusy" href="qml-datamodel.html#isBusy-prop" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="9" type="bool" attached="false" writable="false"/>
+        </qmlclass>
+        <qmlclass name="ExplorePage" qml-module-name="ExplorePage" href="qml-explorepage.html" status="internal" access="private" location="ExplorePage.qml" filepath="/home/developer/Voyce/qml/pages/ExplorePage.qml" lineno="4" title="ExplorePage" fulltitle="ExplorePage" subtitle=""/>
+        <qmlclass name="MediaPlayerPage" qml-module-name="MediaPlayerPage" href="qml-mediaplayerpage.html" status="internal" access="private" location="MediaPlayerPage.qml" filepath="/home/developer/Voyce/qml/pages/MediaPlayerPage.qml" lineno="4" title="MediaPlayerPage" fulltitle="MediaPlayerPage" subtitle=""/>
+        <qmlclass name="main" qml-module-name="main" href="qml-main.html" status="internal" access="private" location="main.qml" filepath="/home/developer/Voyce/main.qml" lineno="5" title="main" fulltitle="main" subtitle=""/>
+    </namespace>
+</INDEX>

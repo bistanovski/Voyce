@@ -1,0 +1,30 @@
+project = Voyce
+description = Voyce is a simple podcast streaming application based on Felgo, Qt and QML
+
+moduleheader =
+includepaths = -I . ../
+
+exampledirs = ../..
+sourcedirs = .. ../..
+headerdirs = ../..
+imagedirs = ../images
+
+sources.fileextensions = "*.cpp *.qdoc *.qml"
+headers.fileextensions = "*.h *.hpp"
+
+outputdir  = ../html
+outputformats = HTML
+
+HTML.stylesheets = ../style/style.css
+HTML.headerstyles = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\"/>\n"
+
+HTML.postheader = "<div align=\"center\"> \
+                   <p class=\"header\">Voyce - Listen your favourite podcasts</p> \
+                   </div> \
+                   <hr/>"
+
+HTML.footer = "<br/> \
+               <hr/> \
+               <div align=\"center\"> \
+               <p class=\"footer\">Voyce - Listen your favourite podcasts</p> \
+               </div>"

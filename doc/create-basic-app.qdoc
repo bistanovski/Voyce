@@ -1,0 +1,63 @@
+/*!
+    \page create-basic-app.html tutorial
+    \title Create new application in Felgo
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage How to create mobile application for Podcast streaming using Felgo SDK
+    \nextpage Explore generated Felgo Application
+
+
+    \section1 Creating new project
+
+    Once we got opened QtCreator, from the main application menu, we select:
+    \b{File} -> \b{New File or Project}. The following Window is opened:
+
+    \image NewProjectWindow.png "New Felgo Project"
+
+    From the options we can see that Felgo SDK provides ready templates for
+    applications and games. We are going to choose \b{Basic Application} option.
+    After clicking \b{Choose}, we are navigated to new window, which allows us
+    to set name of the application and its location:
+
+    \image ProjectLocation.png "Project Location"
+
+    Clicking \b{Next} and we are presented with the Kit Selection options window.
+    From the provided options, we select the \b{Felgo Desktop}, and one of the
+    options for Android.
+
+    \note \e{Android for armeabi-v7a - is kit for a real Android device  - You will
+    need this, you want to run the app on physical device}
+    \note \e{Android for x86 - is kit for a Android emulator - I will choose this
+    one for this tutorial}
+
+    \image KitSelection.png "Kit Selection"
+
+    Going forward, and we are allowed to set basic properties for the project.
+
+    \image ProjectProperties.png "Project Properties"
+
+    After that, we can select which Felgo Plugins we want to use.
+
+    \image SelectPlugins.png "Select Plugins"
+    \note \e{We will not use any plugins at this stage!}
+
+    The next screen for \b{Felgo Plugin Integration Steps} can be skipped, since
+    we have no selected any plugins, and it's empty.
+
+    Finally, as a last step, window with summary of the project details is presented.
+
+    \image ProjectSummary.png "Project Summary"
+
+    Clicking \b{Finish} automatically loads the new project, starts \b{Felgo Live Server}
+    and \b{Felgo Live Client}, and run the application.
+
+    \image FirsAppStart.png "First App Start"
+
+
+    \section1 Next steps
+
+    We've successfuly set up and ran the basic application. Next, we will see what
+    the Felgo SDK generated for us, and what we are going to update in order to have
+    the initial base for our Voyce app.
+
+*/

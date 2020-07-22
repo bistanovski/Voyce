@@ -1,0 +1,98 @@
+/*!
+    \page explore-felgo-gen-app.html tutorial
+    \title Explore generated Felgo Application
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage Create new application in Felgo
+    \nextpage List of source files - initial Voyce application
+
+    In the previous step we created new Felgo Basic Application. The SDK has generated
+    couple of files, which building them, results in a simple TO-DO application.
+    From the Project Source Tree in Qt Creator, we can see the following files:
+
+    \image GeneratedAppSourceTree.png "Generated App Source tree"
+
+    As we can see, Felgo generated great amount of code, as example application.
+    Some of the files we can keep and reuse for our application logic. The files that
+    are deleted are:
+
+    \list
+        \li \b{ViewHelper.qml}
+        \li \b{LoginPage.qml}
+        \li \b{ProfilePage.qml}
+        \li \b{TodoListPage.qml}
+        \li \b{TodoDetailPage.qml}
+    \endlist
+
+    Also related code from other QML files, referencing components, IDs and methods
+    are also removed. Only the basic App layout, pages and RestAPI code is kept for now.
+    We will update it accordingly in next steps.
+
+
+    \section1 Adding new Pages
+
+    From the main QtCreator menu, we select \b{New File or Project}, and from the
+    showed window, we select, \b{Files and Classes} section -> \b{Felgo Apps} ->
+    \b{Page} and click \b{Choose}.
+
+    \image NewPage.png "New page"
+
+    For file name we set \b{PlaylistPage}, and finish the process. This page will
+    hold all podcast episodes that we want to listen in ordered way.
+    We define the following initial code for new \b{PlaylistPage}
+
+    \quotefile qml/pages/PlaylistPage.qml
+
+
+    In a same way we create 4 more pages that will be used:
+
+    \list
+        \li \b{ExplorePage.qml} - \e{List podcasts for exploring}
+            \list
+                \li \quotefile qml/pages/ExplorePage.qml
+            \endlist
+        \li \b{MediaPlayerPage.qml} - \e{Central MediaPlayer}
+            \list
+                \li \quotefile qml/pages/MediaPlayerPage.qml
+            \endlist
+        \li \b{DownloadsPage.qml} - \e{List of downlaoded podcast episodes}
+            \list
+                \li \quotefile qml/pages/DownloadsPage.qml
+            \endlist
+        \li \b{SettingsPage.qml} - \e{Place for defining basic app settings}
+            \list
+                \li \quotefile qml/pages/SettingsPage.qml
+            \endlist
+    \endlist
+
+
+    \section1 Removing not needed code, update existing
+
+    We are removing not needed code from RestAPI.qml file, related to ToDos, and
+    defined URL. We are setting new URL to point to \b{https://gpodder.net/api/2}
+    which is provided by \l{https://gpodder.net/} {GPodder} service. We will explore
+    this service, public APIs and consuming them in the next chapters of this tutorial.
+
+    We're updating Main.qml, and now all of the NavigationItem instances contain
+    the new separate pages we created earlier. Felgo also provides great IconTypes.
+    For example, we can set the IconType to be \b{playcircle} and automatically to
+    draw play icon.
+
+    \qml
+        NavigationItem {
+            title: qsTr("Player")
+            icon: IconType.playcircle
+
+            NavigationStack {
+                splitView: tablet
+                initialPage: MediaPlayerPage { }
+            }
+        }
+    \endqml
+
+    \section1 Next steps
+    For better understanding what we've changed, and what kept, on the next page
+    you will find all source files' content. You can investigate them in greater
+    details.
+
+*/

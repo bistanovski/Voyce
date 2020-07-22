@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+body {
+    line-height:20px;
+    font-family:'Titillium Web', sans-serif;
+    font-weight:400;
+    transition-duration:1s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    background-color:#f3f3f4;
+    color:#404244;
+    margin: 2em;
+}
+
+ol,ul {
+  list-style:none
+}
+
+blockquote,q {
+  quotes:none;
+  border-left:10px solid #ddd;
+  padding-left:10px
+}
+
+blockquote:before,blockquote:after,q:before,q:after {
+  content:'';
+  content:none;
+  width:100%
+}
+
+table {
+  border-collapse:collapse;
+  border-spacing:0;
+  margin-bottom:5px;
+  width:100%
+}
+
+a {
+  color:#17a81a;
+  text-decoration:none;
+  transition-duration:0.3s
+}
+
+a:hover {
+  color:#17a81a
+}
+
+.title {
+  font-size:2.25em;
+  font-weight:400;
+  letter-spacing:-1px;
+  line-height:1.15em;
+  margin-bottom:0.5em;
+  word-wrap:break-word
+}
+
+.nextPage {
+  float:right
+}
+
+.prevPage:before {
+  content:"< "
+}
+
+.nextPage:after {
+  content:" >"
+}
+
+li a.active {
+  color:#585a5c
+}
+
+div.pre {
+  position:relative;
+  height:auto
+}
+pre {
+  background-color:#3a4055;
+  color:#fff;
+  display:block;
+  font-family: 'Source Code Pro', monospace;
+  line-height:1.5;
+  overflow-x:auto;
+  margin-bottom:25px;
+  padding:25px;
+  margin-top:0.75em;
+  font-size: 15px
+}
+
+pre .type,code .typ {
+  color:#4f9d08
+}
+
+pre .preprocessor,pre .com,code .com {
+  color:#55ffff
+}
+
+pre .keyword,code .kwd {
+  color:#ffff55
+}
+
+pre .string,code .str {
+  color:#aaaaaa
+}
+
+pre .number, code.number, pre .lit,code .lit{
+  color:#ff55ff
+}
+
+pre a .typ,pre .type a .pln,code a .typ {
+  color:#21be2b
+}
+
+pre .pun,code .pun,pre .pln,code .pln {
+  color:#fff
+}
+
+.toc,.sectionlist {
+  padding:6px;
+  background-color: #fff;
+}
+.toc h3 a {
+  color:#404244
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- explore-felgo-gen-app.qdoc -->
+  <title>Explore generated Felgo Application | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="create-basic-app.html" />
+  <link rel="next" href="list-initial-source-files.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="create-basic-app.html">Create new application in Felgo</a>
+<a class="nextPage" href="list-initial-source-files.html">List of source files - initial Voyce application</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#adding-new-pages">Adding new Pages</a></li>
+<li class="level1"><a href="#removing-not-needed-code-update-existing">Removing not needed code, update existing</a></li>
+<li class="level1"><a href="#next-steps">Next steps</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Explore generated Felgo Application</h1>
+<span class="subtitle"></span>
+<!-- $$$explore-felgo-gen-app.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>In the previous step we created new Felgo Basic Application. The SDK has generated couple of files, which building them, results in a simple TO-DO application. From the Project Source Tree in Qt Creator, we can see the following files:</p>
+<p class="centerAlign"><img src="images/GeneratedAppSourceTree.png" alt="&quot;Generated App Source tree&quot;" /></p><p>As we can see, Felgo generated great amount of code, as example application. Some of the files we can keep and reuse for our application logic. The files that are deleted are:</p>
+<ul>
+<li><b>ViewHelper.qml</b></li>
+<li><b>LoginPage.qml</b></li>
+<li><b>ProfilePage.qml</b></li>
+<li><b>TodoListPage.qml</b></li>
+<li><b>TodoDetailPage.qml</b></li>
+</ul>
+<p>Also related code from other QML files, referencing components, IDs and methods are also removed. Only the basic App layout, pages and RestAPI code is kept for now. We will update it accordingly in next steps.</p>
+<a name="adding-new-pages"></a>
+<h2 id="adding-new-pages">Adding new Pages</h2>
+<p>From the main QtCreator menu, we select <b>New File or Project</b>, and from the showed window, we select, <b>Files and Classes</b> section -&gt; <b>Felgo Apps</b> -&gt; <b>Page</b> and click <b>Choose</b>.</p>
+<p class="centerAlign"><img src="images/NewPage.png" alt="&quot;New page&quot;" /></p><p>For file name we set <b>PlaylistPage</b>, and finish the process. This page will hold all podcast episodes that we want to listen in ordered way. We define the following initial code for new <b>PlaylistPage</b></p>
+<pre class="cpp">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Playlist&quot;</span>
+}</pre>
+<p>In a same way we create 4 more pages that will be used:</p>
+<ul>
+<li><b>ExplorePage.qml</b> - <i>List podcasts for exploring</i><ul>
+<li><pre class="cpp">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Explore Podcasts&quot;</span>
+}</pre>
+</li>
+</ul>
+</li>
+<li><b>MediaPlayerPage.qml</b> - <i>Central MediaPlayer</i><ul>
+<li><pre class="cpp">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Media Player&quot;</span>
+}</pre>
+</li>
+</ul>
+</li>
+<li><b>DownloadsPage.qml</b> - <i>List of downlaoded podcast episodes</i><ul>
+<li><pre class="cpp">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Downloads&quot;</span>
+}</pre>
+</li>
+</ul>
+</li>
+<li><b>SettingsPage.qml</b> - <i>Place for defining basic app settings</i><ul>
+<li><pre class="cpp">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Settings&quot;</span>
+}</pre>
+</li>
+</ul>
+</li>
+</ul>
+<a name="removing-not-needed-code-update-existing"></a>
+<h2 id="removing-not-needed-code-update-existing">Removing not needed code, update existing</h2>
+<p>We are removing not needed code from RestAPI.qml file, related to ToDos, and defined URL. We are setting new URL to point to <b>https://gpodder.net/api/2</b> which is provided by <a href="https://gpodder.net/">GPodder</a> service. We will explore this service, public APIs and consuming them in the next chapters of this tutorial.</p>
+<p>We're updating Main.qml, and now all of the NavigationItem instances contain the new separate pages we created earlier. Felgo also provides great IconTypes. For example, we can set the IconType to be <b>playcircle</b> and automatically to draw play icon.</p>
+<pre class="qml"><span class="type">NavigationItem</span> {
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Player&quot;</span>)
+    <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">playcircle</span>
+
+    <span class="type">NavigationStack</span> {
+        <span class="name">splitView</span>: <span class="name">tablet</span>
+        <span class="name">initialPage</span>: <span class="name">MediaPlayerPage</span> { }
+    }
+}</pre>
+<a name="next-steps"></a>
+<h2 id="next-steps">Next steps</h2>
+<p>For better understanding what we've changed, and what kept, on the next page you will find all source files' content. You can investigate them in greater details.</p>
+</div>
+<!-- @@@explore-felgo-gen-app.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="create-basic-app.html">Create new application in Felgo</a>
+<a class="nextPage" href="list-initial-source-files.html">List of source files - initial Voyce application</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

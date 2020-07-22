@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- list-initial-voyce-source-files.qdoc -->
+  <title>List of source files - initial Voyce application | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="explore-felgo-gen-app.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="explore-felgo-gen-app.html">Explore generated Felgo Application</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#c-files">C++ Files</a></li>
+<li class="level1"><a href="#qml-files">QML Files</a></li>
+<li class="level2"><a href="#main">main</a></li>
+<li class="level2"><a href="#logic">logic</a></li>
+<li class="level2"><a href="#model">model</a></li>
+<li class="level2"><a href="#pages">pages</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">List of source files - initial Voyce application</h1>
+<span class="subtitle"></span>
+<!-- $$$list-initial-source-files.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="c-files"></a>
+<h2 id="c-files">C++ Files</h2>
+<p><b>main.cpp</b></p>
+<pre class="cpp"><span class="preprocessor">#include &lt;QApplication&gt;</span>
+<span class="preprocessor">#include &lt;FelgoApplication&gt;</span>
+
+<span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+
+<span class="comment">// uncomment this line to add the Live Client Module and use live reloading with your custom C++ code</span>
+<span class="comment">//#include &lt;FelgoLiveClient&gt;</span>
+
+<span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+{
+
+    <span class="type">QApplication</span> app(argc<span class="operator">,</span> argv);
+
+    FelgoApplication felgo;
+
+    <span class="comment">// Use platform-specific fonts instead of Felgo's default font</span>
+    felgo<span class="operator">.</span>setPreservePlatformFonts(<span class="keyword">true</span>);
+
+    <span class="type">QQmlApplicationEngine</span> engine;
+    felgo<span class="operator">.</span>initialize(<span class="operator">&amp;</span>engine);
+
+    <span class="comment">// Set an optional license key from project file</span>
+    <span class="comment">// This does not work if using Felgo Live, only for Felgo Cloud Builds and local builds</span>
+    felgo<span class="operator">.</span>setLicenseKey(PRODUCT_LICENSE_KEY);
+
+    <span class="comment">// use this during development</span>
+    <span class="comment">// for PUBLISHING, use the entry point below</span>
+    felgo<span class="operator">.</span>setMainQmlFileName(<span class="type">QStringLiteral</span>(<span class="string">&quot;qml/Main.qml&quot;</span>));
+
+    <span class="comment">// use this instead of the above call to avoid deployment of the qml files and compile them into the binary with qt's resource system qrc</span>
+    <span class="comment">// this is the preferred deployment option for publishing games to the app stores, because then your qml files and js files are protected</span>
+    <span class="comment">// to avoid deployment of your qml files and images, also comment the DEPLOYMENTFOLDERS command in the .pro file</span>
+    <span class="comment">// also see the .pro file for more details</span>
+    <span class="comment">//felgo.setMainQmlFileName(QStringLiteral(&quot;qrc:/qml/Main.qml&quot;));</span>
+
+    engine<span class="operator">.</span>load(<span class="type">QUrl</span>(felgo<span class="operator">.</span>mainQmlFileName()));
+
+    <span class="comment">// to start your project as Live Client, comment (remove) the lines &quot;felgo.setMainQmlFileName ...&quot; &amp; &quot;engine.load ...&quot;,</span>
+    <span class="comment">// and uncomment the line below</span>
+    <span class="comment">//FelgoLiveClient client (&amp;engine);</span>
+
+    <span class="keyword">return</span> app<span class="operator">.</span>exec();
+}</pre>
+<a name="qml-files"></a>
+<h2 id="qml-files">QML Files</h2>
+<a name="main"></a>
+<h3 id="main">main</h3>
+<p><b>main.qml</b></p>
+<pre class="qml">import Felgo 3.0
+import QtQuick 2.0
+import &quot;model&quot;
+import &quot;logic&quot;
+import &quot;pages&quot;
+
+<span class="type">App</span> {
+    <span class="comment">// app initialization</span>
+    <span class="name">Component</span>.onCompleted: {
+        <span class="comment">// if device has network connection, clear cache at startup</span>
+        <span class="comment">// you'll probably implement a more intelligent cache cleanup for your app</span>
+        <span class="comment">// e.g. to only clear the items that aren't required regularly</span>
+        <span class="keyword">if</span>(<span class="name">isOnline</span>) {
+            <span class="name">logic</span>.<span class="name">clearCache</span>()
+        }
+    }
+
+    <span class="comment">// business logic</span>
+    <span class="type">Logic</span> {
+        <span class="name">id</span>: <span class="name">logic</span>
+    }
+
+    <span class="comment">// model</span>
+    <span class="type">DataModel</span> {
+        <span class="name">id</span>: <span class="name">dataModel</span>
+        <span class="name">dispatcher</span>: <span class="name">logic</span> <span class="comment">// data model handles actions sent by logic</span>
+    }
+
+    <span class="comment">// view</span>
+    <span class="type">Navigation</span> {
+        <span class="name">id</span>: <span class="name">navigation</span>
+
+        <span class="comment">// first tab</span>
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Playlist&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">list</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span> <span class="comment">// use side-by-side view on tablets</span>
+                <span class="name">initialPage</span>: <span class="name">PlaylistPage</span> { }
+            }
+        }
+
+        <span class="comment">// second tab</span>
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Explore&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">cloud</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span>
+                <span class="name">initialPage</span>: <span class="name">ExplorePage</span> { }
+            }
+        }
+
+        <span class="comment">// third tab</span>
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Player&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">playcircle</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span>
+                <span class="name">initialPage</span>: <span class="name">MediaPlayerPage</span> { }
+            }
+        }
+
+        <span class="comment">// fourth tab</span>
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Downloads&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">download</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span>
+                <span class="name">initialPage</span>: <span class="name">DownloadsPage</span> { }
+            }
+        }
+
+        <span class="comment">// fifth tab</span>
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Settings&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">adjust</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span>
+                <span class="name">initialPage</span>: <span class="name">SettingsPage</span> { }
+            }
+        }
+    }
+}</pre>
+<a name="logic"></a>
+<h3 id="logic">logic</h3>
+<p><b>Logic.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+
+<span class="type">Item</span> {
+    <span class="comment">// actions</span>
+    signal <span class="type">clearCache</span>()
+}</pre>
+<a name="model"></a>
+<h3 id="model">model</h3>
+<p><b>DataModel.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Item</span> {
+    <span class="comment">// property to configure target dispatcher / logic</span>
+    property <span class="type">alias</span> <span class="name">dispatcher</span>: <span class="name">logicConnection</span>.<span class="name">target</span>
+
+    <span class="comment">// whether api is busy (ongoing network requests)</span>
+    readonly property <span class="type">bool</span> <span class="name">isBusy</span>: <span class="name">api</span>.<span class="name">busy</span>
+
+    <span class="type">Connections</span> {
+        <span class="name">id</span>: <span class="name">logicConnection</span>
+    }
+
+    <span class="comment">// rest api for data access</span>
+    <span class="type">RestAPI</span> {
+        <span class="name">id</span>: <span class="name">api</span>
+        <span class="name">maxRequestTimeout</span>: <span class="number">3000</span> <span class="comment">// use max request timeout of 3 sec</span>
+    }
+
+    <span class="comment">// storage for caching</span>
+    <span class="type">Storage</span> {
+        <span class="name">id</span>: <span class="name">cache</span>
+    }
+}</pre>
+<p><b>RestAPI.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Item</span> {
+
+    <span class="comment">// loading state</span>
+    readonly property <span class="type">bool</span> <span class="name">busy</span>: <span class="name">HttpNetworkActivityIndicator</span>.<span class="name">enabled</span>
+
+    <span class="comment">// configure request timeout</span>
+    property <span class="type">int</span> <span class="name">maxRequestTimeout</span>: <span class="number">5000</span>
+
+    <span class="comment">// initialization</span>
+    <span class="name">Component</span>.onCompleted: {
+        <span class="comment">// immediately activate loading indicator when a request is started</span>
+        <span class="name">HttpNetworkActivityIndicator</span>.<span class="name">setActivationDelay</span>(<span class="number">0</span>)
+    }
+
+    <span class="comment">// private</span>
+    <span class="type">QtObject</span> {
+        <span class="name">id</span>: <span class="name">_</span>
+        property <span class="type">string</span> <span class="name">podcastsUrl</span>: <span class="string">&quot;https://gpodder.net/api/2&quot;</span>
+
+        <span class="keyword">function</span> <span class="name">fetch</span>(url, success, error) {
+            <span class="name">HttpRequest</span>.<span class="name">get</span>(<span class="name">url</span>)
+            .<span class="name">timeout</span>(<span class="name">maxRequestTimeout</span>)
+            .<span class="name">then</span>(<span class="keyword">function</span>(res) { <span class="name">success</span>(<span class="name">res</span>.<span class="name">body</span>) })
+            .<span class="name">catch</span>(<span class="keyword">function</span>(err) { <span class="name">error</span>(<span class="name">err</span>) });
+        }
+
+        <span class="keyword">function</span> <span class="name">post</span>(url, data, success, error) {
+            <span class="name">HttpRequest</span>.<span class="name">post</span>(<span class="name">url</span>)
+            .<span class="name">timeout</span>(<span class="name">maxRequestTimeout</span>)
+            .<span class="name">set</span>(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>)
+            .<span class="name">send</span>(<span class="name">data</span>)
+            .<span class="name">then</span>(<span class="keyword">function</span>(res) { <span class="name">success</span>(<span class="name">res</span>.<span class="name">body</span>) })
+            .<span class="name">catch</span>(<span class="keyword">function</span>(err) { <span class="name">error</span>(<span class="name">err</span>) });
+        }
+    }
+}</pre>
+<a name="pages"></a>
+<h3 id="pages">pages</h3>
+<p><b>ExplorePage.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Playlist&quot;</span>
+}</pre>
+<p><b>PlaylistPage.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Explore Podcasts&quot;</span>
+}</pre>
+<p><b>MediaPlayerPage.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Media Player&quot;</span>
+}</pre>
+<p><b>DownloadsPage.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Downloads&quot;</span>
+}</pre>
+<p><b>SettingsPage.qml</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">title</span>: <span class="string">&quot;Settings&quot;</span>
+}</pre>
+</div>
+<!-- @@@list-initial-source-files.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="explore-felgo-gen-app.html">Explore generated Felgo Application</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

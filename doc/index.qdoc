@@ -1,0 +1,75 @@
+/*!
+    \page index.html tutorial
+    \title How to create mobile application for Podcast streaming using Felgo SDK
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \nextpage Create new application in Felgo
+
+
+    Did you ever wondered how to create your own mobile podcast application?
+    Wonder no more, you have landed on the correct spot.
+
+    In this tutorial, I will provide step by step configuration, and code walking
+    for a simple, but fully functional mobile application that fetches podcas
+    sources, parse retrieved details for episodes, their descriptions, and streaming
+    of the audio data. We will explore how the episodes can be organized, saved
+    in playlists etc. All of this relying on the powerful cross-platform framework
+    - \l {https://felgo.com/} {Felgo}, which provide easy to use, ready components
+    for building visual appealing user interfaces for multiple platforms.
+
+
+    \section1 Getting Started
+
+    \section2 Installing Felgo SDK
+
+    Installation of the SDK is really simple, and here I will simply puth the
+    links that explain what and where to download and install.
+    If you are not registered on Felgo Website, you should go first to this
+    \l {https://felgo.com/signup} {Signup Page}. Create account and once you are
+    done go to the \l {https://felgo.com/download} {Downloads Page}.
+    Once download is finished, start the executable, and proceed with installation.
+    The process is really simple and straightforward.
+
+    If you have some difficulties, you can watch this
+    \l {https://www.youtube.com/watch?v=oUXXjendkTY} {Video} of the explained
+    process of installing the SDK.
+    Also, there is additional web page on which are described the dependencies
+    which are required to be installed for each host OS -
+    \l {https://felgo.com/doc/felgo-installation/} {Requirements}.
+
+
+    \section2 Add Felgo packages for Android platform
+
+    Since stock Felgo SDK is shipped with only basic packages for compiling
+    applications for the host OS, we need to install additional packages if we want
+    to run and deploy our application to Android device, or emulator.For this reason,
+    we can follow this \l {https://felgo.com/doc/felgo-deployment-android/} {Article}
+    to setup our environment with needed tools.
+    \note \e {If you want to run the application on Android Emulator, you will need
+    to select \b{Android (x86)} component too}.
+
+    \section2 Setup Android emulator
+
+    For this one, there already plenty of tutorials how you can set it up.
+    The main sources that are valuable to you are:
+    \l {https://developer.android.com/studio/run/emulator} {Run apps on the Android Emulator}
+    and \l {https://developer.android.com/studio/run/managing-avds} {Create and manage virtual devices}
+
+
+    \section1 Running Qt Creator
+
+    Once all of the previous steps are completely done, it's about time to run
+    the Qt Creator - IDE for developing apps based on Felgo, Qt, QML and C++.
+    You can find it in the default installation directory, or from your applications
+    menu.
+
+    \image QtCreator.png "Qt Creator"
+
+
+    \section1 Next steps
+
+    Now that everything is set up, it's time to move forward and to create our
+    basic application which will be worked on towards complete Podcast player -
+    \b{Voyce}
+
+*/

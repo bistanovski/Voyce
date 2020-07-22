@@ -1,0 +1,293 @@
+/*!
+    \page list-initial-source-files.html tutorial
+    \title List of source files - initial Voyce application
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage Explore generated Felgo Application
+
+
+    \section1 C++ Files
+
+    \b{main.cpp}
+    \code
+        #include <QApplication>
+        #include <FelgoApplication>
+
+        #include <QQmlApplicationEngine>
+
+        // uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
+        //#include <FelgoLiveClient>
+
+        int main(int argc, char *argv[])
+        {
+
+            QApplication app(argc, argv);
+
+            FelgoApplication felgo;
+
+            // Use platform-specific fonts instead of Felgo's default font
+            felgo.setPreservePlatformFonts(true);
+
+            QQmlApplicationEngine engine;
+            felgo.initialize(&engine);
+
+            // Set an optional license key from project file
+            // This does not work if using Felgo Live, only for Felgo Cloud Builds and local builds
+            felgo.setLicenseKey(PRODUCT_LICENSE_KEY);
+
+            // use this during development
+            // for PUBLISHING, use the entry point below
+            felgo.setMainQmlFileName(QStringLiteral("qml/Main.qml"));
+
+            // use this instead of the above call to avoid deployment of the qml files and compile them into the binary with qt's resource system qrc
+            // this is the preferred deployment option for publishing games to the app stores, because then your qml files and js files are protected
+            // to avoid deployment of your qml files and images, also comment the DEPLOYMENTFOLDERS command in the .pro file
+            // also see the .pro file for more details
+            //felgo.setMainQmlFileName(QStringLiteral("qrc:/qml/Main.qml"));
+
+            engine.load(QUrl(felgo.mainQmlFileName()));
+
+            // to start your project as Live Client, comment (remove) the lines "felgo.setMainQmlFileName ..." & "engine.load ...",
+            // and uncomment the line below
+            //FelgoLiveClient client (&engine);
+
+            return app.exec();
+        }
+    \endcode
+
+
+    \section1 QML Files
+    \section2 main
+
+    \b{main.qml}
+    \qml
+        import Felgo 3.0
+        import QtQuick 2.0
+        import "model"
+        import "logic"
+        import "pages"
+
+        App {
+            // app initialization
+            Component.onCompleted: {
+                // if device has network connection, clear cache at startup
+                // you'll probably implement a more intelligent cache cleanup for your app
+                // e.g. to only clear the items that aren't required regularly
+                if(isOnline) {
+                    logic.clearCache()
+                }
+            }
+
+            // business logic
+            Logic {
+                id: logic
+            }
+
+            // model
+            DataModel {
+                id: dataModel
+                dispatcher: logic // data model handles actions sent by logic
+            }
+
+            // view
+            Navigation {
+                id: navigation
+
+                // first tab
+                NavigationItem {
+                    title: qsTr("Playlist")
+                    icon: IconType.list
+
+                    NavigationStack {
+                        splitView: tablet // use side-by-side view on tablets
+                        initialPage: PlaylistPage { }
+                    }
+                }
+
+                // second tab
+                NavigationItem {
+                    title: qsTr("Explore")
+                    icon: IconType.cloud
+
+                    NavigationStack {
+                        splitView: tablet
+                        initialPage: ExplorePage { }
+                    }
+                }
+
+                // third tab
+                NavigationItem {
+                    title: qsTr("Player")
+                    icon: IconType.playcircle
+
+                    NavigationStack {
+                        splitView: tablet
+                        initialPage: MediaPlayerPage { }
+                    }
+                }
+
+                // fourth tab
+                NavigationItem {
+                    title: qsTr("Downloads")
+                    icon: IconType.download
+
+                    NavigationStack {
+                        splitView: tablet
+                        initialPage: DownloadsPage { }
+                    }
+                }
+
+                // fifth tab
+                NavigationItem {
+                    title: qsTr("Settings")
+                    icon: IconType.adjust
+
+                    NavigationStack {
+                        splitView: tablet
+                        initialPage: SettingsPage { }
+                    }
+                }
+            }
+        }
+    \endqml
+
+    \section2 logic
+
+    \b{Logic.qml}
+    \qml
+        import QtQuick 2.0
+
+        Item {
+            // actions
+            signal clearCache()
+        }
+    \endqml
+
+
+    \section2 model
+
+    \b{DataModel.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Item {
+            // property to configure target dispatcher / logic
+            property alias dispatcher: logicConnection.target
+
+            // whether api is busy (ongoing network requests)
+            readonly property bool isBusy: api.busy
+
+            Connections {
+                id: logicConnection
+            }
+
+            // rest api for data access
+            RestAPI {
+                id: api
+                maxRequestTimeout: 3000 // use max request timeout of 3 sec
+            }
+
+            // storage for caching
+            Storage {
+                id: cache
+            }
+        }
+    \endqml
+
+    \b{RestAPI.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Item {
+
+            // loading state
+            readonly property bool busy: HttpNetworkActivityIndicator.enabled
+
+            // configure request timeout
+            property int maxRequestTimeout: 5000
+
+            // initialization
+            Component.onCompleted: {
+                // immediately activate loading indicator when a request is started
+                HttpNetworkActivityIndicator.setActivationDelay(0)
+            }
+
+            // private
+            QtObject {
+                id: _
+                property string podcastsUrl: "https://gpodder.net/api/2"
+
+                function fetch(url, success, error) {
+                    HttpRequest.get(url)
+                    .timeout(maxRequestTimeout)
+                    .then(function(res) { success(res.body) })
+                    .catch(function(err) { error(err) });
+                }
+
+                function post(url, data, success, error) {
+                    HttpRequest.post(url)
+                    .timeout(maxRequestTimeout)
+                    .set('Content-Type', 'application/json')
+                    .send(data)
+                    .then(function(res) { success(res.body) })
+                    .catch(function(err) { error(err) });
+                }
+            }
+        }
+    \endqml
+
+
+    \section2 pages
+
+    \b{ExplorePage.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Playlist"
+        }
+    \endqml
+
+    \b{PlaylistPage.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Explore Podcasts"
+        }
+    \endqml
+
+    \b{MediaPlayerPage.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Media Player"
+        }
+    \endqml
+
+    \b{DownloadsPage.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Downloads"
+        }
+    \endqml
+
+    \b{SettingsPage.qml}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Settings"
+        }
+    \endqml
+*/
