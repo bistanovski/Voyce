@@ -1,88 +1,88 @@
 import Felgo 3.0
 import QtQuick 2.0
 import "model"
-import "logic"
+import "broadcast"
 import "pages"
+import "media"
 
 App {
-    // app initialization
+    id: app
     Component.onCompleted: {
         // if device has network connection, clear cache at startup
         // you'll probably implement a more intelligent cache cleanup for your app
         // e.g. to only clear the items that aren't required regularly
+
+        HttpRequest.config({ cache: false });
+
         if(isOnline) {
-            logic.clearCache()
+            broadcast.clearCache()
         }
     }
 
-    // business logic
-    Logic {
-        id: logic
+    onClosing: {
+        close.accepted = false;
+        broadcast.clearAndSaveSettings();
+        close.accepted = true;
     }
 
-    // model
+    Broadcast {
+        id: broadcast
+    }
+
     DataModel {
         id: dataModel
-        dispatcher: logic // data model handles actions sent by logic
+        dispatcher: broadcast
     }
 
-    // view
     Navigation {
         id: navigation
+        navigationMode: navigationModeDrawer
+        height: parent.height - mediaPlayer.height
 
-        // first tab
         NavigationItem {
             title: qsTr("Playlist")
             icon: IconType.list
 
             NavigationStack {
-                splitView: tablet // use side-by-side view on tablets
                 initialPage: PlaylistPage { }
             }
         }
 
-        // second tab
         NavigationItem {
             title: qsTr("Explore")
             icon: IconType.cloud
 
             NavigationStack {
                 splitView: tablet
-                initialPage: ExplorePage { }
+                initialPage: CategoriesPage { }
             }
         }
 
-        // third tab
-        NavigationItem {
-            title: qsTr("Player")
-            icon: IconType.playcircle
-
-            NavigationStack {
-                splitView: tablet
-                initialPage: MediaPlayerPage { }
-            }
-        }
-
-        // fourth tab
         NavigationItem {
             title: qsTr("Downloads")
             icon: IconType.download
 
             NavigationStack {
-                splitView: tablet
                 initialPage: DownloadsPage { }
             }
         }
 
-        // fifth tab
         NavigationItem {
             title: qsTr("Settings")
             icon: IconType.adjust
 
             NavigationStack {
-                splitView: tablet
                 initialPage: SettingsPage { }
             }
         }
+    }
+
+    VoyceMediaPlayer {
+        id: mediaPlayer
+        dispatcher: broadcast
+
+        height: dp(100)
+        width: parent.width
+        anchors.bottom: parent.bottom
     }
 }

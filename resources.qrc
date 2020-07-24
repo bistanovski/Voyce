@@ -1,9 +1,28 @@
 <RCC>
     <qresource prefix="/">
-        <file>assets</file>
-        <file>qml</file>
-        <file>qml/logic</file>
-        <file>qml/model</file>
-        <file>qml/pages</file>
+        <file>qml/Main.qml</file>
+        <file>qml/config.json</file>
+        <file>qml/broadcast/Broadcast.qml</file>
+        <file>qml/model/DataModel.qml</file>
+        <file>qml/model/RestAPI.qml</file>
+        <file>qml/pages/DownloadsPage.qml</file>
+        <file>qml/pages/CategoriesPage.qml</file>
+        <file>qml/pages/PlaylistPage.qml</file>
+        <file>qml/pages/SettingsPage.qml</file>
+        <file>qml/pages/PodcastsPage.qml</file>
+        <file>qml/pages/EpisodesPage.qml</file>
+        <file>qml/model/FilterProxyModel.qml</file>
+        <file>qml/VoyceListView.qml</file>
+        <file>qml/delegates/CategoryDelegate.qml</file>
+        <file>qml/delegates/PodcastDelegate.qml</file>
+        <file>qml/delegates/EpisodeDelegate.qml</file>
+        <file>qml/components/VoyceRightBarItem.qml</file>
+        <file>qml/pages/VoycePage.qml</file>
+        <file>qml/media/VoyceMediaControls.qml</file>
+        <file>qml/media/VoyceMediaPlayer.qml</file>
+        <file>qml/media/VoycePlaylist.qml</file>
+        <file>qml/settings/VoyceSettings.qml</file>
+        <file>qml/model/DataModelConnections.qml</file>
+        <file>qml/model/EpisodeDownloader.qml</file>
     </qresource>
 </RCC>

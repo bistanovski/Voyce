@@ -1,25 +1,60 @@
 import QtQuick 2.0
 import Felgo 3.0
+import "../settings"
 
 Item {
-    // property to configure target dispatcher / logic
-    property alias dispatcher: logicConnection.target
+    id: root
 
-    // whether api is busy (ongoing network requests)
+    property alias dispatcher: dataConnection.target
     readonly property bool isBusy: api.busy
 
-    Connections {
-        id: logicConnection
+    readonly property alias tags: _dataHolder.tags
+    readonly property alias podcasts: _dataHolder.podcasts
+    readonly property alias playlistModel: _dataHolder.playlistModelData
+    readonly property alias downloadsModel: _dataHolder.downloadsModelData
+
+    property alias mainSettings: voyceSettings
+
+    VoyceSettings {
+        id: voyceSettings
     }
 
-    // rest api for data access
     RestAPI {
         id: api
-        maxRequestTimeout: 3000 // use max request timeout of 3 sec
     }
 
-    // storage for caching
-    Storage {
-        id: cache
+    Item {
+        id: _dataHolder
+        property var tags: []
+        property var podcasts: []
+
+        property alias playlistModelData: playlistModel
+        property bool playlistUpdated: false
+
+        property alias downloadsModelData: downloadsModel
+        property bool downloadsUpdated: false
+
+        readonly property string keyFieldValue: "url"
+        readonly property var fieldValues: ["url", "title", "pubDate", "length"]
+
+        JsonListModel {
+            id: playlistModel
+            keyField: _dataHolder.keyFieldValue
+            fields: _dataHolder.fieldValues
+        }
+
+        JsonListModel {
+            id: downloadsModel
+            keyField: _dataHolder.keyFieldValue
+            fields: _dataHolder.fieldValues
+        }
+    }
+
+    EpisodeDownloader {
+        id: episodeDownloader
+    }
+
+    DataModelConnections {
+        id: dataConnection
     }
 }

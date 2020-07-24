@@ -18,14 +18,14 @@ PRODUCT_VERSION_CODE = 1
 PRODUCT_LICENSE_KEY = ""
 
 qmlFolder.source = qml
-DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
+#DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
 
 assetsFolder.source = assets
 DEPLOYMENTFOLDERS += assetsFolder
 
 # Add more folders to ship with the application here
 
-# RESOURCES += resources.qrc # uncomment for publishing
+RESOURCES += resources.qrc # uncomment for publishing
 
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
@@ -36,12 +36,15 @@ DEPLOYMENTFOLDERS += assetsFolder
 # during development, use the qmlFolder deployment because you then get shorter compilation times (the qml files do not need to be compiled to the binary but are just copied)
 # also, for quickest deployment on Desktop disable the "Shadow Build" option in Projects/Builds - you can then select "Run Without Deployment" from the Build menu in Qt Creator if you only changed QML files; this speeds up application start, because your app is not copied & re-compiled but just re-interpreted
 
+HEADERS += \
+    VoyceFileUtils.hpp
 
-# The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    VoyceFileUtils.cpp
 
 
 android {
+    QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
     OTHER_FILES += android/AndroidManifest.xml       android/build.gradle
 }
@@ -58,3 +61,4 @@ win32 {
 macx {
     ICON = macx/app_icon.icns
 }
+
