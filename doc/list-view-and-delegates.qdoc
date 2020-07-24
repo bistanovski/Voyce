@@ -1,0 +1,214 @@
+/*!
+    \page list-view-delegates.html tutorial
+    \title ListView and Delegate Components
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage Model Components
+    \nextpage Application Pages
+
+    The ListView and Delegate components of the application, and their
+    implementation is presented in this page.
+
+    \section1 VoyceListView component
+
+    VoyceListView provides simple update of Felgo's \b{AppListView} component.
+    It provides some additional updates of the transition animations.
+
+    \l{VoyceListView} - Documented properties
+    \b{VoyceListView.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        AppListView {
+            id: listView
+            anchors.fill: parent
+            showSearch: searchBarEnabled
+            emptyText.text: showAcitivtyIndicator ? loadingText : "No items available"
+
+            property string loadingText
+            property var refreshFuncHandler
+
+            PullToRefreshHandler {
+                refreshing: showAcitivtyIndicator
+                pullToRefreshEnabled: !!refreshFuncHandler //Enabled if refreshFuncHandler is not null
+                onRefresh: refreshFuncHandler()
+            }
+
+            onSearch: {
+                model.searchValue = term
+            }
+
+            add: Transition {
+                NumberAnimation {
+                    property: "opacity";
+                    from: 0;
+                    to: 1;
+                    duration: 200
+                    easing.type: Easing.OutQuad;
+                }
+            }
+
+            addDisplaced: Transition {
+                NumberAnimation {
+                    properties: "x,y";
+                    duration: 200
+                    easing.type: Easing.OutQuad;
+                }
+            }
+
+            remove: Transition {
+                NumberAnimation {
+                    property: "opacity";
+                    from: 1;
+                    to: 0;
+                    duration: 200
+                    easing.type: Easing.OutQuad;
+                }
+            }
+
+            removeDisplaced: Transition {
+                NumberAnimation {
+                    properties: "x,y";
+                    duration: 200
+                    easing.type: Easing.OutQuad;
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 CategoryDelegate component
+
+    \b{CategoryDelegate.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        SimpleRow {
+            text: model.title
+            detailText: qsTr("Usage: ") + model.usage
+
+            onSelected: {
+                var pageOptions = {
+                    category: model.title,
+                    tag: model.tag
+                }
+
+                rootPage.navigationStack.popAllExceptFirstAndPush(podcastsPageComponent, pageOptions)
+            }
+        }
+    \endqml
+
+
+
+    \section1 PodcastDelegate component
+
+    \b{PodcastDelegate.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        SimpleRow {
+            text: model.title
+            detailText: qsTr("Author: ") + model.author
+
+            imageSource: model.scaled_logo_url
+            imageMaxSize: app.dp(96)
+
+            onSelected: {
+                var pageOptions = {
+                    podcastTitle: model.title,
+                    podcastUrl: model.url
+                }
+
+                rootPage.navigationStack.push(episodesPageComponent, pageOptions)
+            }
+        }
+    \endqml
+
+
+    \section1 EpisodeDelegate component
+
+    \b{EpisodeDelegate.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        SwipeOptionsContainer {
+            id: container
+
+            property alias rowDelegate: row
+            property bool isOfflineEpisode: false
+
+            //Returns model data from current Delegate
+            function getEpisodeData() {
+                return {
+                    url: model.url,
+                    title: model.title,
+                    pubDate: model.pubDate,
+                    length: model.length
+                }
+            }
+
+            SimpleRow {
+                id: row
+                text: model.title
+                detailText: model.pubDate
+                textItem.width: parent.width - playButton.width - 30
+
+                IconButton {
+                    id: playButton
+                    size: app.dp(30)
+                    anchors.right: parent.right
+                    anchors.rightMargin: app.dp(6)
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon: IconType.playcircle
+
+                    onClicked: {
+                        if(Theme.isAndroid && isOfflineEpisode) {
+                            if(VoyceFileUtils.requestAndroidPermissions()) {
+                                broadcast.playEpisode(getEpisodeData())
+                            }
+                            else {
+                                nativeUtils.displayMessageBox(qsTr("Permissions not granted!"));
+                                return;
+                            }
+                        }
+
+                        broadcast.playEpisode(getEpisodeData())
+                    }
+                }
+            }
+
+            leftOption: SwipeButton {
+                text: qsTr("Add to Playlist")
+                icon: IconType.plussquare
+                height: row.height
+                onClicked: {
+                    row.itemChanged()
+                    container.hideOptions()
+                    broadcast.addToPlaylist(getEpisodeData())
+                }
+            }
+
+            rightOption: SwipeButton {
+                height: row.height
+                width: height
+
+                text: qsTr("Download")
+                icon: IconType.download
+                onClicked: {
+                    row.itemChanged()
+                    container.hideOptions()
+                    broadcast.downloadEpisode(getEpisodeData())
+                }
+            }
+        }
+    \endqml
+
+*/

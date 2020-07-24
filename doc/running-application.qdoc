@@ -1,0 +1,35 @@
+/*!
+    \page running-application.html tutorial
+    \title Running Application on Android Device
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage C++ Files
+    \nextpage Conclusion
+
+    Finally, we have completed all of the implementation of our Felgo application.
+    It's time to try and run it on real Android device. For our example, we will
+    use Android emulator, which is provided by Android Studio.
+
+    We're starting previously create virtual Android device.
+
+
+    From the QtCreator we are selecting our Android Kit, and build the project.
+    After build is complete, we hit \e{Run}, and the Voyce application should start
+    running in the emulator.
+
+    Let's see some screenshots!
+
+    \table
+        \row
+            \li \inlineimage AppRun-Categories.png "AppRun Categories"
+            \li \inlineimage AppRun-Podcasts.png "AppRun Podcasts"
+            \li \inlineimage AppRun-PodcastEpisodes.png "AppRun PodcastEpisodes"
+            \li  \inlineimage AppRun-EpisodePlay.png "AppRun EpisodePlay"
+        \row
+          \li \inlineimage AppRun-AddToPlaylist.png "AppRun AddToPlaylist"
+          \li \inlineimage AppRun-Download.png "AppRun Download"
+          \li \inlineimage AppRun-Playlist.png "AppRun Playlist"
+          \li \inlineimage AppRun-SearchPodcasts.png "AppRun SearchPodcasts"
+    \endtable
+
+*/

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- cpp-files.qdoc -->
+  <title>C++ Files | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="media-components.html" />
+  <link rel="next" href="running-application.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="media-components.html">Media Components</a>
+<a class="nextPage" href="running-application.html">Running Application on Android Device</a>
+</p><p/>
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">C++ Files</h1>
+<span class="subtitle"></span>
+<!-- $$$cpp-files.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>In the process of testing the application on Android platform, it was noticed, that delete method for local file was missing. Also, requiring permissions was needed in order to correctly store/read local settings and downloaded files.</p>
+<p>So for that, in this page we will see how the C++ implementation is done.</p>
+<p><b>VoyceFileUtils.hpp</b>:</p>
+<pre class="cpp"><span class="preprocessor">#ifndef VOYCEFILEUTILS_HPP</span>
+<span class="preprocessor">#define VOYCEFILEUTILS_HPP</span>
+
+<span class="preprocessor">#include &lt;QObject&gt;</span>
+
+<span class="preprocessor">#ifdef ANDROID</span>
+<span class="preprocessor">#include &lt;QtAndroidExtras&gt;</span>
+<span class="preprocessor">#endif</span>
+
+<span class="keyword">class</span> VoyceFileUtils : <span class="keyword">public</span> <span class="type">QObject</span>
+{
+    Q_OBJECT
+
+<span class="keyword">public</span>:
+    <span class="keyword">explicit</span> VoyceFileUtils(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr) : <span class="type">QObject</span>(parent) {}
+    Q_INVOKABLE bool deleteFile(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>fileUrl) <span class="keyword">const</span>;
+
+<span class="preprocessor">#ifdef ANDROID</span>
+    Q_INVOKABLE bool requestAndroidPermissions();
+<span class="preprocessor">#endif</span>
+
+};
+
+<span class="preprocessor">#endif // VOYCEFILEUTILS_HPP</span></pre>
+<p><b>VoyceFileUtils.cpp</b>:</p>
+<pre class="cpp"><span class="preprocessor">#include &quot;VoyceFileUtils.hpp&quot;</span>
+
+<span class="preprocessor">#include &lt;QUrl&gt;</span>
+<span class="preprocessor">#include &lt;QFile&gt;</span>
+<span class="preprocessor">#include &lt;QDebug&gt;</span>
+
+bool VoyceFileUtils<span class="operator">::</span>deleteFile(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>fileUrl) <span class="keyword">const</span>
+{
+    <span class="keyword">auto</span> status {<span class="keyword">false</span>};
+
+    <span class="type">QFile</span> file(fileUrl<span class="operator">.</span>toLocalFile());
+    <span class="keyword">if</span>(file<span class="operator">.</span>exists()) {
+        status <span class="operator">=</span> file<span class="operator">.</span>remove();
+        <span class="keyword">if</span>(<span class="operator">!</span>status) {
+            qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Error while removing file:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> file<span class="operator">.</span>errorString();
+        }
+    }
+    <span class="keyword">else</span> {
+        qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;File path for delete does not exist!&quot;</span>;
+    }
+
+    <span class="keyword">return</span> status;
+}
+
+<span class="preprocessor">#ifdef ANDROID</span>
+bool VoyceFileUtils<span class="operator">::</span>requestAndroidPermissions()
+{
+    <span class="keyword">const</span> <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> permissions {
+        <span class="string">&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;</span><span class="operator">,</span>
+        <span class="string">&quot;android.permission.READ_EXTERNAL_STORAGE&quot;</span>
+    };
+
+    <span class="keyword">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>permission : permissions){
+        <span class="keyword">const</span> <span class="keyword">auto</span> result <span class="operator">=</span> <span class="type">QtAndroid</span><span class="operator">::</span>checkPermission(permission);
+        <span class="keyword">if</span>(result <span class="operator">=</span><span class="operator">=</span> <span class="type">QtAndroid</span><span class="operator">::</span>PermissionResult<span class="operator">::</span>Denied){
+            <span class="keyword">auto</span> resultHash <span class="operator">=</span> <span class="type">QtAndroid</span><span class="operator">::</span>requestPermissionsSync(<span class="type">QStringList</span> {permission});
+            <span class="keyword">if</span>(resultHash<span class="operator">[</span>permission<span class="operator">]</span> <span class="operator">=</span><span class="operator">=</span> <span class="type">QtAndroid</span><span class="operator">::</span>PermissionResult<span class="operator">::</span>Denied)
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+    }
+
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+<span class="preprocessor">#endif</span></pre>
+<p>After implementation of VoyceFileUtils class, we need to register it in the main.cpp, more specificaly to the current QQmlContext object. By that the object becomes accessible from QML components.</p>
+<p><b>main.cpp</b>:</p>
+<pre class="cpp"><span class="preprocessor">#include &lt;QApplication&gt;</span>
+<span class="preprocessor">#include &lt;FelgoApplication&gt;</span>
+
+<span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+
+<span class="preprocessor">#include &lt;QQmlContext&gt;</span>
+<span class="preprocessor">#include &quot;VoyceFileUtils.hpp&quot;</span>
+
+<span class="comment">// uncomment this line to add the Live Client Module and use live reloading with your custom C++ code</span>
+<span class="comment">//#include &lt;FelgoLiveClient&gt;</span>
+
+<span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+{
+    <span class="type">QApplication</span> app(argc<span class="operator">,</span> argv);
+
+    FelgoApplication felgo;
+
+    VoyceFileUtils voyceFileUtils;
+
+    <span class="comment">// Use platform-specific fonts instead of Felgo's default font</span>
+    felgo<span class="operator">.</span>setPreservePlatformFonts(<span class="keyword">true</span>);
+
+    <span class="type">QQmlApplicationEngine</span> engine;
+    felgo<span class="operator">.</span>initialize(<span class="operator">&amp;</span>engine);
+
+    engine<span class="operator">.</span>rootContext()<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;VoyceFileUtils&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>voyceFileUtils);
+
+    <span class="comment">// Set an optional license key from project file</span>
+    <span class="comment">// This does not work if using Felgo Live, only for Felgo Cloud Builds and local builds</span>
+    felgo<span class="operator">.</span>setLicenseKey(PRODUCT_LICENSE_KEY);
+
+    <span class="comment">// use this during development</span>
+    <span class="comment">// for PUBLISHING, use the entry point below</span>
+    felgo<span class="operator">.</span>setMainQmlFileName(<span class="type">QStringLiteral</span>(<span class="string">&quot;qrc:/qml/Main.qml&quot;</span>));
+
+    <span class="comment">// use this instead of the above call to avoid deployment of the qml files and compile them into the binary with qt's resource system qrc</span>
+    <span class="comment">// this is the preferred deployment option for publishing games to the app stores, because then your qml files and js files are protected</span>
+    <span class="comment">// to avoid deployment of your qml files and images, also comment the DEPLOYMENTFOLDERS command in the .pro file</span>
+    <span class="comment">// also see the .pro file for more details</span>
+    <span class="comment">//felgo.setMainQmlFileName(QStringLiteral(&quot;qrc:/qml/Main.qml&quot;));</span>
+
+    engine<span class="operator">.</span>load(<span class="type">QUrl</span>(felgo<span class="operator">.</span>mainQmlFileName()));
+
+    <span class="comment">// to start your project as Live Client, comment (remove) the lines &quot;felgo.setMainQmlFileName ...&quot; &amp; &quot;engine.load ...&quot;,</span>
+    <span class="comment">// and uncomment the line below</span>
+    <span class="comment">//FelgoLiveClient client (&amp;engine);</span>
+
+    <span class="keyword">return</span> app<span class="operator">.</span>exec();
+}</pre>
+<p>As a final step before running the application on Android device, we need to update the <b>Voyce.pro</b> file, in which we enable the use of QRC resources in compile process, and disable Felgo <i>DEPLOYMENTFOLDERS</i> define.</p>
+<p><b>Note: </b>These steps are already defined in the generated Voyce.pro file.</p><p><b>Voyce.pro</b></p>
+<pre class="cpp"># allows to add DEPLOYMENTFOLDERS and links to the Felgo library and QtCreator auto-completion
+CONFIG += felgo
+
+# uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
+# for the remaining steps to build a custom Live Code Reload app see here: https://felgo.com/custom-code-reload-app/
+# CONFIG += felgo-live
+
+# Project identifier and version
+# More information: https://felgo.com/doc/felgo-publishing/#project-configuration
+PRODUCT_IDENTIFIER = com.yourcompany.wizardEVAP.Voyce
+PRODUCT_VERSION_NAME = 1.0.0
+PRODUCT_VERSION_CODE = 1
+
+# Optionally set a license key that is used instead of the license key from
+# main.qml file (App::licenseKey for your app or GameWindow::licenseKey for your game)
+# Only used for local builds and Felgo Cloud Builds (https://felgo.com/cloud-builds)
+# Not used if using Felgo Live
+PRODUCT_LICENSE_KEY = &quot;&quot;
+
+qmlFolder.source = qml
+#DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
+
+assetsFolder.source = assets
+DEPLOYMENTFOLDERS += assetsFolder
+
+# Add more folders to ship with the application here
+
+RESOURCES += resources.qrc # uncomment for publishing
+
+# NOTE: for PUBLISHING, perform the following steps:
+# 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
+# 2. uncomment the resources.qrc file inclusion and add any qml subfolders to the .qrc file; this compiles your qml files and js files to the app binary and protects your source code
+# 3. change the setMainQmlFile() call in main.cpp to the one starting with &quot;qrc:/&quot; - this loads the qml files from the resources
+# for more details see the &quot;Deployment Guides&quot; in the Felgo Documentation
+
+# during development, use the qmlFolder deployment because you then get shorter compilation times (the qml files do not need to be compiled to the binary but are just copied)
+# also, for quickest deployment on Desktop disable the &quot;Shadow Build&quot; option in Projects/Builds - you can then select &quot;Run Without Deployment&quot; from the Build menu in Qt Creator if you only changed QML files; this speeds up application start, because your app is not copied &amp; re-compiled but just re-interpreted
+
+HEADERS += \
+    VoyceFileUtils.hpp
+
+SOURCES += main.cpp \
+    VoyceFileUtils.cpp
+
+android {
+    QT += androidextras
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    OTHER_FILES += android/AndroidManifest.xml       android/build.gradle
+}
+
+ios {
+    QMAKE_INFO_PLIST = ios/Project-Info.plist
+    OTHER_FILES += $$QMAKE_INFO_PLIST
+}
+
+# set application icons for win and macx
+win32 {
+    RC_FILE += win/app_icon.rc
+}
+macx {
+    ICON = macx/app_icon.icns
+}</pre>
+</div>
+<!-- @@@cpp-files.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="media-components.html">Media Components</a>
+<a class="nextPage" href="running-application.html">Running Application on Android Device</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- media-components.qdoc -->
+  <title>Media Components | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="list-view-delegates.html" />
+  <link rel="next" href="cpp-files.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+<a class="nextPage" href="cpp-files.html">C++ Files</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#voycemediaplayer-component">VoyceMediaPlayer component</a></li>
+<li class="level1"><a href="#voycemediacontrols-component">VoyceMediaControls component</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Media Components</h1>
+<span class="subtitle"></span>
+<!-- $$$media-components.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>The media components of the application, and their implementation is presented in this page.</p>
+<a name="voycemediaplayer-component"></a>
+<h2 id="voycemediaplayer-component">VoyceMediaPlayer component</h2>
+<p><a href="qml-voycemediaplayer.html">VoyceMediaPlayer</a> wraps Qt's MediaPlayer and <a href="qml-voycemediacontrols.html">VoyceMediaControls</a> instances.</p>
+<p><a href="qml-voycemediaplayer.html">VoyceMediaPlayer</a> - Documented properties</p>
+<p><b><a href="qml-voycemediaplayer.html">VoyceMediaPlayer</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import QtMultimedia 5.12
+
+<span class="type">Rectangle</span> {
+    <span class="name">id</span>: <span class="name">rootControl</span>
+
+    <span class="name">color</span>: <span class="string">&quot;#2D4652&quot;</span>
+
+    property <span class="type">alias</span> <span class="name">dispatcher</span>: <span class="name">mediaConnection</span>.<span class="name">target</span>
+    property <span class="type">string</span> <span class="name">episodeUrl</span>
+    property <span class="type">string</span> <span class="name">episodeTitle</span>
+
+    <span class="type">Connections</span> {
+        <span class="name">id</span>: <span class="name">mediaConnection</span>
+
+        <span class="name">onPlayEpisode</span>: {
+            <span class="name">rootControl</span>.<span class="name">episodeUrl</span> <span class="operator">=</span> <span class="name">episodeData</span>.<span class="name">url</span>
+            <span class="name">rootControl</span>.<span class="name">episodeTitle</span> <span class="operator">=</span> <span class="name">episodeData</span>.<span class="name">title</span>
+            <span class="name">mediaPlayer</span>.<span class="name">play</span>()
+        }
+
+        <span class="name">onAddToPlaylist</span>: {
+            <span class="name">mediaPlaylist</span>.<span class="name">addItem</span>(<span class="name">episodeData</span>.<span class="name">url</span>)
+        }
+    }
+
+    <span class="type">Playlist</span> {
+        <span class="name">id</span>: <span class="name">mediaPlaylist</span>
+        <span class="name">onItemCountChanged</span>: {
+            <span class="keyword">if</span>(<span class="name">itemCount</span> <span class="operator">&gt;</span> <span class="number">0</span>) {
+                <span class="name">currentIndex</span> <span class="operator">=</span> <span class="number">0</span>
+            }
+        }
+    }
+
+    <span class="type">MediaPlayer</span> {
+        <span class="name">id</span>: <span class="name">mediaPlayer</span>
+        <span class="name">source</span>: <span class="name">rootControl</span>.<span class="name">episodeUrl</span>
+        <span class="name">playlist</span>: <span class="name">mediaPlaylist</span>
+    }
+
+    <span class="type"><a href="qml-voycemediacontrols.html">VoyceMediaControls</a></span> {
+        <span class="name">enabledPrevious</span>: <span class="name">mediaPlayer</span>.<span class="name">playlist</span> <span class="operator">&amp;&amp;</span> <span class="name">mediaPlayer</span>.<span class="name">playlist</span>.<span class="name">itemCount</span> <span class="operator">&gt;</span> <span class="number">0</span>
+        <span class="name">enabledNext</span>: <span class="name">enabledPrevious</span>
+        <span class="name">enabledPlayPause</span>: <span class="name">mediaPlayer</span>.<span class="name">hasAudio</span>
+    }
+}</pre>
+<a name="voycemediacontrols-component"></a>
+<h2 id="voycemediacontrols-component">VoyceMediaControls component</h2>
+<p><a href="qml-voycemediacontrols.html">VoyceMediaControls</a> provides simple button controls for Play, Pause, Next, and Previous MediaPlayer actions.</p>
+<p><a href="qml-voycemediacontrols.html">VoyceMediaControls</a> - Documented properties</p>
+<p><b><a href="qml-voycemediacontrols.html">VoyceMediaControls</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import QtMultimedia 5.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
+
+<span class="type">ColumnLayout</span> {
+    <span class="name">id</span>: <span class="name">root</span>
+
+    <span class="name">spacing</span>: <span class="name">dp</span>(<span class="number">5</span>)
+    <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+    property <span class="type">bool</span> <span class="name">enabledPlayPause</span>: <span class="number">false</span>
+    property <span class="type">bool</span> <span class="name">enabledPrevious</span>: <span class="number">false</span>
+    property <span class="type">bool</span> <span class="name">enabledNext</span>: <span class="number">false</span>
+
+    <span class="type">RowLayout</span> {
+        <span class="type">ProgressBar</span> {
+            <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+            <span class="name">value</span>: <span class="name">mediaPlayer</span>.<span class="name">position</span> <span class="operator">/</span> <span class="name">mediaPlayer</span>.<span class="name">duration</span>
+        }
+    }
+
+    <span class="type">RowLayout</span> {
+        <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignHCenter</span>
+
+        <span class="type">Item</span> {
+            <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+            <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+
+            <span class="type">AppText</span> {
+                <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+                <span class="name">text</span>: <span class="name">rootControl</span>.<span class="name">episodeTitle</span>
+                <span class="name">font</span>.pixelSize: <span class="name">app</span>.<span class="name">sp</span>(<span class="number">12</span>)
+                <span class="name">color</span>: <span class="string">&quot;#F2D9B9&quot;</span>
+            }
+        }
+    }
+
+    <span class="type">RowLayout</span> {
+        <span class="name">spacing</span>: <span class="name">dp</span>(<span class="number">50</span>)
+        <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignHCenter</span>
+
+        <span class="type">IconButton</span> {
+            <span class="name">id</span>: <span class="name">previousButton</span>
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">stepbackward</span>
+            <span class="name">size</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">30</span>)
+            <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">enabledPrevious</span>
+
+            <span class="name">onClicked</span>: {
+                <span class="name">mediaPlayer</span>.<span class="name">playlist</span>.<span class="name">previous</span>();
+            }
+        }
+
+        <span class="type">IconButton</span> {
+            <span class="name">id</span>: <span class="name">playPauseButton</span>
+            <span class="name">icon</span>: <span class="name">mediaPlayer</span>.<span class="name">playbackState</span> <span class="operator">===</span> <span class="name">MediaPlayer</span>.<span class="name">PlayingState</span> ? <span class="name">IconType</span>.<span class="name">pause</span> : <span class="name">IconType</span>.<span class="name">playcircle</span>
+            <span class="name">size</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">50</span>)
+            <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">enabledPlayPause</span>
+
+            <span class="name">onClicked</span>: {
+                <span class="keyword">if</span>(<span class="name">mediaPlayer</span>.<span class="name">playbackState</span> <span class="operator">===</span> <span class="name">MediaPlayer</span>.<span class="name">PlayingState</span>) {
+                    <span class="name">mediaPlayer</span>.<span class="name">pause</span>()
+                }
+                <span class="keyword">else</span> {
+                    <span class="name">mediaPlayer</span>.<span class="name">play</span>()
+                }
+            }
+        }
+
+        <span class="type">IconButton</span> {
+            <span class="name">id</span>: <span class="name">nextButton</span>
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">stepforward</span>
+            <span class="name">size</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">30</span>)
+            <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">enabledNext</span>
+
+            <span class="name">onClicked</span>: {
+                <span class="name">mediaPlayer</span>.<span class="name">playlist</span>.<span class="name">next</span>();
+            }
+        }
+    }
+
+    <span class="comment">//This item acts as a vertical spacer, which push the other elements to the top of the layout</span>
+    <span class="type">Item</span> {
+        <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+    }
+}</pre>
+</div>
+<!-- @@@media-components.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+<a class="nextPage" href="cpp-files.html">C++ Files</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

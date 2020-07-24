@@ -2,9 +2,23 @@ import QtQuick 2.0
 import Felgo 3.0
 import Qt.labs.settings 1.1
 
+/*!
+    \qmltype VoyceSettings
+    \inherits Item
+    \brief VoyceSettings - basic local Settings storage.
+
+    VoyceSettings is a simple component which uses Qt's \b{Settings} components
+    in order to save playlist and downloaded episode items, so they are not lost
+    on application restart.
+*/
+
 Item {
     id: settingsRoot
 
+    /*!
+        \qmlmethod void savePlaylist()
+        Save episodes from PlaylistModel in local settings storage
+    */
     function savePlaylist() {
         var playlistLength = _dataHolder.playlistModelData.count;
         playlistStorage.playlistSize = playlistLength;
@@ -14,6 +28,10 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void loadSavedPlaylist()
+        Loads episodes from local settings storage into PlaylistModel
+    */
     function loadSavedPlaylist() {
         for(var i=0; i< playlistStorage.playlistSize; ++i) {
             var episode = playlistStorage.value(i, null);
@@ -25,6 +43,10 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void clearPreviousSavedPlaylist()
+        Clear previous stored episodes from local settings storage
+    */
     function clearPreviousSavedPlaylist() {
         for(var c=0; c < playlistStorage.playlistSize; ++c) {
             var storedItem = playlistStorage.value(c, null);
@@ -36,6 +58,10 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void clearPreviousSavedDownloads()
+        Clear previous downloaded episodes from local settings storage
+    */
     function clearPreviousSavedDownloads() {
         for(var c=0; c < downloadsStorage.downloadsSize; ++c) {
             var storedItem = downloadsStorage.value(c, null);
@@ -47,6 +73,10 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void saveDownloads()
+        Save episodes from DownloadsModel in local settings storage
+    */
     function saveDownloads() {
         var downloadsLength = _dataHolder.downloadsModelData.count;
         downloadsStorage.downloadsSize = downloadsLength;
@@ -56,6 +86,10 @@ Item {
         }
     }
 
+    /*!
+        \qmlmethod void loadDownloadedEpisodes()
+        Loads episodes from local settings storage into DownloadsModel
+    */
     function loadDownloadedEpisodes() {
         for(var i=0; i< downloadsStorage.downloadsSize; ++i) {
             var episode = downloadsStorage.value(i, null);

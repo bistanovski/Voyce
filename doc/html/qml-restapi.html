@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- RestAPI.qml -->
+  <title>RestAPI QML Type | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">RestAPI QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$RestAPI-brief -->
+<p><a href="qml-restapi.html">RestAPI</a> - basic Http client. <a href="#details">More...</a></p>
+<!-- @@@RestAPI -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  </td></tr></table></div><ul>
+<li><a href="qml-restapi-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-restapi.html#bool-prop">bool</a></b></b> : int</li>
+<li class="fn"><b><b><a href="qml-restapi.html#busy-prop">busy</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-restapi.html#maxRequestTimeout-prop">maxRequestTimeout</a></b></b> : int</li>
+</ul>
+<a name="methods"></a>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn">void <b><b><a href="qml-restapi.html#getPodcastTags-method">getPodcastTags</a></b></b>(<i>numOfTags</i>, <i>success</i>, <i>error</i>)</li>
+<li class="fn">void <b><b><a href="qml-restapi.html#getPodcastsForTag-method">getPodcastsForTag</a></b></b>(<i>tag</i>, <i>numOfPodcasts</i>, <i>success</i>, <i>error</i>)</li>
+</ul>
+<!-- $$$RestAPI-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<p><a href="qml-restapi.html">RestAPI</a> is a simple Http client which is used to retrieve data from the Internet. In it's core uses <b>HttpRequest</b> element which is asynchronus client implementation.</p>
+<!-- @@@RestAPI -->
+<h2>Property Documentation</h2>
+<!-- $$$bool -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="bool-prop"></a><span class="qmlreadonly">[read-only] </span><span class="name">bool</span> : <span class="type">int</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds confirmation whether HttpClient is processing request</p>
+</div></div><!-- @@@bool -->
+<br/>
+<!-- $$$busy -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="busy-prop"></a><span class="qmlreadonly">[read-only] </span><span class="name">busy</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Holds confirmation whether HttpClient is processing request</p>
+</div></div><!-- @@@busy -->
+<br/>
+<!-- $$$maxRequestTimeout -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlPropNode"><p>
+<a name="maxRequestTimeout-prop"></a><span class="name">maxRequestTimeout</span> : <span class="type">int</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Maximum request timeout. Default 10 seconds</p>
+</div></div><!-- @@@maxRequestTimeout -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$getPodcastTags[overload1]$$$getPodcastTags -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="getPodcastTags-method"></a><span class="type">void</span> <span class="name">getPodcastTags</span>(<i>numOfTags</i>, <i>success</i>, <i>error</i>)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Invoke new fetching of Podcast Tags (Categories) <i>numOfTags</i> - number of results <i>success</i> - function callback for successful processing of the result <i>error</i> - function callback for failed processing of the result</p>
+</div></div><!-- @@@getPodcastTags -->
+<br/>
+<!-- $$$getPodcastsForTag[overload1]$$$getPodcastsForTag -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="getPodcastsForTag-method"></a><span class="type">void</span> <span class="name">getPodcastsForTag</span>(<i>tag</i>, <i>numOfPodcasts</i>, <i>success</i>, <i>error</i>)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Invoke new fetching of Podcasts for selected <i>tag</i> (Category) <i>numOfPodcasts</i> - number of results <i>success</i> - function callback for successful processing of the result <i>error</i> - function callback for failed processing of the result</p>
+</div></div><!-- @@@getPodcastsForTag -->
+<br/>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

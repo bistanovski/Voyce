@@ -4,6 +4,7 @@
     \startpage How to create mobile application for Podcast streaming using Felgo SDK
 
     \previouspage Explore generated Felgo Application
+    \nextpage Main Components
 
 
     \section1 C++ Files
@@ -290,4 +291,12 @@
             title: "Settings"
         }
     \endqml
+
+
+    \section1 Next steps
+
+    We learned how we can setup the basic app skeleton and layouts. Next, we will
+    see how the application has evolved into fully functional podcast streaming one,
+    and what source code is needed for that. Stay tuned!
+
 */

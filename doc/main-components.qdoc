@@ -1,0 +1,341 @@
+/*!
+    \page main-components.html tutorial
+    \title Main Components
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage List of source files - initial Voyce application
+    \nextpage Model Components
+
+    The main components of the application, and their implementation is presented
+    in this page.
+
+
+    \section1 Broadcast component
+    \l{Broadcast} - Documented properties
+    \b{Broadcast.qml:}
+
+    \qml
+        import QtQuick 2.0
+
+        Item {
+
+            signal clearCache()
+            signal clearTags()
+
+            signal fetchPodcastTags(var numOfTags)
+            signal clearPodcasts()
+
+            signal fetchPodcastsForTag(var tag, var numOfPodcasts)
+            signal playEpisode(var episodeData)
+
+            signal downloadEpisode(var episodeData)
+            signal downloadFinished(var episodeData)
+            signal removeFromDownloads(var episodeIndex, var localUrl)
+
+            signal addToPlaylist(var episodeData)
+            signal removeFromPlaylist(var episodeIndex)
+
+            signal clearAndSaveSettings()
+        }
+    \endqml
+
+
+    \section1 RestAPI component
+    \l{RestAPI} - Documented properties
+    \b{RestAPI.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Item {
+
+            property int maxRequestTimeout: 10000
+            readonly property bool busy: HttpNetworkActivityIndicator.enabled
+
+            Component.onCompleted: {
+                HttpNetworkActivityIndicator.setActivationDelay(0)
+            }
+
+            // private
+            QtObject {
+                id: _api_requestor
+                property string podcastsUrl: "https://gpodder.net/api/2"
+
+                function fetch(url, success, error) {
+                    HttpRequest.get(url)
+                    .timeout(maxRequestTimeout)
+                    .then(function(res) { success(res.body) })
+                    .catch(function(err) { error(err) });
+                }
+            }
+
+            function getPodcastTags(numOfTags, success, error) {
+                if(numOfTags > 0) {
+                    var url = _api_requestor.podcastsUrl + "/tags/" + numOfTags.toString() + ".json";
+                    _api_requestor.fetch(url, success, error)
+                }
+                else {
+                    error('Number of fetching tags must be greater than 0!')
+                }
+            }
+
+            function getPodcastsForTag(tag, numOfPodcasts, success, error) {
+                if('' !== tag) {
+                    var url = _api_requestor.podcastsUrl + "/tag/" + tag + "/" + numOfPodcasts.toString() + ".json";
+                    _api_requestor.fetch(url, success, error)
+                }
+                else {
+                    error('Searched tag must not be empty!')
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 VoyceSettings component
+    \l{VoyceSettings} - Documented properties
+    \b{VoyceSettings.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import Qt.labs.settings 1.1
+
+        Item {
+            id: settingsRoot
+
+            function savePlaylist() {
+                var playlistLength = _dataHolder.playlistModelData.count;
+                playlistStorage.playlistSize = playlistLength;
+                for(var i=0; i < playlistLength; ++i){
+                    var episodeItem = _dataHolder.playlistModelData.get(i);
+                    playlistStorage.setValue(i, JSON.stringify(episodeItem));
+                }
+            }
+
+            function loadSavedPlaylist() {
+                for(var i=0; i< playlistStorage.playlistSize; ++i) {
+                    var episode = playlistStorage.value(i, null);
+                    if(episode) {
+                        var parsedEpisode = JSON.parse(episode);
+                        _dataHolder.playlistModelData.append(parsedEpisode);
+                        broadcast.addToPlaylist(parsedEpisode)
+                    }
+                }
+            }
+
+            function clearPreviousSavedPlaylist() {
+                for(var c=0; c < playlistStorage.playlistSize; ++c) {
+                    var storedItem = playlistStorage.value(c, null);
+                    if(null === storedItem) {
+                        break;
+                    }
+
+                    playlistStorage.setValue(c, null)
+                }
+            }
+
+            function clearPreviousSavedDownloads() {
+                for(var c=0; c < downloadsStorage.downloadsSize; ++c) {
+                    var storedItem = downloadsStorage.value(c, null);
+                    if(null === storedItem) {
+                        break;
+                    }
+
+                    downloadsStorage.setValue(c, null)
+                }
+            }
+
+            function saveDownloads() {
+                var downloadsLength = _dataHolder.downloadsModelData.count;
+                downloadsStorage.downloadsSize = downloadsLength;
+                for(var i=0; i < downloadsLength; ++i){
+                    var episodeItem = _dataHolder.downloadsModelData.get(i);
+                    downloadsStorage.setValue(i, JSON.stringify(episodeItem));
+                }
+            }
+
+            function loadDownloadedEpisodes() {
+                for(var i=0; i< downloadsStorage.downloadsSize; ++i) {
+                    var episode = downloadsStorage.value(i, null);
+                    if(episode) {
+                        _dataHolder.downloadsModelData.append(JSON.parse(episode));
+                    }
+                }
+            }
+
+            Settings {
+                id: playlistStorage
+                fileName: "VoycePlaylist.txt"
+
+                property int playlistSize
+
+                Component.onCompleted: {
+                    loadSavedPlaylist();
+                }
+            }
+
+            Settings {
+                id: downloadsStorage
+                fileName: "VoyceDownloads.txt"
+
+                property int downloadsSize
+
+                Component.onCompleted: {
+                    loadDownloadedEpisodes();
+                }
+            }
+
+            Settings {
+                id: generalSettings
+                fileName: "VoyceSettings.txt"
+            }
+        }
+    \endqml
+
+
+    \section1 EpisodeDownloader component
+
+    EpisodeDownloader is a simple wrapper arround Felgo's \b{DownloadableResource} component.
+    It is used to download podcast episodes to device.
+
+    \l{EpisodeDownloader} - Documented properties
+    \b{EpisodeDownloader.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+
+        DownloadableResource {
+            storageLocation: FileUtils.DownloadLocation
+            extractAsPackage: false
+
+            property var trackedEpisode
+
+            onStatusChanged: {
+                if(DownloadableResource.Available === status) {
+                    nativeUtils.displayMessageBox(qsTr("Download Complete!"));
+                    trackedEpisode.url = storagePath;
+                    broadcast.downloadFinished(trackedEpisode);
+                }
+            }
+
+            function downloadEpisode(episodeData) {
+                trackedEpisode = episodeData
+                storageName = trackedEpisode.title + ".mp3";
+                source = trackedEpisode.url;
+                if(status === DownloadableResource.UnAvailable) {
+                    download();
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 Main component
+
+    Main is the central component which start the main ApplicationWindow creates
+    instances of all needed components, and displays main Navigation components
+    and their contents.
+
+    \b{Main.qml:}
+
+    \qml
+        import Felgo 3.0
+        import QtQuick 2.0
+        import "model"
+        import "broadcast"
+        import "pages"
+        import "media"
+
+        App {
+            id: app
+
+            onInitTheme: {
+                Theme.colors.tintColor = "#E26155"
+            }
+
+            Component.onCompleted: {
+                // if device has network connection, clear cache at startup
+                // you'll probably implement a more intelligent cache cleanup for your app
+                // e.g. to only clear the items that aren't required regularly
+
+                HttpRequest.config({ cache: true });
+
+                if(isOnline) {
+                    broadcast.clearCache()
+                }
+            }
+
+            onClosing: {
+                close.accepted = false;
+                broadcast.clearAndSaveSettings();
+                close.accepted = true;
+            }
+
+            Broadcast {
+                id: broadcast
+            }
+
+            DataModel {
+                id: dataModel
+                dispatcher: broadcast
+            }
+
+            Navigation {
+                id: navigation
+                navigationMode: navigationModeDrawer
+                height: parent.height - mediaPlayer.height
+
+                NavigationItem {
+                    title: qsTr("Playlist")
+                    icon: IconType.list
+
+                    NavigationStack {
+                        initialPage: PlaylistPage { }
+                    }
+                }
+
+                NavigationItem {
+                    title: qsTr("Explore")
+                    icon: IconType.cloud
+
+                    NavigationStack {
+                        splitView: tablet
+                        initialPage: CategoriesPage { }
+                    }
+                }
+
+                NavigationItem {
+                    title: qsTr("Downloads")
+                    icon: IconType.download
+
+                    NavigationStack {
+                        initialPage: DownloadsPage { }
+                    }
+                }
+
+                NavigationItem {
+                    title: qsTr("Settings")
+                    icon: IconType.adjust
+
+                    NavigationStack {
+                        initialPage: SettingsPage { }
+                    }
+                }
+            }
+
+            VoyceMediaPlayer {
+                id: mediaPlayer
+                dispatcher: broadcast
+
+                height: dp(100)
+                width: parent.width
+                anchors.bottom: parent.bottom
+            }
+        }
+    \endqml
+
+*/

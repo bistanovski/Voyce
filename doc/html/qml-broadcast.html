@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- Broadcast.qml -->
+  <title>Broadcast QML Type | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/><div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Broadcast QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$Broadcast-brief -->
+<p>Broadcast - basic signal dispatcher. <a href="#details">More...</a></p>
+<!-- @@@Broadcast -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  </td></tr></table></div><ul>
+<li><a href="qml-broadcast-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-broadcast.html#addToPlaylist-signal">addToPlaylist</a></b></b>(<i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#clearAndSaveSettings-signal">clearAndSaveSettings</a></b></b>()</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#clearCache-signal">clearCache</a></b></b>()</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#clearPodcasts-signal">clearPodcasts</a></b></b>()</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#clearTags-signal">clearTags</a></b></b>()</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#downloadEpisode-signal">downloadEpisode</a></b></b>(<i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#downloadFinished-signal">downloadFinished</a></b></b>(<i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#fetchPodcastTags-signal">fetchPodcastTags</a></b></b>(<i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#fetchPodcastsForTag-signal">fetchPodcastsForTag</a></b></b>(<i>var</i>, <i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#playEpisode-signal">playEpisode</a></b></b>(<i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#removeFromDownloads-signal">removeFromDownloads</a></b></b>(<i>var</i>, <i>var</i>)</li>
+<li class="fn"><b><b><a href="qml-broadcast.html#removeFromPlaylist-signal">removeFromPlaylist</a></b></b>(<i>var</i>)</li>
+</ul>
+<!-- $$$Broadcast-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+<p>Broadcast element is built as signal dispatcher, which are used between different elements and objects in Voyce application. Each item/object instance can &quot;subscribe&quot; to the signals provided in Broadcast, and on new emit, they can handle the processing part in their part of code blocks. This is good initial approach for centralized registrar of events for simple applications.</p>
+<!-- @@@Broadcast -->
+<h2>Signal Documentation</h2>
+<!-- $$$addToPlaylist[overload1]$$$addToPlaylistvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="addToPlaylist-signal"></a><span class="name">addToPlaylist</span>(<i>var</i> = episodeData)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when <i>episodeData</i> object need to be added in the current playlist</p>
+</div></div><!-- @@@addToPlaylist -->
+<br/>
+<!-- $$$clearAndSaveSettings[overload1]$$$clearAndSaveSettings -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="clearAndSaveSettings-signal"></a><span class="name">clearAndSaveSettings</span>()</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when settings need to be updated</p>
+</div></div><!-- @@@clearAndSaveSettings -->
+<br/>
+<!-- $$$clearCache[overload1]$$$clearCache -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="clearCache-signal"></a><span class="name">clearCache</span>()</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when network cache clearing is needed</p>
+</div></div><!-- @@@clearCache -->
+<br/>
+<!-- $$$clearPodcasts[overload1]$$$clearPodcasts -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="clearPodcasts-signal"></a><span class="name">clearPodcasts</span>()</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when new podcast data has to be cleared</p>
+</div></div><!-- @@@clearPodcasts -->
+<br/>
+<!-- $$$clearTags[overload1]$$$clearTags -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="clearTags-signal"></a><span class="name">clearTags</span>()</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when podcast tags stored data has to be cleared</p>
+<p><b>Note: </b><b>tags</b>, refer on the same thing as <b>Category</b> in which podcasts are grouped</p></div></div><!-- @@@clearTags -->
+<br/>
+<!-- $$$downloadEpisode[overload1]$$$downloadEpisodevar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="downloadEpisode-signal"></a><span class="name">downloadEpisode</span>(<i>var</i> = episodeData)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when selected <i>episodeData</i> object is scheduled for downloading</p>
+</div></div><!-- @@@downloadEpisode -->
+<br/>
+<!-- $$$downloadFinished[overload1]$$$downloadFinishedvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="downloadFinished-signal"></a><span class="name">downloadFinished</span>(<i>var</i> = episodeData)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when <i>episodeData</i> object has finished downloading</p>
+</div></div><!-- @@@downloadFinished -->
+<br/>
+<!-- $$$fetchPodcastTags[overload1]$$$fetchPodcastTagsvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="fetchPodcastTags-signal"></a><span class="name">fetchPodcastTags</span>(<i>var</i> = numOfTags)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when new podcast tags need to be fetched, with <i>numOfTags</i> total tags</p>
+</div></div><!-- @@@fetchPodcastTags -->
+<br/>
+<!-- $$$fetchPodcastsForTag[overload1]$$$fetchPodcastsForTagvarvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="fetchPodcastsForTag-signal"></a><span class="name">fetchPodcastsForTag</span>(<i>var</i> = tag, <i>var</i> = numOfPodcasts)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when new search for podcasts based on <i>tag</i> and total <i>numOfPodcasts</i> results</p>
+</div></div><!-- @@@fetchPodcastsForTag -->
+<br/>
+<!-- $$$playEpisode[overload1]$$$playEpisodevar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="playEpisode-signal"></a><span class="name">playEpisode</span>(<i>var</i> = episodeData)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when selected <i>episodeData</i> object is scheduled for playing</p>
+</div></div><!-- @@@playEpisode -->
+<br/>
+<!-- $$$removeFromDownloads[overload1]$$$removeFromDownloadsvarvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="removeFromDownloads-signal"></a><span class="name">removeFromDownloads</span>(<i>var</i> = episodeIndex, <i>var</i> = localUrl)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when episode with <i>episodeIndex</i> located on <i>localUrl</i> need to be deleted</p>
+</div></div><!-- @@@removeFromDownloads -->
+<br/>
+<!-- $$$removeFromPlaylist[overload1]$$$removeFromPlaylistvar -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="">
+<td class="tblQmlFuncNode"><p>
+<a name="removeFromPlaylist-signal"></a><span class="name">removeFromPlaylist</span>(<i>var</i> = episodeIndex)</p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Emitted when episode with <i>episodeIndex</i> need to be removed from the current playlist</p>
+</div></div><!-- @@@removeFromPlaylist -->
+<br/>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

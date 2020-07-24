@@ -9,9 +9,11 @@
 </head>
 <body>
 <div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="explore-felgo-gen-app.html" />
+  <link rel="next" href="main-components.html" />
   <link rel="start" href="index.html" />
 <p class="naviNextPrevious headerNavi">
 <a class="prevPage" href="explore-felgo-gen-app.html">Explore generated Felgo Application</a>
+<a class="nextPage" href="main-components.html">Main Components</a>
 </p><p/>
 <div class="sidebar">
 <div class="toc">
@@ -23,6 +25,7 @@
 <li class="level2"><a href="#logic">logic</a></li>
 <li class="level2"><a href="#model">model</a></li>
 <li class="level2"><a href="#pages">pages</a></li>
+<li class="level1"><a href="#next-steps">Next steps</a></li>
 </ul>
 </div>
 <div class="sidebar-content" id="sidebar-content"></div></div>
@@ -104,7 +107,7 @@ import &quot;pages&quot;
     }
 
     <span class="comment">// model</span>
-    <span class="type">DataModel</span> {
+    <span class="type"><a href="qml-datamodel.html">DataModel</a></span> {
         <span class="name">id</span>: <span class="name">dataModel</span>
         <span class="name">dispatcher</span>: <span class="name">logic</span> <span class="comment">// data model handles actions sent by logic</span>
     }
@@ -180,7 +183,7 @@ import &quot;pages&quot;
 }</pre>
 <a name="model"></a>
 <h3 id="model">model</h3>
-<p><b>DataModel.qml</b></p>
+<p><b><a href="qml-datamodel.html">DataModel</a>.qml</b></p>
 <pre class="qml">import QtQuick 2.0
 import Felgo 3.0
 
@@ -196,7 +199,7 @@ import Felgo 3.0
     }
 
     <span class="comment">// rest api for data access</span>
-    <span class="type">RestAPI</span> {
+    <span class="type"><a href="qml-restapi.html">RestAPI</a></span> {
         <span class="name">id</span>: <span class="name">api</span>
         <span class="name">maxRequestTimeout</span>: <span class="number">3000</span> <span class="comment">// use max request timeout of 3 sec</span>
     }
@@ -206,7 +209,7 @@ import Felgo 3.0
         <span class="name">id</span>: <span class="name">cache</span>
     }
 }</pre>
-<p><b>RestAPI.qml</b></p>
+<p><b><a href="qml-restapi.html">RestAPI</a>.qml</b></p>
 <pre class="qml">import QtQuick 2.0
 import Felgo 3.0
 
@@ -283,10 +286,14 @@ import Felgo 3.0
 <span class="type">Page</span> {
     <span class="name">title</span>: <span class="string">&quot;Settings&quot;</span>
 }</pre>
+<a name="next-steps"></a>
+<h2 id="next-steps">Next steps</h2>
+<p>We learned how we can setup the basic app skeleton and layouts. Next, we will see how the application has evolved into fully functional podcast streaming one, and what source code is needed for that. Stay tuned!</p>
 </div>
 <!-- @@@list-initial-source-files.html -->
 <p class="naviNextPrevious footerNavi">
 <a class="prevPage" href="explore-felgo-gen-app.html">Explore generated Felgo Application</a>
+<a class="nextPage" href="main-components.html">Main Components</a>
 </p>
 <br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
 </html>

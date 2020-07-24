@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- model-components.qdoc -->
+  <title>Model Components | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="main-components.html" />
+  <link rel="next" href="list-view-delegates.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="main-components.html">Main Components</a>
+<a class="nextPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#datamodelconnections-component">DataModelConnections component</a></li>
+<li class="level1"><a href="#datamodel-component">DataModel component</a></li>
+<li class="level1"><a href="#filterproxymodel-component">FilterProxyModel component</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Model Components</h1>
+<span class="subtitle"></span>
+<!-- $$$model-components.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>The model components of the application, and their implementation is presented in this page.</p>
+<a name="datamodelconnections-component"></a>
+<h2 id="datamodelconnections-component">DataModelConnections component</h2>
+<p>DataModelConnections is simple processing-of-signals component, in which signal handlers (slots) are implemented. These slots further take actions on global data models, settings and downloaders.</p>
+<p><b>DataModelConnections.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Connections</span> {
+    <span class="name">id</span>: <span class="name">rootConnections</span>
+
+    <span class="name">onClearTags</span>: {
+        <span class="name">_dataHolder</span>.<span class="name">tags</span> <span class="operator">=</span> []
+    }
+
+    <span class="name">onClearPodcasts</span>: {
+        <span class="name">_dataHolder</span>.<span class="name">podcasts</span> <span class="operator">=</span> []
+    }
+
+    <span class="name">onFetchPodcastTags</span>: {
+        <span class="keyword">function</span> <span class="name">onSuccess</span>(data) {
+            <span class="name">_dataHolder</span>.<span class="name">tags</span> <span class="operator">=</span> <span class="name">data</span>;
+        }
+        <span class="keyword">function</span> <span class="name">onError</span>(error) {
+            <span class="name">console</span>.<span class="name">log</span>(<span class="string">'Fetching PodcastTags failed:'</span>, <span class="name">error</span>)
+        }
+
+        <span class="name">api</span>.<span class="name">getPodcastTags</span>(<span class="name">numOfTags</span>, <span class="name">onSuccess</span>, <span class="name">onError</span>);
+    }
+
+    <span class="name">onFetchPodcastsForTag</span>: {
+        <span class="keyword">function</span> <span class="name">onSuccess</span>(data) {
+            <span class="name">_dataHolder</span>.<span class="name">podcasts</span> <span class="operator">=</span> <span class="name">data</span>;
+        }
+        <span class="keyword">function</span> <span class="name">onError</span>(error) {
+            <span class="name">console</span>.<span class="name">log</span>(<span class="string">'Fetching Podcasts failed:'</span>, <span class="name">error</span>);
+        }
+
+        <span class="name">api</span>.<span class="name">getPodcastsForTag</span>(<span class="name">tag</span>, <span class="name">numOfPodcasts</span>, <span class="name">onSuccess</span>, <span class="name">onError</span>);
+    }
+
+    <span class="name">onAddToPlaylist</span>: {
+        <span class="name">_dataHolder</span>.<span class="name">playlistUpdated</span> <span class="operator">=</span> <span class="number">true</span>;
+        <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>.<span class="name">insert</span>(<span class="number">0</span>, <span class="name">episodeData</span>);
+    }
+
+    <span class="name">onRemoveFromPlaylist</span>: {
+        <span class="name">_dataHolder</span>.<span class="name">playlistUpdated</span> <span class="operator">=</span> <span class="number">true</span>;
+        <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>.<span class="name">remove</span>(<span class="name">episodeIndex</span>, <span class="number">1</span>);
+    }
+
+    <span class="name">onClearAndSaveSettings</span>: {
+        var writeGranted = <span class="number">true</span>;
+        <span class="keyword">if</span>(<span class="name">Theme</span>.<span class="name">isAndroid</span>) {
+            <span class="name">writeGranted</span> <span class="operator">=</span> <span class="name">VoyceFileUtils</span>.<span class="name">requestAndroidPermissions</span>();
+            <span class="keyword">if</span>(!<span class="name">writeGranted</span>) {
+                <span class="name">nativeUtils</span>.<span class="name">displayMessageBox</span>(<span class="name">qsTr</span>(<span class="string">&quot;Permissions not granted!&quot;</span>));
+            }
+        }
+
+        <span class="keyword">if</span>(<span class="name">writeGranted</span> <span class="operator">&amp;&amp;</span> <span class="name">_dataHolder</span>.<span class="name">playlistUpdated</span>) {
+            <span class="name">voyceSettings</span>.<span class="name">clearPreviousSavedPlaylist</span>();
+            <span class="name">voyceSettings</span>.<span class="name">savePlaylist</span>();
+        }
+
+        <span class="keyword">if</span>(<span class="name">writeGranted</span> <span class="operator">&amp;&amp;</span> <span class="name">_dataHolder</span>.<span class="name">downloadsUpdated</span>) {
+            <span class="name">voyceSettings</span>.<span class="name">clearPreviousSavedDownloads</span>();
+            <span class="name">voyceSettings</span>.<span class="name">saveDownloads</span>();
+        }
+    }
+
+    <span class="name">onDownloadEpisode</span>: {
+        var writeGranted = <span class="number">true</span>;
+
+        <span class="keyword">if</span>(<span class="name">Theme</span>.<span class="name">isAndroid</span>) {
+            <span class="name">writeGranted</span> <span class="operator">=</span> <span class="name">VoyceFileUtils</span>.<span class="name">requestAndroidPermissions</span>();
+            <span class="keyword">if</span>(!<span class="name">writeGranted</span>) {
+                <span class="name">nativeUtils</span>.<span class="name">displayMessageBox</span>(<span class="name">qsTr</span>(<span class="string">&quot;Permissions not granted!&quot;</span>));
+            }
+        }
+
+        <span class="keyword">if</span>(<span class="name">writeGranted</span>) {
+            <span class="name">episodeDownloader</span>.<span class="name">downloadEpisode</span>(<span class="name">episodeData</span>);
+        }
+    }
+
+    <span class="name">onDownloadFinished</span>: {
+        <span class="name">_dataHolder</span>.<span class="name">downloadsUpdated</span> <span class="operator">=</span> <span class="number">true</span>;
+        <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>.<span class="name">insert</span>(<span class="number">0</span>, <span class="name">episodeData</span>);
+    }
+
+    <span class="name">onRemoveFromDownloads</span>: {
+        var deleteGranted = <span class="number">true</span>;
+        <span class="keyword">if</span>(<span class="name">Theme</span>.<span class="name">isAndroid</span>) {
+            <span class="name">deleteGranted</span> <span class="operator">=</span> <span class="name">VoyceFileUtils</span>.<span class="name">requestAndroidPermissions</span>();
+            <span class="keyword">if</span>(!<span class="name">deleteGranted</span>) {
+                <span class="name">nativeUtils</span>.<span class="name">displayMessageBox</span>(<span class="name">qsTr</span>(<span class="string">&quot;Permissions not granted!&quot;</span>));
+            }
+        }
+
+        <span class="keyword">if</span>(<span class="name">deleteGranted</span> <span class="operator">&amp;&amp;</span> <span class="name">VoyceFileUtils</span>.<span class="name">deleteFile</span>(<span class="name">localUrl</span>)) {
+            <span class="name">console</span>.<span class="name">log</span>(<span class="string">'Episode Deleted!'</span>)
+            <span class="name">_dataHolder</span>.<span class="name">downloadsUpdated</span> <span class="operator">=</span> <span class="number">true</span>;
+            <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>.<span class="name">remove</span>(<span class="name">episodeIndex</span>, <span class="number">1</span>);
+        }
+    }
+}</pre>
+<a name="datamodel-component"></a>
+<h2 id="datamodel-component">DataModel component</h2>
+<p><a href="qml-datamodel.html">DataModel</a> - Documented properties <b><a href="qml-datamodel.html">DataModel</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;../settings&quot;
+
+<span class="type">Item</span> {
+    <span class="name">id</span>: <span class="name">root</span>
+
+    property <span class="type">alias</span> <span class="name">dispatcher</span>: <span class="name">dataConnection</span>.<span class="name">target</span>
+    readonly property <span class="type">bool</span> <span class="name">isBusy</span>: <span class="name">api</span>.<span class="name">busy</span>
+
+    readonly property <span class="type">alias</span> <span class="name">tags</span>: <span class="name">_dataHolder</span>.<span class="name">tags</span>
+    readonly property <span class="type">alias</span> <span class="name">podcasts</span>: <span class="name">_dataHolder</span>.<span class="name">podcasts</span>
+    readonly property <span class="type">alias</span> <span class="name">playlistModel</span>: <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>
+    readonly property <span class="type">alias</span> <span class="name">downloadsModel</span>: <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>
+
+    property <span class="type">alias</span> <span class="name">mainSettings</span>: <span class="name">voyceSettings</span>
+
+    <span class="type"><a href="qml-voycesettings.html">VoyceSettings</a></span> {
+        <span class="name">id</span>: <span class="name">voyceSettings</span>
+    }
+
+    <span class="type"><a href="qml-restapi.html">RestAPI</a></span> {
+        <span class="name">id</span>: <span class="name">api</span>
+    }
+
+    <span class="type">Item</span> {
+        <span class="name">id</span>: <span class="name">_dataHolder</span>
+        property <span class="type">var</span> <span class="name">tags</span>: []
+        property <span class="type">var</span> <span class="name">podcasts</span>: []
+
+        property <span class="type">alias</span> <span class="name">playlistModelData</span>: <span class="name">playlistModel</span>
+        property <span class="type">bool</span> <span class="name">playlistUpdated</span>: <span class="number">false</span>
+
+        property <span class="type">alias</span> <span class="name">downloadsModelData</span>: <span class="name">downloadsModel</span>
+        property <span class="type">bool</span> <span class="name">downloadsUpdated</span>: <span class="number">false</span>
+
+        readonly property <span class="type">string</span> <span class="name">keyFieldValue</span>: <span class="string">&quot;url&quot;</span>
+        readonly property <span class="type">var</span> <span class="name">fieldValues</span>: [<span class="string">&quot;url&quot;</span>, <span class="string">&quot;title&quot;</span>, <span class="string">&quot;pubDate&quot;</span>, <span class="string">&quot;length&quot;</span>]
+
+        <span class="type">JsonListModel</span> {
+            <span class="name">id</span>: <span class="name">playlistModel</span>
+            <span class="name">keyField</span>: <span class="name">_dataHolder</span>.<span class="name">keyFieldValue</span>
+            <span class="name">fields</span>: <span class="name">_dataHolder</span>.<span class="name">fieldValues</span>
+        }
+
+        <span class="type">JsonListModel</span> {
+            <span class="name">id</span>: <span class="name">downloadsModel</span>
+            <span class="name">keyField</span>: <span class="name">_dataHolder</span>.<span class="name">keyFieldValue</span>
+            <span class="name">fields</span>: <span class="name">_dataHolder</span>.<span class="name">fieldValues</span>
+        }
+    }
+
+    <span class="type"><a href="qml-episodedownloader.html">EpisodeDownloader</a></span> {
+        <span class="name">id</span>: <span class="name">episodeDownloader</span>
+    }
+
+    <span class="type">DataModelConnections</span> {
+        <span class="name">id</span>: <span class="name">dataConnection</span>
+    }
+}</pre>
+<a name="filterproxymodel-component"></a>
+<h2 id="filterproxymodel-component">FilterProxyModel component</h2>
+<p><a href="qml-filterproxymodel.html">FilterProxyModel</a> provides reusable SortFilterProxyModel instance, with exported properties for source model, search pattern and target role.</p>
+<p><a href="qml-filterproxymodel.html">FilterProxyModel</a> - Documented properties <b><a href="qml-filterproxymodel.html">FilterProxyModel</a>.qml:</b></p>
+<pre class="qml">import Felgo 3.0
+
+<span class="type">SortFilterProxyModel</span> {
+    <span class="name">id</span>: <span class="name">filterProxyModel</span>
+
+    property <span class="type">var</span> <span class="name">targetModel</span>
+    property <span class="type">string</span> <span class="name">searchValue</span>
+    property <span class="type">string</span> <span class="name">targetRoleName</span>
+
+    <span class="name">sourceModel</span>: <span class="name">targetModel</span>
+    <span class="name">filters</span>: [
+        <span class="type">AnyOf</span> {
+            <span class="name">enabled</span>: <span class="name">searchValue</span> <span class="operator">!==</span> <span class="string">''</span>
+            <span class="type">RegExpFilter</span> {
+                <span class="name">roleName</span>: <span class="name">targetRoleName</span>
+                <span class="name">pattern</span>: <span class="name">searchValue</span>
+                <span class="name">caseSensitivity</span>: <span class="name">Qt</span>.<span class="name">CaseInsensitive</span>
+            }
+        }
+    ]
+}</pre>
+</div>
+<!-- @@@model-components.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="main-components.html">Main Components</a>
+<a class="nextPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

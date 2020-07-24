@@ -1,0 +1,169 @@
+/*!
+    \page media-components.html tutorial
+    \title Media Components
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage ListView and Delegate Components
+    \nextpage C++ Files
+
+    The media components of the application, and their implementation is presented
+    in this page.
+
+    \section1 VoyceMediaPlayer component
+
+    VoyceMediaPlayer wraps Qt's MediaPlayer and VoyceMediaControls instances.
+
+    \l{VoyceMediaPlayer} - Documented properties
+
+    \b{VoyceMediaPlayer.qml:}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import QtMultimedia 5.12
+
+        Rectangle {
+            id: rootControl
+
+            color: "#2D4652"
+
+            property alias dispatcher: mediaConnection.target
+            property string episodeUrl
+            property string episodeTitle
+
+            Connections {
+                id: mediaConnection
+
+                onPlayEpisode: {
+                    rootControl.episodeUrl = episodeData.url
+                    rootControl.episodeTitle = episodeData.title
+                    mediaPlayer.play()
+                }
+
+                onAddToPlaylist: {
+                    mediaPlaylist.addItem(episodeData.url)
+                }
+            }
+
+            Playlist {
+                id: mediaPlaylist
+                onItemCountChanged: {
+                    if(itemCount > 0) {
+                        currentIndex = 0
+                    }
+                }
+            }
+
+            MediaPlayer {
+                id: mediaPlayer
+                source: rootControl.episodeUrl
+                playlist: mediaPlaylist
+            }
+
+            VoyceMediaControls {
+                enabledPrevious: mediaPlayer.playlist && mediaPlayer.playlist.itemCount > 0
+                enabledNext: enabledPrevious
+                enabledPlayPause: mediaPlayer.hasAudio
+            }
+        }
+    \endqml
+
+
+    \section1 VoyceMediaControls component
+
+    VoyceMediaControls provides simple button controls for Play, Pause, Next,
+    and Previous MediaPlayer actions.
+
+    \l{VoyceMediaControls} - Documented properties
+
+    \b{VoyceMediaControls.qml:}
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import QtMultimedia 5.12
+        import QtQuick.Layouts 1.12
+        import QtQuick.Controls 2.12
+
+        ColumnLayout {
+            id: root
+
+            spacing: dp(5)
+            anchors.fill: parent
+
+            property bool enabledPlayPause: false
+            property bool enabledPrevious: false
+            property bool enabledNext: false
+
+            RowLayout {
+                ProgressBar {
+                    Layout.fillWidth: true
+                    value: mediaPlayer.position / mediaPlayer.duration
+                }
+            }
+
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    AppText {
+                        anchors.centerIn: parent
+                        elide: Text.ElideRight
+                        text: rootControl.episodeTitle
+                        font.pixelSize: app.sp(12)
+                        color: "#F2D9B9"
+                    }
+                }
+            }
+
+            RowLayout {
+                spacing: dp(50)
+                Layout.alignment: Qt.AlignHCenter
+
+                IconButton {
+                    id: previousButton
+                    icon: IconType.stepbackward
+                    size: app.dp(30)
+                    enabled: root.enabledPrevious
+
+                    onClicked: {
+                        mediaPlayer.playlist.previous();
+                    }
+                }
+
+                IconButton {
+                    id: playPauseButton
+                    icon: mediaPlayer.playbackState === MediaPlayer.PlayingState ? IconType.pause : IconType.playcircle
+                    size: app.dp(50)
+                    enabled: root.enabledPlayPause
+
+                    onClicked: {
+                        if(mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+                            mediaPlayer.pause()
+                        }
+                        else {
+                            mediaPlayer.play()
+                        }
+                    }
+                }
+
+                IconButton {
+                    id: nextButton
+                    icon: IconType.stepforward
+                    size: app.dp(30)
+                    enabled: root.enabledNext
+
+                    onClicked: {
+                        mediaPlayer.playlist.next();
+                    }
+                }
+            }
+
+            //This item acts as a vertical spacer, which push the other elements to the top of the layout
+            Item {
+                Layout.fillHeight: true
+            }
+        }
+    \endqml
+*/

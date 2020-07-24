@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- list-view-and-delegates.qdoc -->
+  <title>ListView and Delegate Components | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="model-components.html" />
+  <link rel="next" href="app-pages.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="model-components.html">Model Components</a>
+<a class="nextPage" href="app-pages.html">Application Pages</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#voycelistview-component">VoyceListView component</a></li>
+<li class="level1"><a href="#categorydelegate-component">CategoryDelegate component</a></li>
+<li class="level1"><a href="#podcastdelegate-component">PodcastDelegate component</a></li>
+<li class="level1"><a href="#episodedelegate-component">EpisodeDelegate component</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">ListView and Delegate Components</h1>
+<span class="subtitle"></span>
+<!-- $$$list-view-delegates.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>The ListView and Delegate components of the application, and their implementation is presented in this page.</p>
+<a name="voycelistview-component"></a>
+<h2 id="voycelistview-component">VoyceListView component</h2>
+<p><a href="qml-voycelistview.html">VoyceListView</a> provides simple update of Felgo's <b>AppListView</b> component. It provides some additional updates of the transition animations.</p>
+<p><a href="qml-voycelistview.html">VoyceListView</a> - Documented properties <b><a href="qml-voycelistview.html">VoyceListView</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">AppListView</span> {
+    <span class="name">id</span>: <span class="name">listView</span>
+    <span class="name">anchors</span>.fill: <span class="name">parent</span>
+    <span class="name">showSearch</span>: <span class="name">searchBarEnabled</span>
+    <span class="name">emptyText</span>.text: <span class="name">showAcitivtyIndicator</span> ? <span class="name">loadingText</span> : <span class="string">&quot;No items available&quot;</span>
+
+    property <span class="type">string</span> <span class="name">loadingText</span>
+    property <span class="type">var</span> <span class="name">refreshFuncHandler</span>
+
+    <span class="type">PullToRefreshHandler</span> {
+        <span class="name">refreshing</span>: <span class="name">showAcitivtyIndicator</span>
+        <span class="name">pullToRefreshEnabled</span>: !!<span class="name">refreshFuncHandler</span> <span class="comment">//Enabled if refreshFuncHandler is not null</span>
+        <span class="name">onRefresh</span>: <span class="name">refreshFuncHandler</span>()
+    }
+
+    <span class="name">onSearch</span>: {
+        <span class="name">model</span>.<span class="name">searchValue</span> <span class="operator">=</span> <span class="name">term</span>
+    }
+
+    <span class="name">add</span>: <span class="name">Transition</span> {
+        <span class="type">NumberAnimation</span> {
+            <span class="name">property</span>: <span class="string">&quot;opacity&quot;</span>;
+            <span class="name">from</span>: <span class="number">0</span>;
+            <span class="name">to</span>: <span class="number">1</span>;
+            <span class="name">duration</span>: <span class="number">200</span>
+            <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span>;
+        }
+    }
+
+    <span class="name">addDisplaced</span>: <span class="name">Transition</span> {
+        <span class="type">NumberAnimation</span> {
+            <span class="name">properties</span>: <span class="string">&quot;x,y&quot;</span>;
+            <span class="name">duration</span>: <span class="number">200</span>
+            <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span>;
+        }
+    }
+
+    <span class="name">remove</span>: <span class="name">Transition</span> {
+        <span class="type">NumberAnimation</span> {
+            <span class="name">property</span>: <span class="string">&quot;opacity&quot;</span>;
+            <span class="name">from</span>: <span class="number">1</span>;
+            <span class="name">to</span>: <span class="number">0</span>;
+            <span class="name">duration</span>: <span class="number">200</span>
+            <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span>;
+        }
+    }
+
+    <span class="name">removeDisplaced</span>: <span class="name">Transition</span> {
+        <span class="type">NumberAnimation</span> {
+            <span class="name">properties</span>: <span class="string">&quot;x,y&quot;</span>;
+            <span class="name">duration</span>: <span class="number">200</span>
+            <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutQuad</span>;
+        }
+    }
+}</pre>
+<a name="categorydelegate-component"></a>
+<h2 id="categorydelegate-component">CategoryDelegate component</h2>
+<p><b>CategoryDelegate.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">SimpleRow</span> {
+    <span class="name">text</span>: <span class="name">model</span>.<span class="name">title</span>
+    <span class="name">detailText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Usage: &quot;</span>) <span class="operator">+</span> <span class="name">model</span>.<span class="name">usage</span>
+
+    <span class="name">onSelected</span>: {
+        var pageOptions = {
+            category: <span class="name">model</span>.<span class="name">title</span>,
+            tag: <span class="name">model</span>.<span class="name">tag</span>
+        }
+
+        <span class="name">rootPage</span>.<span class="name">navigationStack</span>.<span class="name">popAllExceptFirstAndPush</span>(<span class="name">podcastsPageComponent</span>, <span class="name">pageOptions</span>)
+    }
+}</pre>
+<a name="podcastdelegate-component"></a>
+<h2 id="podcastdelegate-component">PodcastDelegate component</h2>
+<p><b>PodcastDelegate.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">SimpleRow</span> {
+    <span class="name">text</span>: <span class="name">model</span>.<span class="name">title</span>
+    <span class="name">detailText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Author: &quot;</span>) <span class="operator">+</span> <span class="name">model</span>.<span class="name">author</span>
+
+    <span class="name">imageSource</span>: <span class="name">model</span>.<span class="name">scaled_logo_url</span>
+    <span class="name">imageMaxSize</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">96</span>)
+
+    <span class="name">onSelected</span>: {
+        var pageOptions = {
+            podcastTitle: <span class="name">model</span>.<span class="name">title</span>,
+            podcastUrl: <span class="name">model</span>.<span class="name">url</span>
+        }
+
+        <span class="name">rootPage</span>.<span class="name">navigationStack</span>.<span class="name">push</span>(<span class="name">episodesPageComponent</span>, <span class="name">pageOptions</span>)
+    }
+}</pre>
+<a name="episodedelegate-component"></a>
+<h2 id="episodedelegate-component">EpisodeDelegate component</h2>
+<p><b>EpisodeDelegate.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">SwipeOptionsContainer</span> {
+    <span class="name">id</span>: <span class="name">container</span>
+
+    property <span class="type">alias</span> <span class="name">rowDelegate</span>: <span class="name">row</span>
+    property <span class="type">bool</span> <span class="name">isOfflineEpisode</span>: <span class="number">false</span>
+
+    <span class="comment">//Returns model data from current Delegate</span>
+    <span class="keyword">function</span> <span class="name">getEpisodeData</span>() {
+        <span class="keyword">return</span> {
+            url: <span class="name">model</span>.<span class="name">url</span>,
+            title: <span class="name">model</span>.<span class="name">title</span>,
+            pubDate: <span class="name">model</span>.<span class="name">pubDate</span>,
+            length: <span class="name">model</span>.<span class="name">length</span>
+        }
+    }
+
+    <span class="type">SimpleRow</span> {
+        <span class="name">id</span>: <span class="name">row</span>
+        <span class="name">text</span>: <span class="name">model</span>.<span class="name">title</span>
+        <span class="name">detailText</span>: <span class="name">model</span>.<span class="name">pubDate</span>
+        <span class="name">textItem</span>.width: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">playButton</span>.<span class="name">width</span> <span class="operator">-</span> <span class="number">30</span>
+
+        <span class="type">IconButton</span> {
+            <span class="name">id</span>: <span class="name">playButton</span>
+            <span class="name">size</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">30</span>)
+            <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+            <span class="name">anchors</span>.rightMargin: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">6</span>)
+            <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">playcircle</span>
+
+            <span class="name">onClicked</span>: {
+                <span class="keyword">if</span>(<span class="name">Theme</span>.<span class="name">isAndroid</span> <span class="operator">&amp;&amp;</span> <span class="name">isOfflineEpisode</span>) {
+                    <span class="keyword">if</span>(<span class="name">VoyceFileUtils</span>.<span class="name">requestAndroidPermissions</span>()) {
+                        <span class="name">broadcast</span>.<span class="name">playEpisode</span>(<span class="name">getEpisodeData</span>())
+                    }
+                    <span class="keyword">else</span> {
+                        <span class="name">nativeUtils</span>.<span class="name">displayMessageBox</span>(<span class="name">qsTr</span>(<span class="string">&quot;Permissions not granted!&quot;</span>));
+                        <span class="keyword">return</span>;
+                    }
+                }
+
+                <span class="name">broadcast</span>.<span class="name">playEpisode</span>(<span class="name">getEpisodeData</span>())
+            }
+        }
+    }
+
+    <span class="name">leftOption</span>: <span class="name">SwipeButton</span> {
+        <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Add to Playlist&quot;</span>)
+        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">plussquare</span>
+        <span class="name">height</span>: <span class="name">row</span>.<span class="name">height</span>
+        <span class="name">onClicked</span>: {
+            <span class="name">row</span>.<span class="name">itemChanged</span>()
+            <span class="name">container</span>.<span class="name">hideOptions</span>()
+            <span class="name">broadcast</span>.<span class="name">addToPlaylist</span>(<span class="name">getEpisodeData</span>())
+        }
+    }
+
+    <span class="name">rightOption</span>: <span class="name">SwipeButton</span> {
+        <span class="name">height</span>: <span class="name">row</span>.<span class="name">height</span>
+        <span class="name">width</span>: <span class="name">height</span>
+
+        <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Download&quot;</span>)
+        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">download</span>
+        <span class="name">onClicked</span>: {
+            <span class="name">row</span>.<span class="name">itemChanged</span>()
+            <span class="name">container</span>.<span class="name">hideOptions</span>()
+            <span class="name">broadcast</span>.<span class="name">downloadEpisode</span>(<span class="name">getEpisodeData</span>())
+        }
+    }
+}</pre>
+</div>
+<!-- @@@list-view-delegates.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="model-components.html">Model Components</a>
+<a class="nextPage" href="app-pages.html">Application Pages</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

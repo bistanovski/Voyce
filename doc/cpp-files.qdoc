@@ -1,0 +1,35 @@
+/*!
+    \page cpp-files.html tutorial
+    \title C++ Files
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage Media Components
+    \nextpage Running Application on Android Device
+
+    In the process of testing the application on Android platform, it was noticed,
+    that delete method for local file was missing. Also, requiring permissions was needed
+    in order to correctly store/read local settings and downloaded files.
+
+    So for that, in this page we will see how the C++ implementation is done.
+
+    \b{VoyceFileUtils.hpp}:
+    \quotefile VoyceFileUtils.hpp
+
+    \b{VoyceFileUtils.cpp}:
+    \quotefile VoyceFileUtils.cpp
+
+    After implementation of VoyceFileUtils class, we need to register it in the
+    main.cpp, more specificaly to the current QQmlContext object. By that the object
+    becomes accessible from QML components.
+
+    \b{main.cpp}:
+    \quotefile main.cpp
+
+    As a final step before running the application on Android device, we need to update
+    the \b{Voyce.pro} file, in which we enable the use of QRC resources in compile process,
+    and disable Felgo \e{DEPLOYMENTFOLDERS} define.
+    \note These steps are already defined in the generated Voyce.pro file.
+
+    \b{Voyce.pro}
+    \quotefile Voyce.pro
+*/

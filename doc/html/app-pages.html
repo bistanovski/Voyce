@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- app-pages.qdoc -->
+  <title>Application Pages | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="list-view-delegates.html" />
+  <link rel="next" href="media-components.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+<a class="nextPage" href="media-components.html">Media Components</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#voycepage-component">VoycePage component</a></li>
+<li class="level1"><a href="#voycerightbaritem-component">VoyceRightBarItem component</a></li>
+<li class="level1"><a href="#categoriespage-component">CategoriesPage component</a></li>
+<li class="level1"><a href="#downloadspage-component">DownloadsPage component</a></li>
+<li class="level1"><a href="#episodespage-component">EpisodesPage component</a></li>
+<li class="level1"><a href="#playlistpage-component">PlaylistPage component</a></li>
+<li class="level1"><a href="#podcastspage-component">PodcastsPage component</a></li>
+<li class="level1"><a href="#settingspage-component">SettingsPage component</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Application Pages</h1>
+<span class="subtitle"></span>
+<!-- $$$app-pages.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>The Application Pages components of the application, and their implementation is presented in this page.</p>
+<a name="voycepage-component"></a>
+<h2 id="voycepage-component">VoycePage component</h2>
+<p><a href="qml-voycepage.html">VoycePage</a> - Documented properties</p>
+<p><b><a href="qml-voycepage.html">VoycePage</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;../components&quot;
+
+<span class="type">Page</span> {
+    property <span class="type">bool</span> <span class="name">searchBarEnabled</span>
+    property <span class="type">bool</span> <span class="name">showAcitivtyIndicator</span>
+
+    <span class="name">rightBarItem</span>: <span class="name">VoyceRightBarItem</span> {
+        <span class="name">activityIndicatorVisible</span>: <span class="name">showAcitivtyIndicator</span>
+    }
+}</pre>
+<a name="voycerightbaritem-component"></a>
+<h2 id="voycerightbaritem-component">VoyceRightBarItem component</h2>
+<p><a href="qml-voycerightbaritem.html">VoyceRightBarItem</a> - Documented properties</p>
+<p><b><a href="qml-voycerightbaritem.html">VoyceRightBarItem</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">NavigationBarRow</span> {
+
+    property <span class="type">bool</span> <span class="name">activityIndicatorVisible</span>
+
+    <span class="name">showMoreButton</span>: <span class="number">false</span>
+
+    <span class="type">ActivityIndicatorBarItem</span> {
+        <span class="name">id</span>: <span class="name">activityBarItem</span>
+        <span class="name">visible</span>: <span class="name">activityIndicatorVisible</span>
+        <span class="name">animating</span>: <span class="name">visible</span>
+        <span class="name">showItem</span>: <span class="name">showItemIfRoom</span>
+    }
+
+    <span class="type">IconButtonBarItem</span> {
+        <span class="name">id</span>: <span class="name">searchButton</span>
+        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">search</span>
+        <span class="name">showItem</span>: <span class="name">showItemAlways</span>
+        <span class="name">onClicked</span>: {
+            <span class="name">searchBarEnabled</span> <span class="operator">=</span> !<span class="name">searchBarEnabled</span>
+        }
+    }
+}</pre>
+<a name="categoriespage-component"></a>
+<h2 id="categoriespage-component">CategoriesPage component</h2>
+<p><b>CategoriesPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;.&quot;
+import &quot;..&quot;
+import &quot;../model&quot;
+import &quot;../delegates&quot;
+
+<span class="type"><a href="qml-voycepage.html">VoycePage</a></span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Categories&quot;</span>)
+    <span class="name">showAcitivtyIndicator</span>: <span class="name">dataModel</span>.<span class="name">isBusy</span>
+
+    <span class="keyword">function</span> <span class="name">fetchPodcastTags</span>() {
+        <span class="name">broadcast</span>.<span class="name">fetchPodcastTags</span>(<span class="number">100</span>);
+    }
+
+    <span class="type">JsonListModel</span> {
+        <span class="name">id</span>: <span class="name">podcastTagsModel</span>
+        <span class="name">source</span>: <span class="name">dataModel</span>.<span class="name">tags</span>
+        <span class="name">keyField</span>: <span class="string">&quot;tag&quot;</span>
+        <span class="name">fields</span>: [<span class="string">&quot;tag&quot;</span>, <span class="string">&quot;title&quot;</span>, <span class="string">&quot;usage&quot;</span>]
+    }
+
+    <span class="type"><a href="qml-filterproxymodel.html">FilterProxyModel</a></span>{
+        <span class="name">id</span>: <span class="name">filteredCategoriesModel</span>
+        <span class="name">targetModel</span>: <span class="name">podcastTagsModel</span>
+        <span class="name">targetRoleName</span>: <span class="string">&quot;title&quot;</span>
+    }
+
+    <span class="type"><a href="qml-voycelistview.html">VoyceListView</a></span> {
+        <span class="name">id</span>: <span class="name">categoriesListView</span>
+        <span class="name">model</span>: <span class="name">filteredCategoriesModel</span>
+        <span class="name">loadingText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Loading Categories&quot;</span>)
+        <span class="name">refreshFuncHandler</span>: <span class="name">fetchPodcastTags</span>
+        <span class="name">delegate</span>: <span class="name">CategoryDelegate</span> {}
+    }
+
+    <span class="name">onAppeared</span>: {
+        <span class="name">fetchPodcastTags</span>();
+    }
+
+    <span class="type">Component</span> {
+        <span class="name">id</span>: <span class="name">podcastsPageComponent</span>
+        <span class="type">PodcastsPage</span> { }
+    }
+}</pre>
+<a name="downloadspage-component"></a>
+<h2 id="downloadspage-component">DownloadsPage component</h2>
+<p><b>DownloadsPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;..&quot;
+import &quot;../model&quot;
+import &quot;../delegates&quot;
+import &quot;../components&quot;
+
+<span class="type"><a href="qml-voycepage.html">VoycePage</a></span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Downloads&quot;</span>)
+    <span class="name">searchBarEnabled</span>: <span class="number">true</span>
+    <span class="name">showAcitivtyIndicator</span>: <span class="number">false</span>
+
+    <span class="type"><a href="qml-filterproxymodel.html">FilterProxyModel</a></span>{
+        <span class="name">id</span>: <span class="name">filteredDownloadsModel</span>
+        <span class="name">targetModel</span>: <span class="name">dataModel</span>.<span class="name">downloadsModel</span>
+        <span class="name">targetRoleName</span>: <span class="string">&quot;title&quot;</span>
+    }
+
+    <span class="type"><a href="qml-voycelistview.html">VoyceListView</a></span> {
+        <span class="name">id</span>: <span class="name">downloadsListView</span>
+        <span class="name">model</span>: <span class="name">filteredDownloadsModel</span>
+        <span class="name">loadingText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Loading Downloads&quot;</span>)
+
+        <span class="name">delegate</span>: <span class="name">EpisodeDelegate</span> {
+            <span class="name">id</span>: <span class="name">localEpisodeDelegate</span>
+
+            <span class="name">isOfflineEpisode</span>: <span class="number">true</span>
+            <span class="name">rightOption</span>: <span class="name">Item</span> { }
+
+            <span class="name">leftOption</span>: <span class="name">SwipeButton</span> {
+                <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Remove&quot;</span>)
+                <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">plussquare</span>
+                <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+                <span class="name">backgroundColor</span>: <span class="string">&quot;red&quot;</span>
+
+                <span class="name">onClicked</span>: {
+                    <span class="name">localEpisodeDelegate</span>.<span class="name">rowDelegate</span>.<span class="name">itemChanged</span>()
+                    <span class="name">localEpisodeDelegate</span>.<span class="name">hideOptions</span>()
+
+                    var episodeIndex = <span class="name">filteredDownloadsModel</span>.<span class="name">mapToSource</span>(<span class="name">index</span>)
+                    <span class="name">broadcast</span>.<span class="name">removeFromDownloads</span>(<span class="name">episodeIndex</span>, <span class="name">model</span>.<span class="name">url</span>)
+                }
+            }
+
+        }
+    }
+}</pre>
+<a name="episodespage-component"></a>
+<h2 id="episodespage-component">EpisodesPage component</h2>
+<p>Page on which episodes for selected Podcast are displayed</p>
+<p><b>EpisodesPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import QtQuick.XmlListModel 2.12
+import &quot;..&quot;
+import &quot;../model&quot;
+import &quot;../delegates&quot;
+import &quot;../components&quot;
+
+<span class="type"><a href="qml-voycepage.html">VoycePage</a></span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Episodes: &quot;</span>) <span class="operator">+</span> <span class="name">podcastTitle</span>
+    <span class="name">showAcitivtyIndicator</span>: <span class="name">episodesModel</span>.<span class="name">status</span> <span class="operator">===</span> <span class="name">XmlListModel</span>.<span class="name">Loading</span>
+
+    property <span class="type">string</span> <span class="name">podcastTitle</span>
+    property <span class="type">string</span> <span class="name">podcastUrl</span>
+
+    <span class="name">onPodcastUrlChanged</span>: {
+        <span class="keyword">if</span>(<span class="string">''</span> <span class="operator">!==</span> <span class="name">podcastUrl</span>) {
+            <span class="name">fetchEpisodes</span>()
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">fetchEpisodes</span>() {
+        <span class="name">episodesModel</span>.<span class="name">source</span> <span class="operator">=</span> <span class="name">podcastUrl</span>
+    }
+
+    <span class="type">XmlListModel</span> {
+        <span class="name">id</span>: <span class="name">episodesModel</span>
+        <span class="name">source</span>: <span class="name">rootPage</span>.<span class="name">podcastUrl</span>
+        <span class="name">query</span>: <span class="string">&quot;/rss/channel/item&quot;</span>
+
+        <span class="type">XmlRole</span> { <span class="name">name</span>: <span class="string">&quot;title&quot;</span>; <span class="name">query</span>: <span class="string">&quot;title/string()&quot;</span> }
+        <span class="type">XmlRole</span> { <span class="name">name</span>: <span class="string">&quot;pubDate&quot;</span>; <span class="name">query</span>: <span class="string">&quot;pubDate/string()&quot;</span> }
+        <span class="type">XmlRole</span> { <span class="name">name</span>: <span class="string">&quot;url&quot;</span>; <span class="name">query</span>: <span class="string">&quot;enclosure/@url/string()&quot;</span> }
+        <span class="type">XmlRole</span> { <span class="name">name</span>: <span class="string">&quot;length&quot;</span>; <span class="name">query</span>: <span class="string">&quot;enclosure/@type/string()&quot;</span> }
+    }
+
+    <span class="type"><a href="qml-filterproxymodel.html">FilterProxyModel</a></span>{
+        <span class="name">id</span>: <span class="name">filteredEpisodesModel</span>
+        <span class="name">targetModel</span>: <span class="name">episodesModel</span>
+        <span class="name">targetRoleName</span>: <span class="string">&quot;title&quot;</span>
+    }
+
+    <span class="type"><a href="qml-voycelistview.html">VoyceListView</a></span> {
+        <span class="name">id</span>: <span class="name">episodesListView</span>
+        <span class="name">model</span>: <span class="name">filteredEpisodesModel</span>
+        <span class="name">loadingText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Loading Episodes&quot;</span>)
+        <span class="name">delegate</span>: <span class="name">EpisodeDelegate</span> {}
+    }
+}</pre>
+<a name="playlistpage-component"></a>
+<h2 id="playlistpage-component">PlaylistPage component</h2>
+<p><b>EpisodesPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;..&quot;
+import &quot;../model&quot;
+import &quot;../delegates&quot;
+import &quot;../components&quot;
+
+<span class="type"><a href="qml-voycepage.html">VoycePage</a></span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Playlist&quot;</span>)
+    <span class="name">searchBarEnabled</span>: <span class="number">true</span>
+    <span class="name">showAcitivtyIndicator</span>: <span class="number">false</span>
+
+    <span class="type"><a href="qml-filterproxymodel.html">FilterProxyModel</a></span>{
+        <span class="name">id</span>: <span class="name">filteredPlaylistModel</span>
+        <span class="name">targetModel</span>: <span class="name">dataModel</span>.<span class="name">playlistModel</span>
+        <span class="name">targetRoleName</span>: <span class="string">&quot;title&quot;</span>
+    }
+
+    <span class="type"><a href="qml-voycelistview.html">VoyceListView</a></span> {
+        <span class="name">id</span>: <span class="name">playlistListView</span>
+        <span class="name">model</span>: <span class="name">filteredPlaylistModel</span>
+        <span class="name">loadingText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Loading Playlist&quot;</span>)
+
+        <span class="name">delegate</span>: <span class="name">EpisodeDelegate</span> {
+            <span class="name">id</span>: <span class="name">playlistDelegate</span>
+
+            <span class="name">rightOption</span>: <span class="name">Item</span> { }
+
+            <span class="name">leftOption</span>: <span class="name">SwipeButton</span> {
+                <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Remove&quot;</span>)
+                <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">plussquare</span>
+                <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+                <span class="name">backgroundColor</span>: <span class="string">&quot;red&quot;</span>
+
+                <span class="name">onClicked</span>: {
+                    <span class="name">playlistDelegate</span>.<span class="name">rowDelegate</span>.<span class="name">itemChanged</span>()
+                    <span class="name">playlistDelegate</span>.<span class="name">hideOptions</span>()
+
+                    var episodeIndex = <span class="name">filteredPlaylistModel</span>.<span class="name">mapToSource</span>(<span class="name">index</span>)
+                    <span class="name">broadcast</span>.<span class="name">removeFromPlaylist</span>(<span class="name">episodeIndex</span>)
+                }
+            }
+
+        }
+    }
+}</pre>
+<a name="podcastspage-component"></a>
+<h2 id="podcastspage-component">PodcastsPage component</h2>
+<p>Page on which Podcasts for the previous selected Category are displayed.</p>
+<p><b>PodcastsPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import &quot;..&quot;
+import &quot;../model&quot;
+import &quot;../delegates&quot;
+
+<span class="type"><a href="qml-voycepage.html">VoycePage</a></span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Podcasts: &quot;</span>) <span class="operator">+</span> <span class="name">category</span>
+    <span class="name">showAcitivtyIndicator</span>: <span class="name">dataModel</span>.<span class="name">isBusy</span>
+
+    property <span class="type">string</span> <span class="name">tag</span>
+    property <span class="type">string</span> <span class="name">category</span>
+
+    <span class="name">onTagChanged</span>: {
+        <span class="keyword">if</span>(<span class="string">''</span> <span class="operator">!==</span> <span class="name">tag</span>) {
+            <span class="name">fetchPodcastsForTag</span>()
+        }
+        <span class="keyword">else</span> {
+            <span class="name">console</span>.<span class="name">log</span>(<span class="string">'error: Searched tag must not be empty!'</span>)
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">fetchPodcastsForTag</span>() {
+        <span class="name">broadcast</span>.<span class="name">clearPodcasts</span>()
+        <span class="name">broadcast</span>.<span class="name">fetchPodcastsForTag</span>(<span class="name">tag</span>, <span class="number">40</span>)
+    }
+
+    <span class="type">JsonListModel</span> {
+        <span class="name">id</span>: <span class="name">podcastsModel</span>
+        <span class="name">source</span>: <span class="name">dataModel</span>.<span class="name">podcasts</span>
+        <span class="name">keyField</span>: <span class="string">&quot;url&quot;</span>
+        <span class="name">fields</span>: [<span class="string">&quot;url&quot;</span>, <span class="string">&quot;title&quot;</span>, <span class="string">&quot;author&quot;</span>, <span class="string">&quot;description&quot;</span>, <span class="string">&quot;scaled_logo_url&quot;</span>, <span class="string">&quot;website&quot;</span>]
+    }
+
+    <span class="type"><a href="qml-filterproxymodel.html">FilterProxyModel</a></span>{
+        <span class="name">id</span>: <span class="name">filteredPodcastsModel</span>
+        <span class="name">targetModel</span>: <span class="name">podcastsModel</span>
+        <span class="name">targetRoleName</span>: <span class="string">&quot;title&quot;</span>
+    }
+
+    <span class="type"><a href="qml-voycelistview.html">VoyceListView</a></span> {
+        <span class="name">id</span>: <span class="name">podcastsListView</span>
+        <span class="name">model</span>: <span class="name">filteredPodcastsModel</span>
+        <span class="name">loadingText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Loading Podcasts&quot;</span>)
+        <span class="name">refreshFuncHandler</span>: <span class="name">fetchPodcastsForTag</span>
+        <span class="name">delegate</span>: <span class="name">PodcastDelegate</span>{}
+    }
+
+    <span class="type">Component</span> {
+        <span class="name">id</span>: <span class="name">episodesPageComponent</span>
+        <span class="type">EpisodesPage</span> { }
+    }
+}</pre>
+<a name="settingspage-component"></a>
+<h2 id="settingspage-component">SettingsPage component</h2>
+<p>So far, in the SettingsPage we only provide simple <b>AppButton</b> which on clicking it saves Playlist and Downloads into local settings files.</p>
+<p><b>SettingsPage.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Page</span> {
+    <span class="name">id</span>: <span class="name">rootPage</span>
+    <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Settings&quot;</span>)
+
+    <span class="type">AppText</span> {
+        <span class="name">id</span>: <span class="name">textItem</span>
+        <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+        <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Save Playlist and Downloads settings!&quot;</span>)
+        <span class="name">font</span>.pixelSize: <span class="name">app</span>.<span class="name">sp</span>(<span class="number">12</span>)
+    }
+
+    <span class="type">AppButton</span> {
+        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">save</span>
+        <span class="name">iconSize</span>: <span class="name">app</span>.<span class="name">dp</span>(<span class="number">36</span>)
+        <span class="name">visible</span>: <span class="number">true</span> <span class="comment">// show on all platforms, default is only Android</span>
+
+        <span class="name">anchors</span>.top: <span class="name">textItem</span>.<span class="name">bottom</span>
+        <span class="name">anchors</span>.horizontalCenter: <span class="name">textItem</span>.<span class="name">horizontalCenter</span>
+
+        <span class="name">onClicked</span>: {
+            <span class="name">broadcast</span>.<span class="name">clearAndSaveSettings</span>();
+        }
+    }
+}</pre>
+</div>
+<!-- @@@app-pages.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="list-view-delegates.html">ListView and Delegate Components</a>
+<a class="nextPage" href="media-components.html">Media Components</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

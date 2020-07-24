@@ -14,10 +14,6 @@ body {
     margin: 2em;
 }
 
-ol,ul {
-  list-style:none
-}
-
 blockquote,q {
   quotes:none;
   border-left:10px solid #ddd;
@@ -123,4 +119,41 @@ pre .pun,code .pun,pre .pln,code .pln {
 }
 .toc h3 a {
   color:#404244
+}
+
+.qmlname span.name {
+  font-weight: 400
+}
+.qmlname {
+  font-size:1.46em
+}
+.qmlproto table {
+  border:none;
+  border-bottom:2px #eee solid
+}
+.qmlproto table p {
+  max-width:100%
+}
+.qmlproto table tr {
+  background-color:#fff
+}
+.qmlname td, .qmlname th {
+  border:none;
+  text-align:left;
+  padding:5px 0 0 0
+}
+.qmlreadonly,.qmldefault,.qmlextra {
+  color:#414141;
+  padding:0 5px 0 5px;
+  font-size:0.75em;
+  background-color:#eee;
+  float:right
+}
+
+.qmldoc {
+  margin-top:0.75em
+}
+
+.qmlname p:hover > .plink {
+  opacity:1
 }

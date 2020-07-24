@@ -18,6 +18,25 @@
     for building visual appealing user interfaces for multiple platforms.
 
 
+\section1 Table of Contents
+
+    \list
+        \li \l{Getting Started}
+        \li \l{Create new application in Felgo}
+        \li \l{Creating new project}
+        \li \l{Explore generated Felgo Application}
+        \li \l{List of source files - initial Voyce application}
+        \li \l{Main Components}
+        \li \l{Model Components}
+        \li \l{ListView and Delegate Components}
+        \li \l{Application Pages}
+        \li \l{Media Components}
+        \li \l{C++ Files}
+        \li \l{Running Application on Android Device}
+        \li \l{Conclusion}
+    \endlist
+
+
     \section1 Getting Started
 
     \section2 Installing Felgo SDK

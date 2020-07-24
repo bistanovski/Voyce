@@ -4,14 +4,37 @@ import QtMultimedia 5.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
+/*!
+    \qmltype VoyceMediaControls
+    \inherits ColumnLayout
+    \brief VoyceMediaControls - simple container of Playback controls.
+
+    VoyceMediaControls provides simple button controls for Play, Pause, Next,
+    and Previous MediaPlayer actions.
+*/
+
 ColumnLayout {
     id: root
 
     spacing: dp(5)
     anchors.fill: parent
 
+    /*!
+        \qmlproperty bool enabledPlayPause
+        Property which says whether Play/Pause button is enabled
+    */
     property bool enabledPlayPause: false
+
+    /*!
+        \qmlproperty bool enabledPrevious
+        Property which says whether Previous button is enabled
+    */
     property bool enabledPrevious: false
+
+    /*!
+        \qmlproperty bool enabledNext
+        Property which says whether Next button is enabled
+    */
     property bool enabledNext: false
 
     RowLayout {
@@ -33,6 +56,7 @@ ColumnLayout {
                 elide: Text.ElideRight
                 text: rootControl.episodeTitle
                 font.pixelSize: app.sp(12)
+                color: "#F2D9B9"
             }
         }
     }

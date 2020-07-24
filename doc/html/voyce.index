@@ -2,7 +2,7 @@
 <!DOCTYPE QDOCINDEX>
 <INDEX url="" title="Voyce is a simple podcast streaming application based on Felgo, Qt and QML" version="" project="Voyce">
     <namespace name="" status="active" access="public" module="voyce">
-        <qmlclass name="DownloadsPage" qml-module-name="DownloadsPage" href="qml-downloadspage.html" status="internal" access="private" location="DownloadsPage.qml" filepath="/home/developer/Voyce/qml/pages/DownloadsPage.qml" lineno="4" title="DownloadsPage" fulltitle="DownloadsPage" subtitle=""/>
+        <class name="VoyceFileUtils" href="voycefileutils.html" status="internal" access="private" location="VoyceFileUtils.hpp" filepath="/home/developer/Voyce/VoyceFileUtils.hpp" lineno="10"/>
         <page name="explore-felgo-gen-app.html" href="explore-felgo-gen-app.html" status="active" location="explore-felgo-gen-app.qdoc" filepath="/home/developer/Voyce/doc/explore-felgo-gen-app.qdoc" lineno="1" documented="true" subtype="page" title="Explore generated Felgo Application" fulltitle="Explore generated Felgo Application" subtitle="" module="Voyce">
             <contents name="adding-new-pages" title="Adding new Pages" level="1"/>
             <contents name="removing-not-needed-code-update-existing" title="Removing not needed code, update existing" level="1"/>
@@ -12,6 +12,112 @@
             <contents name="creating-new-project" title="Creating new project" level="1"/>
             <contents name="next-steps" title="Next steps" level="1"/>
         </page>
+        <page name="conclusion.html" href="conclusion.html" status="active" location="conclusion.qdoc" filepath="/home/developer/Voyce/doc/conclusion.qdoc" lineno="1" documented="true" subtype="page" title="Conclusion" fulltitle="Conclusion" subtitle="" module="Voyce"/>
+        <qmlclass name="Main" qml-module-name="Main" href="qml-main.html" status="internal" access="private" location="Main.qml" filepath="/home/developer/Voyce/qml/Main.qml" lineno="8" title="Main" fulltitle="Main" subtitle=""/>
+        <page name="cpp-files.html" href="cpp-files.html" status="active" location="cpp-files.qdoc" filepath="/home/developer/Voyce/doc/cpp-files.qdoc" lineno="1" documented="true" subtype="page" title="C++ Files" fulltitle="C++ Files" subtitle="" module="Voyce"/>
+        <page name="list-view-delegates.html" href="list-view-delegates.html" status="active" location="list-view-and-delegates.qdoc" filepath="/home/developer/Voyce/doc/list-view-and-delegates.qdoc" lineno="1" documented="true" subtype="page" title="ListView and Delegate Components" fulltitle="ListView and Delegate Components" subtitle="" module="Voyce">
+            <contents name="voycelistview-component" title="VoyceListView component" level="1"/>
+            <contents name="categorydelegate-component" title="CategoryDelegate component" level="1"/>
+            <contents name="podcastdelegate-component" title="PodcastDelegate component" level="1"/>
+            <contents name="episodedelegate-component" title="EpisodeDelegate component" level="1"/>
+        </page>
+        <qmlclass name="VoyceRightBarItem" qml-module-name="VoyceRightBarItem" href="qml-voycerightbaritem.html" status="active" access="public" documented="true" title="VoyceRightBarItem" fulltitle="VoyceRightBarItem" subtitle="" brief="- basic update of NavigationBarRow">
+            <qmlproperty name="activityIndicatorVisible" fullname="VoyceRightBarItem::activityIndicatorVisible" href="qml-voycerightbaritem.html#activityIndicatorVisible-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="CategoryDelegate" qml-module-name="CategoryDelegate" href="qml-categorydelegate.html" status="internal" access="private" location="CategoryDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/CategoryDelegate.qml" lineno="4" title="CategoryDelegate" fulltitle="CategoryDelegate" subtitle=""/>
+        <qmlclass name="EpisodeDelegate" qml-module-name="EpisodeDelegate" href="qml-episodedelegate.html" status="internal" access="private" location="EpisodeDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/EpisodeDelegate.qml" lineno="4" title="EpisodeDelegate" fulltitle="EpisodeDelegate" subtitle="">
+            <function name="getEpisodeData" fullname="EpisodeDelegate::getEpisodeData" href="qml-episodedelegate.html#getEpisodeData-method" status="internal" access="private" location="EpisodeDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/EpisodeDelegate.qml" lineno="11" meta="qmlmethod"/>
+            <qmlproperty name="isOfflineEpisode" fullname="EpisodeDelegate::isOfflineEpisode" href="qml-episodedelegate.html#isOfflineEpisode-prop" status="internal" access="private" location="EpisodeDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/EpisodeDelegate.qml" lineno="8" type="bool" attached="false" writable="true"/>
+            <qmlproperty name="rowDelegate" fullname="EpisodeDelegate::rowDelegate" href="qml-episodedelegate.html#rowDelegate-prop" status="internal" access="private" location="EpisodeDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/EpisodeDelegate.qml" lineno="7" type="alias" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="PodcastDelegate" qml-module-name="PodcastDelegate" href="qml-podcastdelegate.html" status="internal" access="private" location="PodcastDelegate.qml" filepath="/home/developer/Voyce/qml/delegates/PodcastDelegate.qml" lineno="4" title="PodcastDelegate" fulltitle="PodcastDelegate" subtitle=""/>
+        <qmlclass name="VoyceMediaControls" qml-module-name="VoyceMediaControls" href="qml-voycemediacontrols.html" status="active" access="public" documented="true" title="VoyceMediaControls" fulltitle="VoyceMediaControls" subtitle="" brief="- simple container of Playback controls">
+            <qmlproperty name="enabledPlayPause" fullname="VoyceMediaControls::enabledPlayPause" href="qml-voycemediacontrols.html#enabledPlayPause-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+            <qmlproperty name="enabledPrevious" fullname="VoyceMediaControls::enabledPrevious" href="qml-voycemediacontrols.html#enabledPrevious-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+            <qmlproperty name="enabledNext" fullname="VoyceMediaControls::enabledNext" href="qml-voycemediacontrols.html#enabledNext-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="VoyceMediaPlayer" qml-module-name="VoyceMediaPlayer" href="qml-voycemediaplayer.html" status="active" access="public" documented="true" title="VoyceMediaPlayer" fulltitle="VoyceMediaPlayer" subtitle="" brief="- simple MediPlayer wrapper">
+            <qmlproperty name="dispatcher" fullname="VoyceMediaPlayer::dispatcher" href="qml-voycemediaplayer.html#dispatcher-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="true"/>
+            <qmlproperty name="episodeUrl" fullname="VoyceMediaPlayer::episodeUrl" href="qml-voycemediaplayer.html#episodeUrl-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+            <qmlproperty name="episodeTitle" fullname="VoyceMediaPlayer::episodeTitle" href="qml-voycemediaplayer.html#episodeTitle-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="DataModel" qml-module-name="DataModel" href="qml-datamodel.html" status="active" access="public" documented="true" title="DataModel" fulltitle="DataModel" subtitle="" brief="- main data holder and processor">
+            <qmlproperty name="dispatcher" fullname="DataModel::dispatcher" href="qml-datamodel.html#dispatcher-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="true"/>
+            <qmlproperty name="isBusy" fullname="DataModel::isBusy" href="qml-datamodel.html#isBusy-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="false"/>
+            <qmlproperty name="tags" fullname="DataModel::tags" href="qml-datamodel.html#tags-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="false"/>
+            <qmlproperty name="podcasts" fullname="DataModel::podcasts" href="qml-datamodel.html#podcasts-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="false"/>
+            <qmlproperty name="playlistModel" fullname="DataModel::playlistModel" href="qml-datamodel.html#playlistModel-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="false"/>
+            <qmlproperty name="downloadsModel" fullname="DataModel::downloadsModel" href="qml-datamodel.html#downloadsModel-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="false"/>
+            <qmlproperty name="mainSettings" fullname="DataModel::mainSettings" href="qml-datamodel.html#mainSettings-prop" status="active" access="public" documented="true" type="alias" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="FilterProxyModel" qml-module-name="FilterProxyModel" href="qml-filterproxymodel.html" status="active" access="public" documented="true" title="FilterProxyModel" fulltitle="FilterProxyModel" subtitle="" brief="- wrapper around SortFilterProxyModel">
+            <qmlproperty name="targetModel" fullname="FilterProxyModel::targetModel" href="qml-filterproxymodel.html#targetModel-prop" status="active" access="public" documented="true" type="var" attached="false" writable="true"/>
+            <qmlproperty name="searchValue" fullname="FilterProxyModel::searchValue" href="qml-filterproxymodel.html#searchValue-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+            <qmlproperty name="targetRoleName" fullname="FilterProxyModel::targetRoleName" href="qml-filterproxymodel.html#targetRoleName-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="EpisodeDownloader" qml-module-name="EpisodeDownloader" href="qml-episodedownloader.html" status="active" access="public" documented="true" title="EpisodeDownloader" fulltitle="EpisodeDownloader" subtitle="" brief="- basic MP3 downloader">
+            <function name="downloadEpisode" fullname="EpisodeDownloader::downloadEpisode" href="qml-episodedownloader.html#downloadEpisode-method" status="internal" access="private" location="EpisodeDownloader.qml" filepath="/home/developer/Voyce/qml/model/EpisodeDownloader.qml" lineno="28" meta="qmlmethod"/>
+            <qmlproperty name="trackedEpisode" fullname="EpisodeDownloader::trackedEpisode" href="qml-episodedownloader.html#trackedEpisode-prop" status="active" access="public" documented="true" type="var" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="DataModelConnections" qml-module-name="DataModelConnections" href="qml-datamodelconnections.html" status="internal" access="private" location="DataModelConnections.qml" filepath="/home/developer/Voyce/qml/model/DataModelConnections.qml" lineno="4" title="DataModelConnections" fulltitle="DataModelConnections" subtitle="">
+            <function name="onError" fullname="DataModelConnections::onError" href="qml-datamodelconnections.html#onError-method" status="internal" access="private" location="DataModelConnections.qml" filepath="/home/developer/Voyce/qml/model/DataModelConnections.qml" lineno="19" meta="qmlmethod"/>
+            <function name="onError" fullname="DataModelConnections::onError" href="qml-datamodelconnections.html#onError-method" status="internal" access="private" location="DataModelConnections.qml" filepath="/home/developer/Voyce/qml/model/DataModelConnections.qml" lineno="30" meta="qmlmethod"/>
+            <function name="onSuccess" fullname="DataModelConnections::onSuccess" href="qml-datamodelconnections.html#onSuccess-method" status="internal" access="private" location="DataModelConnections.qml" filepath="/home/developer/Voyce/qml/model/DataModelConnections.qml" lineno="16" meta="qmlmethod"/>
+            <function name="onSuccess" fullname="DataModelConnections::onSuccess" href="qml-datamodelconnections.html#onSuccess-method" status="internal" access="private" location="DataModelConnections.qml" filepath="/home/developer/Voyce/qml/model/DataModelConnections.qml" lineno="27" meta="qmlmethod"/>
+        </qmlclass>
+        <qmlclass name="RestAPI" qml-module-name="RestAPI" href="qml-restapi.html" status="active" access="public" documented="true" title="RestAPI" fulltitle="RestAPI" subtitle="" brief="- basic Http client">
+            <function name="getPodcastTags" fullname="RestAPI::getPodcastTags" href="qml-restapi.html#getPodcastTags-method" status="active" access="public" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="45" documented="true" meta="qmlmethod"/>
+            <function name="getPodcastsForTag" fullname="RestAPI::getPodcastsForTag" href="qml-restapi.html#getPodcastsForTag-method" status="active" access="public" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="63" documented="true" meta="qmlmethod"/>
+            <qmlproperty name="maxRequestTimeout" fullname="RestAPI::maxRequestTimeout" href="qml-restapi.html#maxRequestTimeout-prop" status="active" access="public" documented="true" type="int" attached="false" writable="true"/>
+            <qmlproperty name="busy" fullname="RestAPI::busy" href="qml-restapi.html#busy-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="false"/>
+            <qmlproperty name="bool" fullname="RestAPI::bool" href="qml-restapi.html#bool-prop" status="active" access="public" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="21" documented="true" type="int" attached="false" writable="false"/>
+        </qmlclass>
+        <qmlclass name="CategoriesPage" qml-module-name="CategoriesPage" href="qml-categoriespage.html" status="internal" access="private" location="CategoriesPage.qml" filepath="/home/developer/Voyce/qml/pages/CategoriesPage.qml" lineno="8" title="CategoriesPage" fulltitle="CategoriesPage" subtitle="">
+            <function name="fetchPodcastTags" fullname="CategoriesPage::fetchPodcastTags" href="qml-categoriespage.html#fetchPodcastTags-method" status="internal" access="private" location="CategoriesPage.qml" filepath="/home/developer/Voyce/qml/pages/CategoriesPage.qml" lineno="13" meta="qmlmethod"/>
+        </qmlclass>
+        <qmlclass name="DownloadsPage" qml-module-name="DownloadsPage" href="qml-downloadspage.html" status="internal" access="private" location="DownloadsPage.qml" filepath="/home/developer/Voyce/qml/pages/DownloadsPage.qml" lineno="8" title="DownloadsPage" fulltitle="DownloadsPage" subtitle=""/>
+        <qmlclass name="EpisodesPage" qml-module-name="EpisodesPage" href="qml-episodespage.html" status="internal" access="private" location="EpisodesPage.qml" filepath="/home/developer/Voyce/qml/pages/EpisodesPage.qml" lineno="9" title="EpisodesPage" fulltitle="EpisodesPage" subtitle="">
+            <function name="fetchEpisodes" fullname="EpisodesPage::fetchEpisodes" href="qml-episodespage.html#fetchEpisodes-method" status="internal" access="private" location="EpisodesPage.qml" filepath="/home/developer/Voyce/qml/pages/EpisodesPage.qml" lineno="23" meta="qmlmethod"/>
+            <qmlproperty name="podcastTitle" fullname="EpisodesPage::podcastTitle" href="qml-episodespage.html#podcastTitle-prop" status="internal" access="private" location="EpisodesPage.qml" filepath="/home/developer/Voyce/qml/pages/EpisodesPage.qml" lineno="14" type="string" attached="false" writable="true"/>
+            <qmlproperty name="podcastUrl" fullname="EpisodesPage::podcastUrl" href="qml-episodespage.html#podcastUrl-prop" status="internal" access="private" location="EpisodesPage.qml" filepath="/home/developer/Voyce/qml/pages/EpisodesPage.qml" lineno="15" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="PlaylistPage" qml-module-name="PlaylistPage" href="qml-playlistpage.html" status="internal" access="private" location="PlaylistPage.qml" filepath="/home/developer/Voyce/qml/pages/PlaylistPage.qml" lineno="8" title="PlaylistPage" fulltitle="PlaylistPage" subtitle=""/>
+        <qmlclass name="PodcastsPage" qml-module-name="PodcastsPage" href="qml-podcastspage.html" status="internal" access="private" location="PodcastsPage.qml" filepath="/home/developer/Voyce/qml/pages/PodcastsPage.qml" lineno="7" title="PodcastsPage" fulltitle="PodcastsPage" subtitle="">
+            <function name="fetchPodcastsForTag" fullname="PodcastsPage::fetchPodcastsForTag" href="qml-podcastspage.html#fetchPodcastsForTag-method" status="internal" access="private" location="PodcastsPage.qml" filepath="/home/developer/Voyce/qml/pages/PodcastsPage.qml" lineno="24" meta="qmlmethod"/>
+            <qmlproperty name="tag" fullname="PodcastsPage::tag" href="qml-podcastspage.html#tag-prop" status="internal" access="private" location="PodcastsPage.qml" filepath="/home/developer/Voyce/qml/pages/PodcastsPage.qml" lineno="12" type="string" attached="false" writable="true"/>
+            <qmlproperty name="category" fullname="PodcastsPage::category" href="qml-podcastspage.html#category-prop" status="internal" access="private" location="PodcastsPage.qml" filepath="/home/developer/Voyce/qml/pages/PodcastsPage.qml" lineno="13" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="SettingsPage" qml-module-name="SettingsPage" href="qml-settingspage.html" status="internal" access="private" location="SettingsPage.qml" filepath="/home/developer/Voyce/qml/pages/SettingsPage.qml" lineno="4" title="SettingsPage" fulltitle="SettingsPage" subtitle=""/>
+        <qmlclass name="VoycePage" qml-module-name="VoycePage" href="qml-voycepage.html" status="active" access="public" documented="true" title="VoycePage" fulltitle="VoycePage" subtitle="" brief="- basic page reused across the Voyce app">
+            <qmlproperty name="searchBarEnabled" fullname="VoycePage::searchBarEnabled" href="qml-voycepage.html#searchBarEnabled-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+            <qmlproperty name="showAcitivtyIndicator" fullname="VoycePage::showAcitivtyIndicator" href="qml-voycepage.html#showAcitivtyIndicator-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="VoyceSettings" qml-module-name="VoyceSettings" href="qml-voycesettings.html" status="active" access="public" documented="true" title="VoyceSettings" fulltitle="VoyceSettings" subtitle="" brief="- basic local Settings storage">
+            <function name="clearPreviousSavedDownloads" fullname="VoyceSettings::clearPreviousSavedDownloads" href="qml-voycesettings.html#clearPreviousSavedDownloads-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="61" documented="true" meta="qmlmethod"/>
+            <function name="clearPreviousSavedPlaylist" fullname="VoyceSettings::clearPreviousSavedPlaylist" href="qml-voycesettings.html#clearPreviousSavedPlaylist-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="46" documented="true" meta="qmlmethod"/>
+            <function name="loadDownloadedEpisodes" fullname="VoyceSettings::loadDownloadedEpisodes" href="qml-voycesettings.html#loadDownloadedEpisodes-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="89" documented="true" meta="qmlmethod"/>
+            <function name="loadSavedPlaylist" fullname="VoyceSettings::loadSavedPlaylist" href="qml-voycesettings.html#loadSavedPlaylist-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="31" documented="true" meta="qmlmethod"/>
+            <function name="saveDownloads" fullname="VoyceSettings::saveDownloads" href="qml-voycesettings.html#saveDownloads-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="76" documented="true" meta="qmlmethod"/>
+            <function name="savePlaylist" fullname="VoyceSettings::savePlaylist" href="qml-voycesettings.html#savePlaylist-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="18" documented="true" meta="qmlmethod"/>
+        </qmlclass>
+        <qmlclass name="VoyceListView" qml-module-name="VoyceListView" href="qml-voycelistview.html" status="active" access="public" documented="true" title="VoyceListView" fulltitle="VoyceListView" subtitle="" brief="- basic ListView component reused across the Voyce app">
+            <qmlproperty name="refreshFuncHandler" fullname="VoyceListView::refreshFuncHandler" href="qml-voycelistview.html#refreshFuncHandler-prop" status="active" access="public" documented="true" type="var" attached="false" writable="true"/>
+            <qmlproperty name="loadingText" fullname="VoyceListView::loadingText" href="qml-voycelistview.html#loadingText-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="Broadcast" qml-module-name="Broadcast" href="qml-broadcast.html" status="active" access="public" documented="true" title="Broadcast" fulltitle="Broadcast" subtitle="" brief="- basic signal dispatcher">
+            <function name="addToPlaylist" fullname="Broadcast::addToPlaylist" href="qml-broadcast.html#addToPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearAndSaveSettings" fullname="Broadcast::clearAndSaveSettings" href="qml-broadcast.html#clearAndSaveSettings-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearCache" fullname="Broadcast::clearCache" href="qml-broadcast.html#clearCache-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearPodcasts" fullname="Broadcast::clearPodcasts" href="qml-broadcast.html#clearPodcasts-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearTags" fullname="Broadcast::clearTags" href="qml-broadcast.html#clearTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="downloadEpisode" fullname="Broadcast::downloadEpisode" href="qml-broadcast.html#downloadEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="downloadFinished" fullname="Broadcast::downloadFinished" href="qml-broadcast.html#downloadFinished-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="fetchPodcastTags" fullname="Broadcast::fetchPodcastTags" href="qml-broadcast.html#fetchPodcastTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="fetchPodcastsForTag" fullname="Broadcast::fetchPodcastsForTag" href="qml-broadcast.html#fetchPodcastsForTag-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="playEpisode" fullname="Broadcast::playEpisode" href="qml-broadcast.html#playEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="removeFromDownloads" fullname="Broadcast::removeFromDownloads" href="qml-broadcast.html#removeFromDownloads-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="removeFromPlaylist" fullname="Broadcast::removeFromPlaylist" href="qml-broadcast.html#removeFromPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+        </qmlclass>
         <page name="list-initial-source-files.html" href="list-initial-source-files.html" status="active" location="list-initial-voyce-source-files.qdoc" filepath="/home/developer/Voyce/doc/list-initial-voyce-source-files.qdoc" lineno="1" documented="true" subtype="page" title="List of source files - initial Voyce application" fulltitle="List of source files - initial Voyce application" subtitle="" module="Voyce">
             <contents name="c-files" title="C++ Files" level="1"/>
             <contents name="qml-files" title="QML Files" level="1"/>
@@ -19,8 +125,10 @@
             <contents name="logic" title="logic" level="2"/>
             <contents name="model" title="model" level="2"/>
             <contents name="pages" title="pages" level="2"/>
+            <contents name="next-steps" title="Next steps" level="1"/>
         </page>
         <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/developer/Voyce/doc/index.qdoc" lineno="1" documented="true" subtype="page" title="How to create mobile application for Podcast streaming using Felgo SDK" fulltitle="How to create mobile application for Podcast streaming using Felgo SDK" subtitle="" module="Voyce">
+            <contents name="table-of-contents" title="Table of Contents" level="1"/>
             <contents name="getting-started" title="Getting Started" level="1"/>
             <contents name="installing-felgo-sdk" title="Installing Felgo SDK" level="2"/>
             <contents name="add-felgo-packages-for-android-platform" title="Add Felgo packages for Android platform" level="2"/>
@@ -28,22 +136,33 @@
             <contents name="running-qt-creator" title="Running Qt Creator" level="1"/>
             <contents name="next-steps" title="Next steps" level="1"/>
         </page>
-        <qmlclass name="PlaylistPage" qml-module-name="PlaylistPage" href="qml-playlistpage.html" status="internal" access="private" location="PlaylistPage.qml" filepath="/home/developer/Voyce/qml/pages/PlaylistPage.qml" lineno="4" title="PlaylistPage" fulltitle="PlaylistPage" subtitle=""/>
-        <qmlclass name="SettingsPage" qml-module-name="SettingsPage" href="qml-settingspage.html" status="internal" access="private" location="SettingsPage.qml" filepath="/home/developer/Voyce/qml/pages/SettingsPage.qml" lineno="4" title="SettingsPage" fulltitle="SettingsPage" subtitle=""/>
-        <qmlclass name="Main" qml-module-name="Main" href="qml-main.html" status="internal" access="private" location="Main.qml" filepath="/home/developer/Voyce/qml/Main.qml" lineno="7" title="Main" fulltitle="Main" subtitle=""/>
-        <qmlclass name="Logic" qml-module-name="Logic" href="qml-logic.html" status="internal" access="private" location="Logic.qml" filepath="/home/developer/Voyce/qml/logic/Logic.qml" lineno="3" title="Logic" fulltitle="Logic" subtitle="">
-            <function name="clearCache" fullname="Logic::clearCache" href="qml-logic.html#clearCache-signal" status="internal" access="private" location="Logic.qml" filepath="/home/developer/Voyce/qml/logic/Logic.qml" lineno="5" meta="qmlsignal"/>
-        </qmlclass>
-        <qmlclass name="RestAPI" qml-module-name="RestAPI" href="qml-restapi.html" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="4" title="RestAPI" fulltitle="RestAPI" subtitle="">
-            <qmlproperty name="maxRequestTimeout" fullname="RestAPI::maxRequestTimeout" href="qml-restapi.html#maxRequestTimeout-prop" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="10" type="int" attached="false" writable="true"/>
-            <qmlproperty name="busy" fullname="RestAPI::busy" href="qml-restapi.html#busy-prop" status="internal" access="private" location="RestAPI.qml" filepath="/home/developer/Voyce/qml/model/RestAPI.qml" lineno="7" type="bool" attached="false" writable="false"/>
-        </qmlclass>
-        <qmlclass name="DataModel" qml-module-name="DataModel" href="qml-datamodel.html" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="4" title="DataModel" fulltitle="DataModel" subtitle="">
-            <qmlproperty name="dispatcher" fullname="DataModel::dispatcher" href="qml-datamodel.html#dispatcher-prop" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="6" type="alias" attached="false" writable="true"/>
-            <qmlproperty name="isBusy" fullname="DataModel::isBusy" href="qml-datamodel.html#isBusy-prop" status="internal" access="private" location="DataModel.qml" filepath="/home/developer/Voyce/qml/model/DataModel.qml" lineno="9" type="bool" attached="false" writable="false"/>
-        </qmlclass>
-        <qmlclass name="ExplorePage" qml-module-name="ExplorePage" href="qml-explorepage.html" status="internal" access="private" location="ExplorePage.qml" filepath="/home/developer/Voyce/qml/pages/ExplorePage.qml" lineno="4" title="ExplorePage" fulltitle="ExplorePage" subtitle=""/>
-        <qmlclass name="MediaPlayerPage" qml-module-name="MediaPlayerPage" href="qml-mediaplayerpage.html" status="internal" access="private" location="MediaPlayerPage.qml" filepath="/home/developer/Voyce/qml/pages/MediaPlayerPage.qml" lineno="4" title="MediaPlayerPage" fulltitle="MediaPlayerPage" subtitle=""/>
+        <page name="running-application.html" href="running-application.html" status="active" location="running-application.qdoc" filepath="/home/developer/Voyce/doc/running-application.qdoc" lineno="1" documented="true" subtype="page" title="Running Application on Android Device" fulltitle="Running Application on Android Device" subtitle="" module="Voyce"/>
         <qmlclass name="main" qml-module-name="main" href="qml-main.html" status="internal" access="private" location="main.qml" filepath="/home/developer/Voyce/main.qml" lineno="5" title="main" fulltitle="main" subtitle=""/>
+        <page name="main-components.html" href="main-components.html" status="active" location="main-components.qdoc" filepath="/home/developer/Voyce/doc/main-components.qdoc" lineno="1" documented="true" subtype="page" title="Main Components" fulltitle="Main Components" subtitle="" module="Voyce">
+            <contents name="broadcast-component" title="Broadcast component" level="1"/>
+            <contents name="restapi-component" title="RestAPI component" level="1"/>
+            <contents name="voycesettings-component" title="VoyceSettings component" level="1"/>
+            <contents name="episodedownloader-component" title="EpisodeDownloader component" level="1"/>
+            <contents name="main-component" title="Main component" level="1"/>
+        </page>
+        <page name="media-components.html" href="media-components.html" status="active" location="media-components.qdoc" filepath="/home/developer/Voyce/doc/media-components.qdoc" lineno="1" documented="true" subtype="page" title="Media Components" fulltitle="Media Components" subtitle="" module="Voyce">
+            <contents name="voycemediaplayer-component" title="VoyceMediaPlayer component" level="1"/>
+            <contents name="voycemediacontrols-component" title="VoyceMediaControls component" level="1"/>
+        </page>
+        <page name="model-components.html" href="model-components.html" status="active" location="model-components.qdoc" filepath="/home/developer/Voyce/doc/model-components.qdoc" lineno="1" documented="true" subtype="page" title="Model Components" fulltitle="Model Components" subtitle="" module="Voyce">
+            <contents name="datamodelconnections-component" title="DataModelConnections component" level="1"/>
+            <contents name="datamodel-component" title="DataModel component" level="1"/>
+            <contents name="filterproxymodel-component" title="FilterProxyModel component" level="1"/>
+        </page>
+        <page name="app-pages.html" href="app-pages.html" status="active" location="app-pages.qdoc" filepath="/home/developer/Voyce/doc/app-pages.qdoc" lineno="1" documented="true" subtype="page" title="Application Pages" fulltitle="Application Pages" subtitle="" module="Voyce">
+            <contents name="voycepage-component" title="VoycePage component" level="1"/>
+            <contents name="voycerightbaritem-component" title="VoyceRightBarItem component" level="1"/>
+            <contents name="categoriespage-component" title="CategoriesPage component" level="1"/>
+            <contents name="downloadspage-component" title="DownloadsPage component" level="1"/>
+            <contents name="episodespage-component" title="EpisodesPage component" level="1"/>
+            <contents name="playlistpage-component" title="PlaylistPage component" level="1"/>
+            <contents name="podcastspage-component" title="PodcastsPage component" level="1"/>
+            <contents name="settingspage-component" title="SettingsPage component" level="1"/>
+        </page>
     </namespace>
 </INDEX>

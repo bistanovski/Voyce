@@ -1,0 +1,17 @@
+/*!
+    \page conclusion.html tutorial
+    \title Conclusion
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage Running Application on Android Device
+
+    We have arrived at end of our journey. It is easy to agree that \b{Felgo SDK}
+    provides quality of tools and components for rapid Application development.
+
+    Leveraging Qt's proven technologies, and upgraded APIs and Plugins from Felgo,
+    creating even detailed views and application flow is very easy. We've done it
+    almost all of it in QML, and just a little code in C++.
+
+    \l{https://qt.io} {Qt} and \l{https://felgo.com} {Felgo} has proved to be right
+    technology for many use cases. Check them out!
+*/

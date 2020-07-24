@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- main-components.qdoc -->
+  <title>Main Components | Voyce</title>
+<link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+<body>
+<div align="center">                    <p class="header">Voyce - Listen your favourite podcasts</p>                    </div>                    <hr/>  <link rel="prev" href="list-initial-source-files.html" />
+  <link rel="next" href="model-components.html" />
+  <link rel="start" href="index.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="list-initial-source-files.html">List of source files - initial Voyce application</a>
+<a class="nextPage" href="model-components.html">Model Components</a>
+</p><p/>
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#broadcast-component">Broadcast component</a></li>
+<li class="level1"><a href="#restapi-component">RestAPI component</a></li>
+<li class="level1"><a href="#voycesettings-component">VoyceSettings component</a></li>
+<li class="level1"><a href="#episodedownloader-component">EpisodeDownloader component</a></li>
+<li class="level1"><a href="#main-component">Main component</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Main Components</h1>
+<span class="subtitle"></span>
+<!-- $$$main-components.html-description -->
+<div class="descr"> <a name="details"></a>
+<p>The main components of the application, and their implementation is presented in this page.</p>
+<a name="broadcast-component"></a>
+<h2 id="broadcast-component">Broadcast component</h2>
+<p><a href="qml-broadcast.html">Broadcast</a> - Documented properties <b>Broadcast.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+
+<span class="type">Item</span> {
+
+    signal <span class="type">clearCache</span>()
+    signal <span class="type">clearTags</span>()
+
+    signal <span class="type">fetchPodcastTags</span>(var numOfTags)
+    signal <span class="type">clearPodcasts</span>()
+
+    signal <span class="type">fetchPodcastsForTag</span>(var tag, var numOfPodcasts)
+    signal <span class="type">playEpisode</span>(var episodeData)
+
+    signal <span class="type">downloadEpisode</span>(var episodeData)
+    signal <span class="type">downloadFinished</span>(var episodeData)
+    signal <span class="type">removeFromDownloads</span>(var episodeIndex, var localUrl)
+
+    signal <span class="type">addToPlaylist</span>(var episodeData)
+    signal <span class="type">removeFromPlaylist</span>(var episodeIndex)
+
+    signal <span class="type">clearAndSaveSettings</span>()
+}</pre>
+<a name="restapi-component"></a>
+<h2 id="restapi-component">RestAPI component</h2>
+<p><a href="qml-restapi.html">RestAPI</a> - Documented properties <b><a href="qml-restapi.html">RestAPI</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+<span class="type">Item</span> {
+
+    property <span class="type">int</span> <span class="name">maxRequestTimeout</span>: <span class="number">10000</span>
+    readonly property <span class="type">bool</span> <span class="name">busy</span>: <span class="name">HttpNetworkActivityIndicator</span>.<span class="name">enabled</span>
+
+    <span class="name">Component</span>.onCompleted: {
+        <span class="name">HttpNetworkActivityIndicator</span>.<span class="name">setActivationDelay</span>(<span class="number">0</span>)
+    }
+
+    <span class="comment">// private</span>
+    <span class="type">QtObject</span> {
+        <span class="name">id</span>: <span class="name">_api_requestor</span>
+        property <span class="type">string</span> <span class="name">podcastsUrl</span>: <span class="string">&quot;https://gpodder.net/api/2&quot;</span>
+
+        <span class="keyword">function</span> <span class="name">fetch</span>(url, success, error) {
+            <span class="name">HttpRequest</span>.<span class="name">get</span>(<span class="name">url</span>)
+            .<span class="name">timeout</span>(<span class="name">maxRequestTimeout</span>)
+            .<span class="name">then</span>(<span class="keyword">function</span>(res) { <span class="name">success</span>(<span class="name">res</span>.<span class="name">body</span>) })
+            .<span class="name">catch</span>(<span class="keyword">function</span>(err) { <span class="name">error</span>(<span class="name">err</span>) });
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">getPodcastTags</span>(numOfTags, success, error) {
+        <span class="keyword">if</span>(<span class="name">numOfTags</span> <span class="operator">&gt;</span> <span class="number">0</span>) {
+            var url = <span class="name">_api_requestor</span>.<span class="name">podcastsUrl</span> <span class="operator">+</span> <span class="string">&quot;/tags/&quot;</span> <span class="operator">+</span> <span class="name">numOfTags</span>.<span class="name">toString</span>() <span class="operator">+</span> <span class="string">&quot;.json&quot;</span>;
+            <span class="name">_api_requestor</span>.<span class="name">fetch</span>(<span class="name">url</span>, <span class="name">success</span>, <span class="name">error</span>)
+        }
+        <span class="keyword">else</span> {
+            <span class="name">error</span>(<span class="string">'Number of fetching tags must be greater than 0!'</span>)
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">getPodcastsForTag</span>(tag, numOfPodcasts, success, error) {
+        <span class="keyword">if</span>(<span class="string">''</span> <span class="operator">!==</span> <span class="name">tag</span>) {
+            var url = <span class="name">_api_requestor</span>.<span class="name">podcastsUrl</span> <span class="operator">+</span> <span class="string">&quot;/tag/&quot;</span> <span class="operator">+</span> <span class="name">tag</span> <span class="operator">+</span> <span class="string">&quot;/&quot;</span> <span class="operator">+</span> <span class="name">numOfPodcasts</span>.<span class="name">toString</span>() <span class="operator">+</span> <span class="string">&quot;.json&quot;</span>;
+            <span class="name">_api_requestor</span>.<span class="name">fetch</span>(<span class="name">url</span>, <span class="name">success</span>, <span class="name">error</span>)
+        }
+        <span class="keyword">else</span> {
+            <span class="name">error</span>(<span class="string">'Searched tag must not be empty!'</span>)
+        }
+    }
+}</pre>
+<a name="voycesettings-component"></a>
+<h2 id="voycesettings-component">VoyceSettings component</h2>
+<p><a href="qml-voycesettings.html">VoyceSettings</a> - Documented properties <b><a href="qml-voycesettings.html">VoyceSettings</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+import Qt.labs.settings 1.1
+
+<span class="type">Item</span> {
+    <span class="name">id</span>: <span class="name">settingsRoot</span>
+
+    <span class="keyword">function</span> <span class="name">savePlaylist</span>() {
+        var playlistLength = <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>.<span class="name">count</span>;
+        <span class="name">playlistStorage</span>.<span class="name">playlistSize</span> <span class="operator">=</span> <span class="name">playlistLength</span>;
+        <span class="keyword">for</span>(var i=0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">playlistLength</span>; ++<span class="name">i</span>){
+            var episodeItem = <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>.<span class="name">get</span>(<span class="name">i</span>);
+            <span class="name">playlistStorage</span>.<span class="name">setValue</span>(<span class="name">i</span>, <span class="name">JSON</span>.<span class="name">stringify</span>(<span class="name">episodeItem</span>));
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">loadSavedPlaylist</span>() {
+        <span class="keyword">for</span>(var i=0; <span class="name">i</span><span class="operator">&lt;</span> <span class="name">playlistStorage</span>.<span class="name">playlistSize</span>; ++<span class="name">i</span>) {
+            var episode = <span class="name">playlistStorage</span>.<span class="name">value</span>(<span class="name">i</span>, <span class="number">null</span>);
+            <span class="keyword">if</span>(<span class="name">episode</span>) {
+                var parsedEpisode = <span class="name">JSON</span>.<span class="name">parse</span>(<span class="name">episode</span>);
+                <span class="name">_dataHolder</span>.<span class="name">playlistModelData</span>.<span class="name">append</span>(<span class="name">parsedEpisode</span>);
+                <span class="name">broadcast</span>.<span class="name">addToPlaylist</span>(<span class="name">parsedEpisode</span>)
+            }
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">clearPreviousSavedPlaylist</span>() {
+        <span class="keyword">for</span>(var c=0; <span class="name">c</span> <span class="operator">&lt;</span> <span class="name">playlistStorage</span>.<span class="name">playlistSize</span>; ++<span class="name">c</span>) {
+            var storedItem = <span class="name">playlistStorage</span>.<span class="name">value</span>(<span class="name">c</span>, <span class="number">null</span>);
+            <span class="keyword">if</span>(<span class="number">null</span> <span class="operator">===</span> <span class="name">storedItem</span>) {
+                <span class="keyword">break</span>;
+            }
+
+            <span class="name">playlistStorage</span>.<span class="name">setValue</span>(<span class="name">c</span>, <span class="number">null</span>)
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">clearPreviousSavedDownloads</span>() {
+        <span class="keyword">for</span>(var c=0; <span class="name">c</span> <span class="operator">&lt;</span> <span class="name">downloadsStorage</span>.<span class="name">downloadsSize</span>; ++<span class="name">c</span>) {
+            var storedItem = <span class="name">downloadsStorage</span>.<span class="name">value</span>(<span class="name">c</span>, <span class="number">null</span>);
+            <span class="keyword">if</span>(<span class="number">null</span> <span class="operator">===</span> <span class="name">storedItem</span>) {
+                <span class="keyword">break</span>;
+            }
+
+            <span class="name">downloadsStorage</span>.<span class="name">setValue</span>(<span class="name">c</span>, <span class="number">null</span>)
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">saveDownloads</span>() {
+        var downloadsLength = <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>.<span class="name">count</span>;
+        <span class="name">downloadsStorage</span>.<span class="name">downloadsSize</span> <span class="operator">=</span> <span class="name">downloadsLength</span>;
+        <span class="keyword">for</span>(var i=0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">downloadsLength</span>; ++<span class="name">i</span>){
+            var episodeItem = <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>.<span class="name">get</span>(<span class="name">i</span>);
+            <span class="name">downloadsStorage</span>.<span class="name">setValue</span>(<span class="name">i</span>, <span class="name">JSON</span>.<span class="name">stringify</span>(<span class="name">episodeItem</span>));
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">loadDownloadedEpisodes</span>() {
+        <span class="keyword">for</span>(var i=0; <span class="name">i</span><span class="operator">&lt;</span> <span class="name">downloadsStorage</span>.<span class="name">downloadsSize</span>; ++<span class="name">i</span>) {
+            var episode = <span class="name">downloadsStorage</span>.<span class="name">value</span>(<span class="name">i</span>, <span class="number">null</span>);
+            <span class="keyword">if</span>(<span class="name">episode</span>) {
+                <span class="name">_dataHolder</span>.<span class="name">downloadsModelData</span>.<span class="name">append</span>(<span class="name">JSON</span>.<span class="name">parse</span>(<span class="name">episode</span>));
+            }
+        }
+    }
+
+    <span class="type">Settings</span> {
+        <span class="name">id</span>: <span class="name">playlistStorage</span>
+        <span class="name">fileName</span>: <span class="string">&quot;VoycePlaylist.txt&quot;</span>
+
+        property <span class="type">int</span> <span class="name">playlistSize</span>
+
+        <span class="name">Component</span>.onCompleted: {
+            <span class="name">loadSavedPlaylist</span>();
+        }
+    }
+
+    <span class="type">Settings</span> {
+        <span class="name">id</span>: <span class="name">downloadsStorage</span>
+        <span class="name">fileName</span>: <span class="string">&quot;VoyceDownloads.txt&quot;</span>
+
+        property <span class="type">int</span> <span class="name">downloadsSize</span>
+
+        <span class="name">Component</span>.onCompleted: {
+            <span class="name">loadDownloadedEpisodes</span>();
+        }
+    }
+
+    <span class="type">Settings</span> {
+        <span class="name">id</span>: <span class="name">generalSettings</span>
+        <span class="name">fileName</span>: <span class="string">&quot;VoyceSettings.txt&quot;</span>
+    }
+}</pre>
+<a name="episodedownloader-component"></a>
+<h2 id="episodedownloader-component">EpisodeDownloader component</h2>
+<p><a href="qml-episodedownloader.html">EpisodeDownloader</a> is a simple wrapper arround Felgo's <b>DownloadableResource</b> component. It is used to download podcast episodes to device.</p>
+<p><a href="qml-episodedownloader.html">EpisodeDownloader</a> - Documented properties <b><a href="qml-episodedownloader.html">EpisodeDownloader</a>.qml:</b></p>
+<pre class="qml">import QtQuick 2.0
+import Felgo 3.0
+
+
+<span class="type">DownloadableResource</span> {
+    <span class="name">storageLocation</span>: <span class="name">FileUtils</span>.<span class="name">DownloadLocation</span>
+    <span class="name">extractAsPackage</span>: <span class="number">false</span>
+
+    property <span class="type">var</span> <span class="name">trackedEpisode</span>
+
+    <span class="name">onStatusChanged</span>: {
+        <span class="keyword">if</span>(<span class="name">DownloadableResource</span>.<span class="name">Available</span> <span class="operator">===</span> <span class="name">status</span>) {
+            <span class="name">nativeUtils</span>.<span class="name">displayMessageBox</span>(<span class="name">qsTr</span>(<span class="string">&quot;Download Complete!&quot;</span>));
+            <span class="name">trackedEpisode</span>.<span class="name">url</span> <span class="operator">=</span> <span class="name">storagePath</span>;
+            <span class="name">broadcast</span>.<span class="name">downloadFinished</span>(<span class="name">trackedEpisode</span>);
+        }
+    }
+
+    <span class="keyword">function</span> <span class="name">downloadEpisode</span>(episodeData) {
+        <span class="name">trackedEpisode</span> <span class="operator">=</span> <span class="name">episodeData</span>
+        <span class="name">storageName</span> <span class="operator">=</span> <span class="name">trackedEpisode</span>.<span class="name">title</span> <span class="operator">+</span> <span class="string">&quot;.mp3&quot;</span>;
+        <span class="name">source</span> <span class="operator">=</span> <span class="name">trackedEpisode</span>.<span class="name">url</span>;
+        <span class="keyword">if</span>(<span class="name">status</span> <span class="operator">===</span> <span class="name">DownloadableResource</span>.<span class="name">UnAvailable</span>) {
+            <span class="name">download</span>();
+        }
+    }
+}</pre>
+<a name="main-component"></a>
+<h2 id="main-component">Main component</h2>
+<p>Main is the central component which start the main ApplicationWindow creates instances of all needed components, and displays main Navigation components and their contents.</p>
+<p><b>Main.qml:</b></p>
+<pre class="qml">import Felgo 3.0
+import QtQuick 2.0
+import &quot;model&quot;
+import &quot;broadcast&quot;
+import &quot;pages&quot;
+import &quot;media&quot;
+
+<span class="type">App</span> {
+    <span class="name">id</span>: <span class="name">app</span>
+
+    <span class="name">onInitTheme</span>: {
+        <span class="name">Theme</span>.<span class="name">colors</span>.<span class="name">tintColor</span> <span class="operator">=</span> <span class="string">&quot;#E26155&quot;</span>
+    }
+
+    <span class="name">Component</span>.onCompleted: {
+        <span class="comment">// if device has network connection, clear cache at startup</span>
+        <span class="comment">// you'll probably implement a more intelligent cache cleanup for your app</span>
+        <span class="comment">// e.g. to only clear the items that aren't required regularly</span>
+
+        <span class="name">HttpRequest</span>.<span class="name">config</span>({ cache: <span class="number">true</span> });
+
+        <span class="keyword">if</span>(<span class="name">isOnline</span>) {
+            <span class="name">broadcast</span>.<span class="name">clearCache</span>()
+        }
+    }
+
+    <span class="name">onClosing</span>: {
+        <span class="name">close</span>.<span class="name">accepted</span> <span class="operator">=</span> <span class="number">false</span>;
+        <span class="name">broadcast</span>.<span class="name">clearAndSaveSettings</span>();
+        <span class="name">close</span>.<span class="name">accepted</span> <span class="operator">=</span> <span class="number">true</span>;
+    }
+
+    <span class="type"><a href="qml-broadcast.html">Broadcast</a></span> {
+        <span class="name">id</span>: <span class="name">broadcast</span>
+    }
+
+    <span class="type"><a href="qml-datamodel.html">DataModel</a></span> {
+        <span class="name">id</span>: <span class="name">dataModel</span>
+        <span class="name">dispatcher</span>: <span class="name">broadcast</span>
+    }
+
+    <span class="type">Navigation</span> {
+        <span class="name">id</span>: <span class="name">navigation</span>
+        <span class="name">navigationMode</span>: <span class="name">navigationModeDrawer</span>
+        <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">mediaPlayer</span>.<span class="name">height</span>
+
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Playlist&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">list</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">initialPage</span>: <span class="name">PlaylistPage</span> { }
+            }
+        }
+
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Explore&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">cloud</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">splitView</span>: <span class="name">tablet</span>
+                <span class="name">initialPage</span>: <span class="name">CategoriesPage</span> { }
+            }
+        }
+
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Downloads&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">download</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">initialPage</span>: <span class="name">DownloadsPage</span> { }
+            }
+        }
+
+        <span class="type">NavigationItem</span> {
+            <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Settings&quot;</span>)
+            <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">adjust</span>
+
+            <span class="type">NavigationStack</span> {
+                <span class="name">initialPage</span>: <span class="name">SettingsPage</span> { }
+            }
+        }
+    }
+
+    <span class="type"><a href="qml-voycemediaplayer.html">VoyceMediaPlayer</a></span> {
+        <span class="name">id</span>: <span class="name">mediaPlayer</span>
+        <span class="name">dispatcher</span>: <span class="name">broadcast</span>
+
+        <span class="name">height</span>: <span class="name">dp</span>(<span class="number">100</span>)
+        <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+        <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+    }
+}</pre>
+</div>
+<!-- @@@main-components.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="list-initial-source-files.html">List of source files - initial Voyce application</a>
+<a class="nextPage" href="model-components.html">Model Components</a>
+</p>
+<br/>                <hr/>                <div align="center">                <p class="footer">Voyce - Listen your favourite podcasts</p>                </div></body>
+</html>

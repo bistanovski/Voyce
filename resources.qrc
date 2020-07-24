@@ -20,7 +20,6 @@
         <file>qml/pages/VoycePage.qml</file>
         <file>qml/media/VoyceMediaControls.qml</file>
         <file>qml/media/VoyceMediaPlayer.qml</file>
-        <file>qml/media/VoycePlaylist.qml</file>
         <file>qml/settings/VoyceSettings.qml</file>
         <file>qml/model/DataModelConnections.qml</file>
         <file>qml/model/EpisodeDownloader.qml</file>

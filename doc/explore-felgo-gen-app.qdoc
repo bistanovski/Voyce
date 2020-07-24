@@ -41,7 +41,14 @@
     hold all podcast episodes that we want to listen in ordered way.
     We define the following initial code for new \b{PlaylistPage}
 
-    \quotefile qml/pages/PlaylistPage.qml
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            title: "Explore Podcasts"
+        }
+    \endqml
 
 
     In a same way we create 4 more pages that will be used:
@@ -49,19 +56,47 @@
     \list
         \li \b{ExplorePage.qml} - \e{List podcasts for exploring}
             \list
-                \li \quotefile qml/pages/ExplorePage.qml
+                \li \qml
+                        import QtQuick 2.0
+                        import Felgo 3.0
+
+                        Page {
+                            title: "Playlist"
+                        }
+                    \endqml
             \endlist
         \li \b{MediaPlayerPage.qml} - \e{Central MediaPlayer}
             \list
-                \li \quotefile qml/pages/MediaPlayerPage.qml
+                \li \qml
+                    import QtQuick 2.0
+                    import Felgo 3.0
+
+                    Page {
+                        title: "Media Player"
+                    }
+                \endqml
             \endlist
         \li \b{DownloadsPage.qml} - \e{List of downlaoded podcast episodes}
             \list
-                \li \quotefile qml/pages/DownloadsPage.qml
+                \li \qml
+                        import QtQuick 2.0
+                        import Felgo 3.0
+
+                        Page {
+                            title: "Downloads"
+                        }
+                    \endqml
             \endlist
         \li \b{SettingsPage.qml} - \e{Place for defining basic app settings}
             \list
-                \li \quotefile qml/pages/SettingsPage.qml
+                \li \qml
+                    import QtQuick 2.0
+                    import Felgo 3.0
+
+                    Page {
+                        title: "Settings"
+                    }
+                \endqml
             \endlist
     \endlist
 

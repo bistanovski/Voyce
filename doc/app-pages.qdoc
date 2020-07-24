@@ -1,0 +1,397 @@
+/*!
+    \page app-pages.html tutorial
+    \title Application Pages
+    \startpage How to create mobile application for Podcast streaming using Felgo SDK
+
+    \previouspage ListView and Delegate Components
+    \nextpage Media Components
+
+    The Application Pages components of the application, and their
+    implementation is presented in this page.
+
+
+    \section1 VoycePage component
+
+    \l{VoycePage} - Documented properties
+
+    \b{VoycePage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import "../components"
+
+        Page {
+            property bool searchBarEnabled
+            property bool showAcitivtyIndicator
+
+            rightBarItem: VoyceRightBarItem {
+                activityIndicatorVisible: showAcitivtyIndicator
+            }
+        }
+    \endqml
+
+
+    \section1 VoyceRightBarItem component
+
+    \l{VoyceRightBarItem} - Documented properties
+
+    \b{VoyceRightBarItem.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        NavigationBarRow {
+
+            property bool activityIndicatorVisible
+
+            showMoreButton: false
+
+            ActivityIndicatorBarItem {
+                id: activityBarItem
+                visible: activityIndicatorVisible
+                animating: visible
+                showItem: showItemIfRoom
+            }
+
+            IconButtonBarItem {
+                id: searchButton
+                icon: IconType.search
+                showItem: showItemAlways
+                onClicked: {
+                    searchBarEnabled = !searchBarEnabled
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 CategoriesPage component
+
+    \b{CategoriesPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import "."
+        import ".."
+        import "../model"
+        import "../delegates"
+
+        VoycePage {
+            id: rootPage
+            title: qsTr("Categories")
+            showAcitivtyIndicator: dataModel.isBusy
+
+            function fetchPodcastTags() {
+                broadcast.fetchPodcastTags(100);
+            }
+
+            JsonListModel {
+                id: podcastTagsModel
+                source: dataModel.tags
+                keyField: "tag"
+                fields: ["tag", "title", "usage"]
+            }
+
+            FilterProxyModel{
+                id: filteredCategoriesModel
+                targetModel: podcastTagsModel
+                targetRoleName: "title"
+            }
+
+            VoyceListView {
+                id: categoriesListView
+                model: filteredCategoriesModel
+                loadingText: qsTr("Loading Categories")
+                refreshFuncHandler: fetchPodcastTags
+                delegate: CategoryDelegate {}
+            }
+
+            onAppeared: {
+                fetchPodcastTags();
+            }
+
+            Component {
+                id: podcastsPageComponent
+                PodcastsPage { }
+            }
+        }
+    \endqml
+
+
+    \section1 DownloadsPage component
+
+    \b{DownloadsPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import ".."
+        import "../model"
+        import "../delegates"
+        import "../components"
+
+        VoycePage {
+            id: rootPage
+            title: qsTr("Downloads")
+            searchBarEnabled: true
+            showAcitivtyIndicator: false
+
+            FilterProxyModel{
+                id: filteredDownloadsModel
+                targetModel: dataModel.downloadsModel
+                targetRoleName: "title"
+            }
+
+            VoyceListView {
+                id: downloadsListView
+                model: filteredDownloadsModel
+                loadingText: qsTr("Loading Downloads")
+
+                delegate: EpisodeDelegate {
+                    id: localEpisodeDelegate
+
+                    isOfflineEpisode: true
+                    rightOption: Item { }
+
+                    leftOption: SwipeButton {
+                        text: qsTr("Remove")
+                        icon: IconType.plussquare
+                        height: parent.height
+                        backgroundColor: "red"
+
+                        onClicked: {
+                            localEpisodeDelegate.rowDelegate.itemChanged()
+                            localEpisodeDelegate.hideOptions()
+
+                            var episodeIndex = filteredDownloadsModel.mapToSource(index)
+                            broadcast.removeFromDownloads(episodeIndex, model.url)
+                        }
+                    }
+
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 EpisodesPage component
+
+    Page on which episodes for selected Podcast are displayed
+
+    \b{EpisodesPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import QtQuick.XmlListModel 2.12
+        import ".."
+        import "../model"
+        import "../delegates"
+        import "../components"
+
+        VoycePage {
+            id: rootPage
+            title: qsTr("Episodes: ") + podcastTitle
+            showAcitivtyIndicator: episodesModel.status === XmlListModel.Loading
+
+            property string podcastTitle
+            property string podcastUrl
+
+            onPodcastUrlChanged: {
+                if('' !== podcastUrl) {
+                    fetchEpisodes()
+                }
+            }
+
+            function fetchEpisodes() {
+                episodesModel.source = podcastUrl
+            }
+
+            XmlListModel {
+                id: episodesModel
+                source: rootPage.podcastUrl
+                query: "/rss/channel/item"
+
+                XmlRole { name: "title"; query: "title/string()" }
+                XmlRole { name: "pubDate"; query: "pubDate/string()" }
+                XmlRole { name: "url"; query: "enclosure/@url/string()" }
+                XmlRole { name: "length"; query: "enclosure/@type/string()" }
+            }
+
+            FilterProxyModel{
+                id: filteredEpisodesModel
+                targetModel: episodesModel
+                targetRoleName: "title"
+            }
+
+            VoyceListView {
+                id: episodesListView
+                model: filteredEpisodesModel
+                loadingText: qsTr("Loading Episodes")
+                delegate: EpisodeDelegate {}
+            }
+        }
+    \endqml
+
+
+    \section1 PlaylistPage component
+
+    \b{EpisodesPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import ".."
+        import "../model"
+        import "../delegates"
+        import "../components"
+
+        VoycePage {
+            id: rootPage
+            title: qsTr("Playlist")
+            searchBarEnabled: true
+            showAcitivtyIndicator: false
+
+            FilterProxyModel{
+                id: filteredPlaylistModel
+                targetModel: dataModel.playlistModel
+                targetRoleName: "title"
+            }
+
+            VoyceListView {
+                id: playlistListView
+                model: filteredPlaylistModel
+                loadingText: qsTr("Loading Playlist")
+
+                delegate: EpisodeDelegate {
+                    id: playlistDelegate
+
+                    rightOption: Item { }
+
+                    leftOption: SwipeButton {
+                        text: qsTr("Remove")
+                        icon: IconType.plussquare
+                        height: parent.height
+                        backgroundColor: "red"
+
+                        onClicked: {
+                            playlistDelegate.rowDelegate.itemChanged()
+                            playlistDelegate.hideOptions()
+
+                            var episodeIndex = filteredPlaylistModel.mapToSource(index)
+                            broadcast.removeFromPlaylist(episodeIndex)
+                        }
+                    }
+
+                }
+            }
+        }
+    \endqml
+
+
+    \section1 PodcastsPage component
+
+    Page on which Podcasts for the previous selected Category
+    are displayed.
+
+    \b{PodcastsPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+        import ".."
+        import "../model"
+        import "../delegates"
+
+        VoycePage {
+            id: rootPage
+            title: qsTr("Podcasts: ") + category
+            showAcitivtyIndicator: dataModel.isBusy
+
+            property string tag
+            property string category
+
+            onTagChanged: {
+                if('' !== tag) {
+                    fetchPodcastsForTag()
+                }
+                else {
+                    console.log('error: Searched tag must not be empty!')
+                }
+            }
+
+            function fetchPodcastsForTag() {
+                broadcast.clearPodcasts()
+                broadcast.fetchPodcastsForTag(tag, 40)
+            }
+
+            JsonListModel {
+                id: podcastsModel
+                source: dataModel.podcasts
+                keyField: "url"
+                fields: ["url", "title", "author", "description", "scaled_logo_url", "website"]
+            }
+
+            FilterProxyModel{
+                id: filteredPodcastsModel
+                targetModel: podcastsModel
+                targetRoleName: "title"
+            }
+
+            VoyceListView {
+                id: podcastsListView
+                model: filteredPodcastsModel
+                loadingText: qsTr("Loading Podcasts")
+                refreshFuncHandler: fetchPodcastsForTag
+                delegate: PodcastDelegate{}
+            }
+
+            Component {
+                id: episodesPageComponent
+                EpisodesPage { }
+            }
+        }
+    \endqml
+
+
+    \section1 SettingsPage component
+
+    So far, in the SettingsPage we only provide simple \b{AppButton} which on clicking it
+    saves Playlist and Downloads into local settings files.
+
+    \b{SettingsPage.qml:}
+
+    \qml
+        import QtQuick 2.0
+        import Felgo 3.0
+
+        Page {
+            id: rootPage
+            title: qsTr("Settings")
+
+            AppText {
+                id: textItem
+                anchors.centerIn: parent
+                text: qsTr("Save Playlist and Downloads settings!")
+                font.pixelSize: app.sp(12)
+            }
+
+            AppButton {
+                icon: IconType.save
+                iconSize: app.dp(36)
+                visible: true // show on all platforms, default is only Android
+
+                anchors.top: textItem.bottom
+                anchors.horizontalCenter: textItem.horizontalCenter
+
+                onClicked: {
+                    broadcast.clearAndSaveSettings();
+                }
+            }
+        }
+    \endqml
+
+*/

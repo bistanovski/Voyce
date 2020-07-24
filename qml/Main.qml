@@ -7,12 +7,17 @@ import "media"
 
 App {
     id: app
+
+    onInitTheme: {
+        Theme.colors.tintColor = "#E26155"
+    }
+
     Component.onCompleted: {
         // if device has network connection, clear cache at startup
         // you'll probably implement a more intelligent cache cleanup for your app
         // e.g. to only clear the items that aren't required regularly
 
-        HttpRequest.config({ cache: false });
+        HttpRequest.config({ cache: true });
 
         if(isOnline) {
             broadcast.clearCache()
