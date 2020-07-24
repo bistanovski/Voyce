@@ -41,6 +41,14 @@
 
 
     \section1 RestAPI component
+
+    RestApi Component provides access to Podcast Directory API which is provided
+    by open source project - \l{https://gpodder.net/} {gpodder}. The documentation
+    for the API is stored here: \l {https://gpoddernet.readthedocs.io} {https://gpoddernet.readthedocs.io}.
+
+   Gpodder, provides access to open and shared data without authentication of users,
+   and further list locations of other podcasts.
+
     \l{RestAPI} - Documented properties
     \b{RestAPI.qml:}
 

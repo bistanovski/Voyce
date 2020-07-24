@@ -179,7 +179,15 @@
 
     \section1 EpisodesPage component
 
-    Page on which episodes for selected Podcast are displayed
+    Page on which episodes for selected Podcast are displayed. In this page, there
+    is instance of \e{XmlListModel}, whic provides asynchronous loading of network
+    data in XML format. The URL where the XML file is stored online, is provided
+    by Podcasts API. You can check the documentation here: \l {https://gpoddernet.readthedocs.io}
+    {https://gpoddernet.readthedocs.io}.
+
+    Next, \e{XmlRole} instances are assigned to the \e{episodesModel} so that it
+    knows which data to be extracted, from where and under which name to be registered
+    for later usage.
 
     \b{EpisodesPage.qml:}
 

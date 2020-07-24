@@ -3,6 +3,32 @@
 <INDEX url="" title="Voyce is a simple podcast streaming application based on Felgo, Qt and QML" version="" project="Voyce">
     <namespace name="" status="active" access="public" module="voyce">
         <class name="VoyceFileUtils" href="voycefileutils.html" status="internal" access="private" location="VoyceFileUtils.hpp" filepath="/home/developer/Voyce/VoyceFileUtils.hpp" lineno="10"/>
+        <page name="media-components.html" href="media-components.html" status="active" location="media-components.qdoc" filepath="/home/developer/Voyce/doc/media-components.qdoc" lineno="1" documented="true" subtype="page" title="Media Components" fulltitle="Media Components" subtitle="" module="Voyce">
+            <contents name="voycemediaplayer-component" title="VoyceMediaPlayer component" level="1"/>
+            <contents name="voycemediacontrols-component" title="VoyceMediaControls component" level="1"/>
+        </page>
+        <page name="main-components.html" href="main-components.html" status="active" location="main-components.qdoc" filepath="/home/developer/Voyce/doc/main-components.qdoc" lineno="1" documented="true" subtype="page" title="Main Components" fulltitle="Main Components" subtitle="" module="Voyce">
+            <contents name="broadcast-component" title="Broadcast component" level="1"/>
+            <contents name="restapi-component" title="RestAPI component" level="1"/>
+            <contents name="voycesettings-component" title="VoyceSettings component" level="1"/>
+            <contents name="episodedownloader-component" title="EpisodeDownloader component" level="1"/>
+            <contents name="main-component" title="Main component" level="1"/>
+        </page>
+        <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/developer/Voyce/doc/index.qdoc" lineno="1" documented="true" subtype="page" title="How to create mobile application for Podcast streaming using Felgo SDK" fulltitle="How to create mobile application for Podcast streaming using Felgo SDK" subtitle="" module="Voyce">
+            <contents name="table-of-contents" title="Table of Contents" level="1"/>
+            <contents name="getting-started" title="Getting Started" level="1"/>
+            <contents name="installing-felgo-sdk" title="Installing Felgo SDK" level="2"/>
+            <contents name="add-felgo-packages-for-android-platform" title="Add Felgo packages for Android platform" level="2"/>
+            <contents name="setup-android-emulator" title="Setup Android emulator" level="2"/>
+            <contents name="running-qt-creator" title="Running Qt Creator" level="1"/>
+            <contents name="next-steps" title="Next steps" level="1"/>
+        </page>
+        <page name="list-view-delegates.html" href="list-view-delegates.html" status="active" location="list-view-and-delegates.qdoc" filepath="/home/developer/Voyce/doc/list-view-and-delegates.qdoc" lineno="1" documented="true" subtype="page" title="ListView and Delegate Components" fulltitle="ListView and Delegate Components" subtitle="" module="Voyce">
+            <contents name="voycelistview-component" title="VoyceListView component" level="1"/>
+            <contents name="categorydelegate-component" title="CategoryDelegate component" level="1"/>
+            <contents name="podcastdelegate-component" title="PodcastDelegate component" level="1"/>
+            <contents name="episodedelegate-component" title="EpisodeDelegate component" level="1"/>
+        </page>
         <page name="explore-felgo-gen-app.html" href="explore-felgo-gen-app.html" status="active" location="explore-felgo-gen-app.qdoc" filepath="/home/developer/Voyce/doc/explore-felgo-gen-app.qdoc" lineno="1" documented="true" subtype="page" title="Explore generated Felgo Application" fulltitle="Explore generated Felgo Application" subtitle="" module="Voyce">
             <contents name="adding-new-pages" title="Adding new Pages" level="1"/>
             <contents name="removing-not-needed-code-update-existing" title="Removing not needed code, update existing" level="1"/>
@@ -13,14 +39,26 @@
             <contents name="next-steps" title="Next steps" level="1"/>
         </page>
         <page name="conclusion.html" href="conclusion.html" status="active" location="conclusion.qdoc" filepath="/home/developer/Voyce/doc/conclusion.qdoc" lineno="1" documented="true" subtype="page" title="Conclusion" fulltitle="Conclusion" subtitle="" module="Voyce"/>
-        <qmlclass name="Main" qml-module-name="Main" href="qml-main.html" status="internal" access="private" location="Main.qml" filepath="/home/developer/Voyce/qml/Main.qml" lineno="8" title="Main" fulltitle="Main" subtitle=""/>
         <page name="cpp-files.html" href="cpp-files.html" status="active" location="cpp-files.qdoc" filepath="/home/developer/Voyce/doc/cpp-files.qdoc" lineno="1" documented="true" subtype="page" title="C++ Files" fulltitle="C++ Files" subtitle="" module="Voyce"/>
-        <page name="list-view-delegates.html" href="list-view-delegates.html" status="active" location="list-view-and-delegates.qdoc" filepath="/home/developer/Voyce/doc/list-view-and-delegates.qdoc" lineno="1" documented="true" subtype="page" title="ListView and Delegate Components" fulltitle="ListView and Delegate Components" subtitle="" module="Voyce">
-            <contents name="voycelistview-component" title="VoyceListView component" level="1"/>
-            <contents name="categorydelegate-component" title="CategoryDelegate component" level="1"/>
-            <contents name="podcastdelegate-component" title="PodcastDelegate component" level="1"/>
-            <contents name="episodedelegate-component" title="EpisodeDelegate component" level="1"/>
-        </page>
+        <qmlclass name="VoyceListView" qml-module-name="VoyceListView" href="qml-voycelistview.html" status="active" access="public" documented="true" title="VoyceListView" fulltitle="VoyceListView" subtitle="" brief="- basic ListView component reused across the Voyce app">
+            <qmlproperty name="refreshFuncHandler" fullname="VoyceListView::refreshFuncHandler" href="qml-voycelistview.html#refreshFuncHandler-prop" status="active" access="public" documented="true" type="var" attached="false" writable="true"/>
+            <qmlproperty name="loadingText" fullname="VoyceListView::loadingText" href="qml-voycelistview.html#loadingText-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
+        </qmlclass>
+        <qmlclass name="Broadcast" qml-module-name="Broadcast" href="qml-broadcast.html" status="active" access="public" documented="true" title="Broadcast" fulltitle="Broadcast" subtitle="" brief="- basic signal dispatcher">
+            <function name="addToPlaylist" fullname="Broadcast::addToPlaylist" href="qml-broadcast.html#addToPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearAndSaveSettings" fullname="Broadcast::clearAndSaveSettings" href="qml-broadcast.html#clearAndSaveSettings-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearCache" fullname="Broadcast::clearCache" href="qml-broadcast.html#clearCache-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearPodcasts" fullname="Broadcast::clearPodcasts" href="qml-broadcast.html#clearPodcasts-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="clearTags" fullname="Broadcast::clearTags" href="qml-broadcast.html#clearTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="downloadEpisode" fullname="Broadcast::downloadEpisode" href="qml-broadcast.html#downloadEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="downloadFinished" fullname="Broadcast::downloadFinished" href="qml-broadcast.html#downloadFinished-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="fetchPodcastTags" fullname="Broadcast::fetchPodcastTags" href="qml-broadcast.html#fetchPodcastTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="fetchPodcastsForTag" fullname="Broadcast::fetchPodcastsForTag" href="qml-broadcast.html#fetchPodcastsForTag-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="playEpisode" fullname="Broadcast::playEpisode" href="qml-broadcast.html#playEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="removeFromDownloads" fullname="Broadcast::removeFromDownloads" href="qml-broadcast.html#removeFromDownloads-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+            <function name="removeFromPlaylist" fullname="Broadcast::removeFromPlaylist" href="qml-broadcast.html#removeFromPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
+        </qmlclass>
+        <qmlclass name="main" qml-module-name="main" href="qml-main.html" status="internal" access="private" location="main.qml" filepath="/home/developer/Voyce/main.qml" lineno="5" title="main" fulltitle="main" subtitle=""/>
         <qmlclass name="VoyceRightBarItem" qml-module-name="VoyceRightBarItem" href="qml-voycerightbaritem.html" status="active" access="public" documented="true" title="VoyceRightBarItem" fulltitle="VoyceRightBarItem" subtitle="" brief="- basic update of NavigationBarRow">
             <qmlproperty name="activityIndicatorVisible" fullname="VoyceRightBarItem::activityIndicatorVisible" href="qml-voycerightbaritem.html#activityIndicatorVisible-prop" status="active" access="public" documented="true" type="bool" attached="false" writable="true"/>
         </qmlclass>
@@ -100,24 +138,7 @@
             <function name="saveDownloads" fullname="VoyceSettings::saveDownloads" href="qml-voycesettings.html#saveDownloads-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="76" documented="true" meta="qmlmethod"/>
             <function name="savePlaylist" fullname="VoyceSettings::savePlaylist" href="qml-voycesettings.html#savePlaylist-method" status="active" access="public" location="VoyceSettings.qml" filepath="/home/developer/Voyce/qml/settings/VoyceSettings.qml" lineno="18" documented="true" meta="qmlmethod"/>
         </qmlclass>
-        <qmlclass name="VoyceListView" qml-module-name="VoyceListView" href="qml-voycelistview.html" status="active" access="public" documented="true" title="VoyceListView" fulltitle="VoyceListView" subtitle="" brief="- basic ListView component reused across the Voyce app">
-            <qmlproperty name="refreshFuncHandler" fullname="VoyceListView::refreshFuncHandler" href="qml-voycelistview.html#refreshFuncHandler-prop" status="active" access="public" documented="true" type="var" attached="false" writable="true"/>
-            <qmlproperty name="loadingText" fullname="VoyceListView::loadingText" href="qml-voycelistview.html#loadingText-prop" status="active" access="public" documented="true" type="string" attached="false" writable="true"/>
-        </qmlclass>
-        <qmlclass name="Broadcast" qml-module-name="Broadcast" href="qml-broadcast.html" status="active" access="public" documented="true" title="Broadcast" fulltitle="Broadcast" subtitle="" brief="- basic signal dispatcher">
-            <function name="addToPlaylist" fullname="Broadcast::addToPlaylist" href="qml-broadcast.html#addToPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="clearAndSaveSettings" fullname="Broadcast::clearAndSaveSettings" href="qml-broadcast.html#clearAndSaveSettings-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="clearCache" fullname="Broadcast::clearCache" href="qml-broadcast.html#clearCache-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="clearPodcasts" fullname="Broadcast::clearPodcasts" href="qml-broadcast.html#clearPodcasts-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="clearTags" fullname="Broadcast::clearTags" href="qml-broadcast.html#clearTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="downloadEpisode" fullname="Broadcast::downloadEpisode" href="qml-broadcast.html#downloadEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="downloadFinished" fullname="Broadcast::downloadFinished" href="qml-broadcast.html#downloadFinished-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="fetchPodcastTags" fullname="Broadcast::fetchPodcastTags" href="qml-broadcast.html#fetchPodcastTags-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="fetchPodcastsForTag" fullname="Broadcast::fetchPodcastsForTag" href="qml-broadcast.html#fetchPodcastsForTag-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="playEpisode" fullname="Broadcast::playEpisode" href="qml-broadcast.html#playEpisode-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="removeFromDownloads" fullname="Broadcast::removeFromDownloads" href="qml-broadcast.html#removeFromDownloads-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-            <function name="removeFromPlaylist" fullname="Broadcast::removeFromPlaylist" href="qml-broadcast.html#removeFromPlaylist-signal" status="active" access="public" documented="true" meta="qmlsignal"/>
-        </qmlclass>
+        <qmlclass name="Main" qml-module-name="Main" href="qml-main.html" status="internal" access="private" location="Main.qml" filepath="/home/developer/Voyce/qml/Main.qml" lineno="8" title="Main" fulltitle="Main" subtitle=""/>
         <page name="list-initial-source-files.html" href="list-initial-source-files.html" status="active" location="list-initial-voyce-source-files.qdoc" filepath="/home/developer/Voyce/doc/list-initial-voyce-source-files.qdoc" lineno="1" documented="true" subtype="page" title="List of source files - initial Voyce application" fulltitle="List of source files - initial Voyce application" subtitle="" module="Voyce">
             <contents name="c-files" title="C++ Files" level="1"/>
             <contents name="qml-files" title="QML Files" level="1"/>
@@ -127,28 +148,7 @@
             <contents name="pages" title="pages" level="2"/>
             <contents name="next-steps" title="Next steps" level="1"/>
         </page>
-        <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/developer/Voyce/doc/index.qdoc" lineno="1" documented="true" subtype="page" title="How to create mobile application for Podcast streaming using Felgo SDK" fulltitle="How to create mobile application for Podcast streaming using Felgo SDK" subtitle="" module="Voyce">
-            <contents name="table-of-contents" title="Table of Contents" level="1"/>
-            <contents name="getting-started" title="Getting Started" level="1"/>
-            <contents name="installing-felgo-sdk" title="Installing Felgo SDK" level="2"/>
-            <contents name="add-felgo-packages-for-android-platform" title="Add Felgo packages for Android platform" level="2"/>
-            <contents name="setup-android-emulator" title="Setup Android emulator" level="2"/>
-            <contents name="running-qt-creator" title="Running Qt Creator" level="1"/>
-            <contents name="next-steps" title="Next steps" level="1"/>
-        </page>
         <page name="running-application.html" href="running-application.html" status="active" location="running-application.qdoc" filepath="/home/developer/Voyce/doc/running-application.qdoc" lineno="1" documented="true" subtype="page" title="Running Application on Android Device" fulltitle="Running Application on Android Device" subtitle="" module="Voyce"/>
-        <qmlclass name="main" qml-module-name="main" href="qml-main.html" status="internal" access="private" location="main.qml" filepath="/home/developer/Voyce/main.qml" lineno="5" title="main" fulltitle="main" subtitle=""/>
-        <page name="main-components.html" href="main-components.html" status="active" location="main-components.qdoc" filepath="/home/developer/Voyce/doc/main-components.qdoc" lineno="1" documented="true" subtype="page" title="Main Components" fulltitle="Main Components" subtitle="" module="Voyce">
-            <contents name="broadcast-component" title="Broadcast component" level="1"/>
-            <contents name="restapi-component" title="RestAPI component" level="1"/>
-            <contents name="voycesettings-component" title="VoyceSettings component" level="1"/>
-            <contents name="episodedownloader-component" title="EpisodeDownloader component" level="1"/>
-            <contents name="main-component" title="Main component" level="1"/>
-        </page>
-        <page name="media-components.html" href="media-components.html" status="active" location="media-components.qdoc" filepath="/home/developer/Voyce/doc/media-components.qdoc" lineno="1" documented="true" subtype="page" title="Media Components" fulltitle="Media Components" subtitle="" module="Voyce">
-            <contents name="voycemediaplayer-component" title="VoyceMediaPlayer component" level="1"/>
-            <contents name="voycemediacontrols-component" title="VoyceMediaControls component" level="1"/>
-        </page>
         <page name="model-components.html" href="model-components.html" status="active" location="model-components.qdoc" filepath="/home/developer/Voyce/doc/model-components.qdoc" lineno="1" documented="true" subtype="page" title="Model Components" fulltitle="Model Components" subtitle="" module="Voyce">
             <contents name="datamodelconnections-component" title="DataModelConnections component" level="1"/>
             <contents name="datamodel-component" title="DataModel component" level="1"/>
